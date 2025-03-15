@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="accent">#FF8000</color>
+    <color name="text">#FFFFFFFF</color>
+    <color name="text_second">#C1C0C0</color>
+    <color name="background">#1E1E1E</color>
+    <color name="background_second">#323232</color>
+
+    <color name="score_green">#00CB2C</color>
+    <color name="score_gray">#939393</color>
+    <color name="score_red">#AC0000</color>
+    <color name="score_legend_start">#FFCF68</color>
+    <color name="score_legend_end">#997C3E</color>
+
+</resources>

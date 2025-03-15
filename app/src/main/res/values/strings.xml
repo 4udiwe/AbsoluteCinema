@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">AbsoluteCinema</string>
+    <string name="Registration">Регистрация</string>
+    <string name="mockemail">anyemail@gmail.com</string>
+    <string name="Password">Пароль</string>
+    <string name="ConfirmPassword">Подтвердите пароль</string>
+    <string name="HasAccount">Уже есть аккаунт?</string>
+    <string name="ToLogin">Вход</string>
+    <string name="Registrate">Зарегистрироваться</string>
+    <string name="LogIn">Вход</string>
+    <string name="NoAccount">Eще нет аккаунта?</string>
+    <string name="ToRegistration">Регистрация</string>
+    <string name="ForgotPassword">Забыли пароль?</string>
+    <string name="toEnter">Войти</string>
+    <string name="All">Все</string>
+    <string name="FilmsForYou">Фильмы для вас</string>
+    <string name="SerialsForYou">Сериалы для вас</string>
+    <string name="Detectives">Детективы</string>
+    <string name="Comedys">Комедии</string>
+    <string name="Romans">Романы</string>
+    <string name="WillWatch">Буду смотреть</string>
+    <string name="YourRates">Ваши оценки</string>
+    <string name="Favourite">Любимые</string>
+</resources>
