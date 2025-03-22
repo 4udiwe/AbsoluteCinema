@@ -1,6 +1,7 @@
 package com.example.data.local.category
 
 import androidx.room.TypeConverter
+import com.example.domain.model.LocalCategory
 
 class LocalCategoryConverter {
 

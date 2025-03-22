@@ -1,4 +1,4 @@
-package com.example.data.local.category
+package com.example.domain.model
 
 /**
  * [LocalCategory] используется для определения того,

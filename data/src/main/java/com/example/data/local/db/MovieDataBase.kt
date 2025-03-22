@@ -3,6 +3,7 @@ package com.example.data.local.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.data.local.category.CategoryEntity
+import com.example.data.local.category.MovieCategoryEntity
 import com.example.data.local.dao.MovieDao
 import com.example.data.local.entity.BackdropEntity
 import com.example.data.local.entity.BudgetEntity
@@ -21,6 +22,7 @@ import com.example.data.local.entity.SimilarMovieEntity
 @Database(
     entities = [
         CategoryEntity::class,
+        MovieCategoryEntity::class,
         BackdropEntity::class,
         BudgetEntity::class,
         CountryEntity::class,
