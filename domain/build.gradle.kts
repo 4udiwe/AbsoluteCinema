@@ -1,6 +1,16 @@
 plugins {
     id("java-library")
     alias(libs.plugins.jetbrains.kotlin.jvm)
+    id("org.jetbrains.dokka") version "1.9.10"
+}
+
+tasks.dokkaHtmlPartial.configure {
+    outputDirectory.set(file("$buildDir/dokka/domain")) // Указываем директорию для вывода
+    dokkaSourceSets {
+        named("main") {
+            sourceRoots.from("src/main/java") // Указываем путь к исходникам
+        }
+    }
 }
 
 java {

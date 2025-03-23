@@ -14,9 +14,9 @@ interface MovieRepository {
      * Выполняет поиск с различными фильтрами.
      *
      *
-     * - [fields] - сортировка по полям из MoviesDTO (year, rating.kp...)
-     * - [sortTypes] - тип сортировки для каждого из полей [fields] ("1", "-1")
-     * - [types] - поиск по типам:
+     * @param fields сортировка по полям из MoviesDTO (year, rating.kp...)
+     * @param sortTypes  тип сортировки для каждого из полей [fields] ("1", "-1")
+     * @param types поиск по типам:
      *      - movie
      *      - tv-series
      *      - cartoon
@@ -25,24 +25,24 @@ interface MovieRepository {
      *
      *      Пример: {"movie", "tv-series", "!anime"}
      *
-     * - [isSeries] - является ли сериалом
-     * - [years] - года, как по отдельности, так и диапазоном
+     * @param isSeries является ли сериалом
+     * @param years года, как по отдельности, так и диапазоном
      *
      *      Пример: {1874, 2050, !2020, 2020-2024}
      *
-     * - [kpRating] - поиск по рейтингу Кинопоиска
+     * @param kpRating поиск по рейтингу Кинопоиска
      *
      *      Пример: { 7, 10, 7.2-10 }
      *
-     * - [genres] - жанры
+     * @param genres жанры
      *
      *      Пример: { "драма", "комедия", "!мелодрама", "+ужасы" }
      *
-     * - [countries] - страны
+     * @param countries страны
      *
      *      Пример: { "США", "Россия", "!Франция" , "+Великобритания" }
      *
-     * - [inCollection] - вхождение в какую-либо коллекцию
+     * @param inCollection вхождение в какую-либо коллекцию
      *
      *      Пример: { "top250", "top-100-indian-movies", "!top-100-movies" }
      */

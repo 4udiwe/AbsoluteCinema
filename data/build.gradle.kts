@@ -2,6 +2,16 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
+    id("org.jetbrains.dokka") version "1.9.10"
+}
+
+tasks.dokkaHtmlPartial.configure {
+    outputDirectory.set(file("$buildDir/dokka/data")) // Указываем директорию для вывода
+    dokkaSourceSets {
+        named("main") {
+            sourceRoots.from("src/main/java") // Указываем путь к исходникам
+        }
+    }
 }
 
 android {

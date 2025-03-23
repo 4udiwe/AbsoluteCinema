@@ -2,7 +2,18 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    //id("org.jetbrains.dokka") version "1.9.10"
 }
+
+//tasks.dokkaHtmlPartial.configure {
+//    outputDirectory.set(file("$buildDir/dokka/app")) // Указываем директорию для вывода
+//    dokkaSourceSets {
+//        named("main") {
+//            sourceRoots.from("src/main/java") // Указываем путь к исходникам
+//        }
+//    }
+//}
+
 
 android {
     namespace = "com.example.absolutecinema"
