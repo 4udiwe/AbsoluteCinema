@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>searchMoviesWithFilters</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+                    <a class="library-name--link" href="../../../index.html">
+                            domain
+                    </a>
+            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":domain:dokkaHtml/main">jvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="member" id="content" pageIds="domain::com.example.domain.repository/MovieRepository/searchMoviesWithFilters/#kotlin.collections.List[kotlin.String]?#kotlin.collections.List[kotlin.Int]?#kotlin.collections.List[kotlin.String]?#kotlin.Boolean?#kotlin.collections.List[kotlin.String]?#kotlin.collections.List[kotlin.String]?#kotlin.collections.List[kotlin.String]?#kotlin.collections.List[kotlin.String]?#kotlin.collections.List[kotlin.String]?/PointingToDeclaration//1141137579">
+  <div class="breadcrumbs"><a href="../../../index.html">domain</a><span class="delimiter">/</span><a href="../index.html">com.example.domain.repository</a><span class="delimiter">/</span><a href="index.html">MovieRepository</a><span class="delimiter">/</span><span class="current">searchMoviesWithFilters</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>search</span><wbr></wbr><span>Movies</span><wbr></wbr><span>With</span><wbr></wbr><span><span>Filters</span></span></h1>
+  </div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":domain:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="search-movies-with-filters.html"><span class="token function">searchMoviesWithFilters</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">fields<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">sortTypes<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">types<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">isSeries<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">years<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">kpRating<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">genres<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">countries<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">inCollection<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.example.domain.model/-movies-responce/index.html">MoviesResponce</a></div><p class="paragraph">Выполняет поиск с различными фильтрами.</p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":domain:dokkaHtml/main" data-filterable-set=":domain:dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>fields</span></span></u></div></span></div><div><div class="title"><p class="paragraph">сортировка по полям из MoviesDTO (year, rating.kp...)</p></div></div></div></div><div class="table-row" data-filterable-current=":domain:dokkaHtml/main" data-filterable-set=":domain:dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>sort</span><wbr></wbr><span><span>Types</span></span></u></div></span></div><div><div class="title"><p class="paragraph">тип сортировки для каждого из полей <a href="search-movies-with-filters.html">fields</a> (&quot;1&quot;, &quot;-1&quot;)</p></div></div></div></div><div class="table-row" data-filterable-current=":domain:dokkaHtml/main" data-filterable-set=":domain:dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>types</span></span></u></div></span></div><div><div class="title"><p class="paragraph">поиск по типам:     - movie     - tv-series     - cartoon     - animated-series     - anime</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">Пример: {&quot;movie&quot;, &quot;tv-series&quot;, &quot;!anime&quot;}</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div></div></div><div class="table-row" data-filterable-current=":domain:dokkaHtml/main" data-filterable-set=":domain:dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>is</span><wbr></wbr><span><span>Series</span></span></u></div></span></div><div><div class="title"><p class="paragraph">является ли сериалом</p></div></div></div></div><div class="table-row" data-filterable-current=":domain:dokkaHtml/main" data-filterable-set=":domain:dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>years</span></span></u></div></span></div><div><div class="title"><p class="paragraph">года, как по отдельности, так и диапазоном</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">Пример: {1874, 2050, !2020, 2020-2024}</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div></div></div><div class="table-row" data-filterable-current=":domain:dokkaHtml/main" data-filterable-set=":domain:dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>kp</span><wbr></wbr><span><span>Rating</span></span></u></div></span></div><div><div class="title"><p class="paragraph">поиск по рейтингу Кинопоиска</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">Пример: { 7, 10, 7.2-10 }</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div></div></div><div class="table-row" data-filterable-current=":domain:dokkaHtml/main" data-filterable-set=":domain:dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>genres</span></span></u></div></span></div><div><div class="title"><p class="paragraph">жанры</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">Пример: { &quot;драма&quot;, &quot;комедия&quot;, &quot;!мелодрама&quot;, &quot;+ужасы&quot; }</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div></div></div><div class="table-row" data-filterable-current=":domain:dokkaHtml/main" data-filterable-set=":domain:dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>countries</span></span></u></div></span></div><div><div class="title"><p class="paragraph">страны</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">Пример: { &quot;США&quot;, &quot;Россия&quot;, &quot;!Франция&quot; , &quot;+Великобритания&quot; }</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div></div></div><div class="table-row" data-filterable-current=":domain:dokkaHtml/main" data-filterable-set=":domain:dokkaHtml/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>in</span><wbr></wbr><span><span>Collection</span></span></u></div></span></div><div><div class="title"><p class="paragraph">вхождение в какую-либо коллекцию</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">Пример: { &quot;top250&quot;, &quot;top-100-indian-movies&quot;, &quot;!top-100-movies&quot; }</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div></div></div></div></div></div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2025 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

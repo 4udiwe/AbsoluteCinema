@@ -1,0 +1,59 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy////PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/index.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Actor///PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-actor/index.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Actor/Actor/#kotlin.String#kotlin.String#kotlin.String/PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-actor/-actor.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Actor/name/#/PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-actor/name.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Actor/pictureURL/#/PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-actor/picture-u-r-l.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Actor/role/#/PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-actor/role.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Film///PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-film/index.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Film/Film/#kotlin.String#kotlin.String#kotlin.String#kotlin.Int#kotlin.Int#kotlin.Boolean#kotlin.String#kotlin.String#kotlin.Int#kotlin.Float#kotlin.Int#kotlin.String#kotlin.collections.List[com.example.absolutecinema.ui.screens.dummy.Actor]#kotlin.collections.List[kotlin.String]#kotlin.Boolean/PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-film/-film.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Film/actors/#/PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-film/actors.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Film/country/#/PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-film/country.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Film/description/#/PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-film/description.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Film/duration/#/PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-film/duration.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Film/enname/#/PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-film/enname.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Film/facts/#/PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-film/facts.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Film/genres/#/PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-film/genres.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Film/isForAdult/#/PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-film/is-for-adult.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Film/isTop100/#/PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-film/is-top100.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Film/name/#/PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-film/name.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Film/posterURL/#/PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-film/poster-u-r-l.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Film/rating/#/PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-film/rating.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Film/userScore/#/PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-film/user-score.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Film/watches/#/PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-film/watches.html
+$dokka.location:com.example.absolutecinema.ui.screens.dummy/Film/year/#/PointingToDeclaration/app/com.example.absolutecinema.ui.screens.dummy/-film/year.html
+$dokka.location:com.example.absolutecinema.ui.screens////PointingToDeclaration/app/com.example.absolutecinema.ui.screens/index.html
+$dokka.location:com.example.absolutecinema.ui.screens//FeedScreen/#androidx.compose.foundation.layout.PaddingValues#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/app/com.example.absolutecinema.ui.screens/-feed-screen.html
+$dokka.location:com.example.absolutecinema.ui.screens//FilmRating/#com.example.absolutecinema.ui.screens.dummy.Film#androidx.compose.ui.Modifier/PointingToDeclaration/app/com.example.absolutecinema.ui.screens/-film-rating.html
+$dokka.location:com.example.absolutecinema.ui.screens//LoadImageWithPlaceholder/#kotlin.String?#kotlin.Int#androidx.compose.ui.Modifier#androidx.compose.ui.layout.ContentScale/PointingToDeclaration/app/com.example.absolutecinema.ui.screens/-load-image-with-placeholder.html
+$dokka.location:com.example.absolutecinema.ui.screens//LoginScreen/#kotlin.Function0[kotlin.Unit]#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/app/com.example.absolutecinema.ui.screens/-login-screen.html
+$dokka.location:com.example.absolutecinema.ui.screens//MovieScreen/#androidx.compose.foundation.layout.PaddingValues#com.example.absolutecinema.ui.screens.dummy.Film/PointingToDeclaration/app/com.example.absolutecinema.ui.screens/-movie-screen.html
+$dokka.location:com.example.absolutecinema.ui.screens//ProfileScreen/#androidx.compose.foundation.layout.PaddingValues#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/app/com.example.absolutecinema.ui.screens/-profile-screen.html
+$dokka.location:com.example.absolutecinema.ui.screens//RegistrationScreen/#kotlin.Function0[kotlin.Unit]#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/app/com.example.absolutecinema.ui.screens/-registration-screen.html
+$dokka.location:com.example.absolutecinema.ui.screens//SearchScreen/#androidx.compose.foundation.layout.PaddingValues/PointingToDeclaration/app/com.example.absolutecinema.ui.screens/-search-screen.html
+$dokka.location:com.example.absolutecinema.ui.screens//SettingsScreen/#androidx.compose.foundation.layout.PaddingValues#kotlin.Function1[kotlin.Boolean,kotlin.Unit]/PointingToDeclaration/app/com.example.absolutecinema.ui.screens/-settings-screen.html
+$dokka.location:com.example.absolutecinema.ui.screens//UserScore/#com.example.absolutecinema.ui.screens.dummy.Film#androidx.compose.ui.Modifier/PointingToDeclaration/app/com.example.absolutecinema.ui.screens/-user-score.html
+$dokka.location:com.example.absolutecinema.ui.screens//UsersScreen/#androidx.compose.foundation.layout.PaddingValues#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/app/com.example.absolutecinema.ui.screens/-users-screen.html
+$dokka.location:com.example.absolutecinema.ui.theme////PointingToDeclaration/app/com.example.absolutecinema.ui.theme/index.html
+$dokka.location:com.example.absolutecinema.ui.theme//AbsoluteCinemaTheme/#kotlin.Boolean#kotlin.Boolean#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/app/com.example.absolutecinema.ui.theme/-absolute-cinema-theme.html
+$dokka.location:com.example.absolutecinema.ui.theme//Pink40/#/PointingToDeclaration/app/com.example.absolutecinema.ui.theme/-pink40.html
+$dokka.location:com.example.absolutecinema.ui.theme//Pink80/#/PointingToDeclaration/app/com.example.absolutecinema.ui.theme/-pink80.html
+$dokka.location:com.example.absolutecinema.ui.theme//Purple40/#/PointingToDeclaration/app/com.example.absolutecinema.ui.theme/-purple40.html
+$dokka.location:com.example.absolutecinema.ui.theme//Purple80/#/PointingToDeclaration/app/com.example.absolutecinema.ui.theme/-purple80.html
+$dokka.location:com.example.absolutecinema.ui.theme//PurpleGrey40/#/PointingToDeclaration/app/com.example.absolutecinema.ui.theme/-purple-grey40.html
+$dokka.location:com.example.absolutecinema.ui.theme//PurpleGrey80/#/PointingToDeclaration/app/com.example.absolutecinema.ui.theme/-purple-grey80.html
+$dokka.location:com.example.absolutecinema.ui.theme//Typography/#/PointingToDeclaration/app/com.example.absolutecinema.ui.theme/-typography.html
+$dokka.location:com.example.absolutecinema////PointingToDeclaration/app/com.example.absolutecinema/index.html
+$dokka.location:com.example.absolutecinema//Greeting/#kotlin.String#androidx.compose.ui.Modifier/PointingToDeclaration/app/com.example.absolutecinema/-greeting.html
+$dokka.location:com.example.absolutecinema//GreetingPreview/#/PointingToDeclaration/app/com.example.absolutecinema/-greeting-preview.html
+$dokka.location:com.example.absolutecinema/MainActivity///PointingToDeclaration/app/com.example.absolutecinema/-main-activity/index.html
+$dokka.location:com.example.absolutecinema/MainActivity/MainActivity/#/PointingToDeclaration/app/com.example.absolutecinema/-main-activity/-main-activity.html
+$dokka.location:com.example.kinopoiskapp.ui.screens////PointingToDeclaration/app/com.example.kinopoiskapp.ui.screens/index.html
+$dokka.location:com.example.kinopoiskapp.ui.screens//BotBar/#kotlin.Function0[kotlin.Unit]#kotlin.Function0[kotlin.Unit]#kotlin.Function0[kotlin.Unit]#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/app/com.example.kinopoiskapp.ui.screens/-bot-bar.html
+com.example.absolutecinema
+com.example.absolutecinema.ui.screens
+com.example.absolutecinema.ui.screens.dummy
+com.example.absolutecinema.ui.theme
+com.example.kinopoiskapp.ui.screens
+
