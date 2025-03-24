@@ -33,7 +33,7 @@ data class MovieEntity(
         parentColumn = "id",
         entityColumn = "movieId"
     )
-    var facts              : ArrayList<FactEntity>         = arrayListOf(),
+    var facts              : List<FactEntity>               = listOf(),
     @Embedded
     var rating             : RatingEntity?                 = RatingEntity(),
     var movieLength        : Int?                          = null,
@@ -48,29 +48,29 @@ data class MovieEntity(
         parentColumn = "id",
         entityColumn = "movieId"
     )
-    var genres             : ArrayList<GenreEntity>        = arrayListOf(),
+    var genres             : List<GenreEntity>              = listOf(),
     @Relation(
         parentColumn = "id",
         entityColumn = "movieId"
     )
-    var countries          : ArrayList<CountryEntity>      = arrayListOf(),
+    var countries          : List<CountryEntity>            = listOf(),
     @Relation(
         parentColumn = "id",
         entityColumn = "movieId"
     )
-    var persons            : ArrayList<PersonSimpleEntity> = arrayListOf(),
+    var persons            : List<PersonSimpleEntity>       = listOf(),
     @Embedded
     var budget             : BudgetEntity?                 = BudgetEntity(),
     @Relation(
         parentColumn = "id",
         entityColumn = "movieId"
     )
-    var similarMovies      : ArrayList<SimilarMovieEntity> = arrayListOf(),
+    var similarMovies      : List<SimilarMovieEntity>       = listOf(),
     @Relation(
         parentColumn = "id",
         entityColumn = "movieId"
     )
-    var sequelsAndPrequels : ArrayList<SeqAndPreqEntity> = arrayListOf(),
+    var sequelsAndPrequels : List<SeqAndPreqEntity>         = listOf(),
     var top10              : Int?                          = null,
     var top250             : Int?                          = null,
     var totalSeriesLength  : Int?                          = null,
