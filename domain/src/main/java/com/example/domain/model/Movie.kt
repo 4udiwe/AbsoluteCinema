@@ -9,10 +9,6 @@ data class Movie(
      * [userRate] - оценка пользователя, которая хранится локально.
      */
     var userRate: Int? = null,
-    /**
-     * [category] - категория фильма, которая приходит из базы данных
-     */
-    var category: LocalCategory? = null,
     var type: String? = null,
     var typeNumber: Int? = null,
     var year: Int? = null,
