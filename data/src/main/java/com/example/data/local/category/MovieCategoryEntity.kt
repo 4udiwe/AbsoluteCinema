@@ -24,5 +24,5 @@ import com.example.data.local.entity.MovieEntity
 )
 data class MovieCategoryEntity(
     val movieId: Int,
-    val categoryId: String
+    val categoryId: Int
 )

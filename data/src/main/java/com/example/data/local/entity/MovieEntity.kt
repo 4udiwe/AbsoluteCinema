@@ -18,10 +18,6 @@ data class MovieEntity(
     var name               : String?                       = null,
     var alternativeName    : String?                       = null,
     var enName             : String?                       = null,
-    /**
-     * [userRate] - оценка пользователя, которая хранится локально.
-     */
-    var userRate           : Int?                          = null,
     var type               : String?                       = null,
     var typeNumber         : Int?                          = null,
     var year               : Int?                          = null,

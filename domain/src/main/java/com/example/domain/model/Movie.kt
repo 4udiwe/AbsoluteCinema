@@ -1,14 +1,22 @@
 package com.example.domain.model
 
+/**
+ * Основная модель фильма в приложении, используется в presentation слое.
+ *
+ * @property userRate локальная оценка пользователя. Хранится в БД.
+ * @property isFavorite добавлен ли в "Любимые". Хранится в БД.
+ * @property isWillWatch добавлен ли в "Буду смотреть". Хранится в БД.
+ */
 data class Movie(
+
+    var userRate: Int? = null,
+    var isFavorite: Boolean = false,
+    var isWillWatch: Boolean = false,
+
     var id: Int? = null,
     var name: String? = null,
     var alternativeName: String? = null,
     var enName: String? = null,
-    /**
-     * [userRate] - оценка пользователя, которая хранится локально.
-     */
-    var userRate: Int? = null,
     var type: String? = null,
     var typeNumber: Int? = null,
     var year: Int? = null,

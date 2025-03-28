@@ -4,10 +4,12 @@ import com.example.data.local.dao.MovieDao
 import com.example.data.mapper.DtoToEntity
 import com.example.data.mapper.EntityToDomain
 import com.example.data.remote.api.MoviesAPI
+import com.example.domain.model.LocalCategory
 import com.example.domain.model.Movie
 import com.example.domain.model.MoviesResponce
 import com.example.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 /**
  * Реализует логику [MovieRepository]
@@ -17,41 +19,55 @@ import kotlinx.coroutines.flow.Flow
  */
 class MovieRepositoryImpl(
     private val api: MoviesAPI,
-    private val dao: MovieDao
+    private val dao: MovieDao,
 ) : MovieRepository {
+
+    /**
+     * Метод достает информацию из БД о том, является ли фильм "Любимым" и/или "Буду смотреть"
+     * и пользовательской оценке фильма.
+     *
+     * @param movie фильм без категорий и оценки.
+     * @return [Movie] фильм с категориями и пользовательской оценкой.
+     */
+    private suspend fun parseMovieInfo(movie: Movie): Movie {
+        val categories = movie.id?.let { dao.getCategoriesForMovie(movieId = it) }
+
+        movie.isFavorite = categories?.contains(LocalCategory.Favourite) == true
+        movie.isWillWatch = categories?.contains(LocalCategory.WillWatch) == true
+
+        movie.userRate = movie.id?.let { dao.getMovieUserRate(movieId = it) }
+
+        return movie
+    }
+
     override suspend fun getMovieById(id: Int): Movie {
         val dto = api.getMovieById(id = id)
-        val entity =  DtoToEntity.map(movie = dto)
-
-        entity.userRate = dao.getMovieUserRate(entity.id!!)
+        val entity = DtoToEntity.map(movie = dto)
 
         dao.insert(entity)
 
-        TODO("добавить парсинг категории")
+        val movie = EntityToDomain.map(movie = entity)
 
-        return EntityToDomain.map(entity)
+        return parseMovieInfo(movie = movie)
     }
 
     override suspend fun searchMoviesByName(query: String): MoviesResponce {
-        val responceDto = api.searchMovieByName(query = query)
-        
-        val responce = MoviesResponce(
-            movies = responceDto.movieDtos.map {
-                movieDto ->
+        val responseDto = api.searchMovieByName(query = query)
+
+        val response = MoviesResponce(
+            movies = responseDto.movieDtos.map { movieDto ->
 
                 val entity = DtoToEntity.map(movieDto)
-                entity.userRate = dao.getMovieUserRate(entity.id!!)
 
-                TODO("добавить парсинг категории")
-
-                EntityToDomain.map(movie = entity)
+                val movie = EntityToDomain.map(movie = entity)
+                parseMovieInfo(movie)
             },
-            total = responceDto.total,
-            limit = responceDto.limit,
-            page = responceDto.page,
-            pages = responceDto.pages
+            total = responseDto.total,
+            limit = responseDto.limit,
+            page = responseDto.page,
+            pages = responseDto.pages
         )
-        return responce
+        return response
     }
 
     override suspend fun searchMoviesWithFilters(
@@ -69,7 +85,13 @@ class MovieRepositoryImpl(
     }
 
     override fun getFavouriteMovies(): Flow<List<Movie>> {
-        TODO("Not yet implemented")
+        val movieEntities = dao.getMoviesOfCategory(category = LocalCategory.Favourite.name)
+        return movieEntities.map { list ->
+            list.map { movieEntity ->
+                val movie = EntityToDomain.map(movie = movieEntity)
+                parseMovieInfo(movie = movie)
+            }
+        }
     }
 
     override fun getMoviesWithUserRate(): Flow<List<Movie>> {
@@ -104,11 +126,11 @@ class MovieRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-    override fun getRecomendedFilms(): Flow<List<Movie>> {
+    override fun getRecommendedFilms(): Flow<List<Movie>> {
         TODO("Not yet implemented")
     }
 
-    override fun getRecomendedSeries(): Flow<List<Movie>> {
+    override fun getRecommendedSeries(): Flow<List<Movie>> {
         TODO("Not yet implemented")
     }
 

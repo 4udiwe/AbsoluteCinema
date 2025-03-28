@@ -19,5 +19,5 @@ data class FactEntity(
     var fact: String? = null,
     var type: String? = null,
     var spoiler: Boolean? = null,
-    var movieId: Int? = null,
+    var movieId: Int,
 )

@@ -147,7 +147,7 @@ interface MovieRepository {
      * Затем показывает список из БД.
      * Если запрос к API неудачный, то показывает последние кешированные фильмы из БД.
      */
-    fun getRecomendedFilms() : Flow<List<Movie>>
+    fun getRecommendedFilms() : Flow<List<Movie>>
 
     /**
      * Возвращает рекомендованные сериалы.
@@ -157,7 +157,7 @@ interface MovieRepository {
      * Затем показывает список из БД.
      * Если запрос к API неудачный, то показывает последние кешированные сериалы из БД.
      */
-    fun getRecomendedSeries() : Flow<List<Movie>>
+    fun getRecommendedSeries() : Flow<List<Movie>>
 
     /**
      * Возвращает рекомендованные фильмы.
