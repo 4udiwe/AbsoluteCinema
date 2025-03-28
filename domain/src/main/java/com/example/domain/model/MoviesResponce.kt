@@ -1,7 +1,7 @@
 package com.example.domain.model
 
 data class MoviesResponce(
-    var movieDtos: ArrayList<Movie> = arrayListOf(),
+    var movies: List<Movie> = listOf(),
     var total: Int? = null,
     var limit: Int? = null,
     var page: Int? = null,

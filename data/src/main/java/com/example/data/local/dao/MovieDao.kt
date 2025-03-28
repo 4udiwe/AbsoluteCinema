@@ -10,11 +10,14 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(movies: List<MovieEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(movie: MovieEntity)
+
+    @Query("SELECT userRate FROM userrating WHERE movieId == movieId LIMIT 1")
+    suspend fun getMovieUserRate(movieId: Int) : Int?
 
     @Delete
     suspend fun deleteAll(movies: List<MovieEntity>)
