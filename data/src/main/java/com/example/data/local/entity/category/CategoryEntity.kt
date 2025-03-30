@@ -1,4 +1,4 @@
-package com.example.data.local.category
+package com.example.data.local.entity.category
 
 import androidx.room.Entity
 import androidx.room.ForeignKey

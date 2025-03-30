@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 
 data class MoviesResponseDto (
 
-    @SerializedName("docs"  ) var movieDtos  : ArrayList<MovieDto> = arrayListOf(),
+    @SerializedName("docs"  ) var movieDtos: List<MovieDto> = listOf(),
     @SerializedName("total" ) var total : Int?            = null,
     @SerializedName("limit" ) var limit : Int?            = null,
     @SerializedName("page"  ) var page  : Int?            = null,

@@ -59,14 +59,14 @@ interface MoviesAPI {
      */
     @GET("v1.4/movie")
     suspend fun searchWithFilter(
-        @Query("sortField") fields: List<String>?,
-        @Query("sortType") sortTypes: List<Int>?,
-        @Query("type") types: List<String>?,
-        @Query("isSeries") isSeries: Boolean?,
-        @Query("year") years: List<String>?,
-        @Query("rating.kp") kpRating: List<String>?,
-        @Query("genres.name") genres: List<String>?,
-        @Query("countries.name") countries: List<String>?,
-        @Query("lists") inCollection: List<String>?,
+        @Query("sortField") fields: List<String>? = null,
+        @Query("sortType") sortTypes: List<Int>? = null,
+        @Query("type") types: List<String>? = null,
+        @Query("isSeries") isSeries: Boolean? = null,
+        @Query("year") years: List<String>? = null,
+        @Query("rating.kp") kpRating: List<String>? = null,
+        @Query("genres.name") genres: List<String>? = null,
+        @Query("countries.name") countries: List<String>? = null,
+        @Query("lists") inCollection: List<String>? = null,
     ): MoviesResponseDto
 }

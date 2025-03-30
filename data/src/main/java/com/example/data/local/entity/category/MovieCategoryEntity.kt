@@ -1,7 +1,8 @@
-package com.example.data.local.category
+package com.example.data.local.entity.category
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 import com.example.data.local.entity.MovieEntity
 
 @Entity(
@@ -23,6 +24,8 @@ import com.example.data.local.entity.MovieEntity
     ]
 )
 data class MovieCategoryEntity(
+    @PrimaryKey
     val movieId: Int,
+    @PrimaryKey
     val categoryId: Int
 )

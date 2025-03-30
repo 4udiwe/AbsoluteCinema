@@ -24,10 +24,19 @@ interface MovieDao {
     suspend fun delete(movie: MovieEntity)
 
     @Query("SELECT * FROM movieentity")
-    fun getAll() : Flow<List<MovieEntity>>
+    fun getAll(): Flow<List<MovieEntity>>
 
-    @Query("SELECT userRate FROM userrating WHERE movieId == :movieId LIMIT 1")
-    suspend fun getMovieUserRate(movieId: Int) : Int?
+    @Query("SELECT userRate FROM UserRatingEntity WHERE movieId = :movieId LIMIT 1")
+    suspend fun getMovieUserRate(movieId: Int): Int?
+
+    @Query(
+        """
+        SELECT MovieEntity.*, UserRatingEntity.userRate
+        FROM MovieEntity
+        INNER JOIN UserRatingEntity ON MovieEntity.id = UserRatingEntity.movieId
+        """
+    )
+    fun getMoviesWithUserRate(): Flow<List<MovieWithRating>>
 
     @Query(
         """
@@ -50,4 +59,43 @@ interface MovieDao {
         """
     )
     fun getMoviesOfCategory(category: String): Flow<List<MovieEntity>>
+
+    @Query(
+        """
+        INSERT INTO movie_category (movieId, categoryId)
+        SELECT :movieId, id 
+        FROM CategoryEntity 
+        WHERE name = :category
+    """
+    )
+    suspend fun addMovieToCategory(movieId: Int, category: String)
+
+    @Query(
+        """
+        DELETE FROM movie_category
+        WHERE movieId = :movieId 
+        AND categoryId IN (
+            SELECT id 
+            FROM CategoryEntity 
+            WHERE name = :category
+        )
+    """
+    )
+    suspend fun removeMovieFromCategory(movieId: Int, category: String)
+
+    @Query(
+        """
+        INSERT OR REPLACE INTO userratingentity (movieId, userRate)
+        VALUES (:movieId, :rating)
+    """
+    )
+    suspend fun setUserRateToMovie(movieId: Int, rating: Int)
+
+    @Query(
+        """
+        DELETE FROM userratingentity
+        WHERE movieId = :movieId
+    """
+    )
+    suspend fun removeUserRateFromMovie(movieId: Int)
 }

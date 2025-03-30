@@ -2,8 +2,8 @@ package com.example.data.local.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.data.local.category.CategoryEntity
-import com.example.data.local.category.MovieCategoryEntity
+import com.example.data.local.entity.category.CategoryEntity
+import com.example.data.local.entity.category.MovieCategoryEntity
 import com.example.data.local.dao.MovieDao
 import com.example.data.local.entity.BackdropEntity
 import com.example.data.local.entity.BudgetEntity
@@ -18,6 +18,7 @@ import com.example.data.local.entity.PosterEntity
 import com.example.data.local.entity.RatingEntity
 import com.example.data.local.entity.SeqAndPreqEntity
 import com.example.data.local.entity.SimilarMovieEntity
+import com.example.data.local.entity.UserRatingEntity
 
 @Database(
     entities = [
@@ -36,6 +37,7 @@ import com.example.data.local.entity.SimilarMovieEntity
         RatingEntity::class,
         SeqAndPreqEntity::class,
         SimilarMovieEntity::class,
+        UserRatingEntity::class
     ],
     version = 1
 )
