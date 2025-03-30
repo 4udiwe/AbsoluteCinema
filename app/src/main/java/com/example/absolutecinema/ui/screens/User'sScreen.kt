@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,18 +28,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.absolutecinema.R
-import com.example.absolutecinema.ui.screens.dummy.Film
+import com.example.domain.model.Movie
 
 private const val POSTER_HEIGHT = 150
 private const val POSTER_WIDTH = 100
 
 
-/**
- * Отображает постер фильома с названием и жанрами внизу и оценкой пользователя.
- * Используется на экране пользователя (User'sScreen)
- */
+
 @Composable
-private fun FilmPosterWNameGenre(film: Film, onFilmClicked: () -> Unit) {
+private fun FilmPosterWNameGenre(movie: Movie, onFilmClicked: () -> Unit) {
     Column(
         modifier = Modifier
             .width(POSTER_WIDTH.dp)
@@ -46,7 +44,7 @@ private fun FilmPosterWNameGenre(film: Film, onFilmClicked: () -> Unit) {
             .clickable { onFilmClicked.invoke() }
     ) {
         LoadImageWithPlaceholder(
-            imageUrl = film.posterURL,
+            imageUrl = movie.poster?.posterUrl,
             placeholderResId = R.drawable.ic_launcher_background,
             modifier = Modifier
                 .height(POSTER_HEIGHT.dp)
@@ -62,35 +60,27 @@ private fun FilmPosterWNameGenre(film: Film, onFilmClicked: () -> Unit) {
                 modifier = Modifier.weight(1f)
             ){
                 Text(
-                    text = film.name,
-                    color = colorResource(R.color.text),
+                    text = movie.name!!,
+                    color = MaterialTheme.colorScheme.primary,
                     fontSize = 14.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = film.genres,
-                    color = colorResource(R.color.text_second),
+                    text = movie.genres.joinToString(),
+                    color = MaterialTheme.colorScheme.secondary,
                     fontSize = 14.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            UserScore(film)
+            UserScore(movie)
         }
     }
 }
 
-/**
- * Отображает небольшой ряд фильмов с постером.
- * Содержит одно из названий категории:
- * - буду смотреть
- * - ваши оценки
- * - любимые
- * Используется на экране пользователя (User'sScreen)
- */
 @Composable
-private fun HorizontalRowWTitleSmall(title: String, list: List<Film>, onAllClicked: () -> Unit, onFilmClicked: () -> Unit) {
+private fun HorizontalRowWTitleSmall(title: String, list: List<Movie>, onAllClicked: () -> Unit, onFilmClicked: () -> Unit) {
     Column(
         modifier = Modifier.padding(top = 32.dp, start = 16.dp, end = 16.dp)
     ) {
@@ -101,7 +91,7 @@ private fun HorizontalRowWTitleSmall(title: String, list: List<Film>, onAllClick
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Bottom
         ) {
-            Text(title, fontSize = 24.sp, color = colorResource(R.color.text))
+            Text(title, fontSize = 24.sp, color = MaterialTheme.colorScheme.primary)
             Text(
                 stringResource(R.string.All),
                 fontSize = 20.sp,
@@ -111,8 +101,8 @@ private fun HorizontalRowWTitleSmall(title: String, list: List<Film>, onAllClick
                 })
         }
         LazyRow {
-            items(list) { film ->
-                FilmPosterWNameGenre(film) {
+            items(list) { movie ->
+                FilmPosterWNameGenre(movie) {
                     onFilmClicked.invoke()
                 }
             }
@@ -120,14 +110,6 @@ private fun HorizontalRowWTitleSmall(title: String, list: List<Film>, onAllClick
     }
 }
 
-
-/**
- * Экран пользователя.
- * Содержит 3 ряда с фильмами:
- * - буду смотреть
- * - ваши оценки
- * - любимые
- */
 @Preview(showSystemUi = true)
 @Composable
 fun UsersScreen(
@@ -138,12 +120,12 @@ fun UsersScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(R.color.background))
+            .background(MaterialTheme.colorScheme.background)
             .padding(paddingValues)
             .verticalScroll(scrollState)
         ) {
 
-        val list = arrayListOf(Film(), Film(), Film(), Film(), Film(), Film(), Film(), Film())
+        //val list = arrayListOf(Film(), Film(), Film(), Film(), Film(), Film(), Film(), Film())
 
         HorizontalRowWTitleSmall(
             title = stringResource(R.string.WillWatch), list,

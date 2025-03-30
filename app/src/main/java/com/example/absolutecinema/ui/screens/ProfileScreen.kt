@@ -15,9 +15,14 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.rounded.AccountCircle
+import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -39,7 +44,7 @@ fun ProfileScreen(
     Column(
         modifier = Modifier
             .fillMaxSize().padding(paddingValues)
-            .background(color = colorResource(R.color.background)),
+            .background(color = MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
@@ -47,7 +52,7 @@ fun ProfileScreen(
                 .fillMaxWidth()
                 .padding(start = 8.dp, end = 8.dp, bottom = 16.dp)
                 .background(
-                    color = colorResource(R.color.background_second),
+                    color = MaterialTheme.colorScheme.surface,
                     shape = RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)
                 )
         ) {
@@ -67,7 +72,7 @@ fun ProfileScreen(
                 )
                 Text(
                     stringResource(R.string.mockemail),
-                    color = colorResource(R.color.text),
+                    color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(16.dp)
                 )
             }
@@ -78,7 +83,7 @@ fun ProfileScreen(
                 .fillMaxWidth()
                 .padding(start = 8.dp, end = 8.dp)
                 .background(
-                    color = colorResource(R.color.background_second),
+                    color = MaterialTheme.colorScheme.surface,
                     shape = RoundedCornerShape(20.dp)
                 )
         ) {
@@ -95,18 +100,18 @@ fun ProfileScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Настройки", fontSize = 20.sp, color = colorResource(R.color.text))
+                    Text("Настройки", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
                     Icon(
                         Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         "",
-                        tint = colorResource(R.color.text_second),
+                        tint = MaterialTheme.colorScheme.secondary,
                         modifier = Modifier.size(40.dp)
                     )
                 }
 
                 HorizontalDivider(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    color = colorResource(R.color.text_second)
+                    color = MaterialTheme.colorScheme.secondary
                 )
 
                 Row(
@@ -119,18 +124,18 @@ fun ProfileScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Поддержка", fontSize = 20.sp, color = colorResource(R.color.text))
+                    Text("Поддержка", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
                     Icon(
                         Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         "",
-                        tint = colorResource(R.color.text_second),
+                        tint = MaterialTheme.colorScheme.secondary,
                         modifier = Modifier.size(40.dp)
                     )
                 }
 
                 HorizontalDivider(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    color = colorResource(R.color.text_second)
+                    color = MaterialTheme.colorScheme.secondary
                 )
 
                 Row(
@@ -143,11 +148,11 @@ fun ProfileScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("О приложении", fontSize = 20.sp, color = colorResource(R.color.text))
+                    Text("О приложении", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
                     Icon(
                         Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         "",
-                        tint = colorResource(R.color.text_second),
+                        tint = MaterialTheme.colorScheme.secondary,
                         modifier = Modifier.size(40.dp)
                     )
                 }
@@ -158,7 +163,7 @@ fun ProfileScreen(
 
             }
         ) {
-            Text("Выйти из аккаунта", fontSize = 20.sp, color = colorResource(R.color.text))
+            Text("Выйти из аккаунта", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
         }
     }
 }

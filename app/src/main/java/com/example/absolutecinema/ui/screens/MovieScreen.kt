@@ -21,7 +21,9 @@ import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.twotone.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,13 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.absolutecinema.R
-import com.example.absolutecinema.ui.screens.dummy.Actor
-import com.example.absolutecinema.ui.screens.dummy.Film
 
-/**
- * Отображает картинку с актером и его имя справа.
- * Используется на экране фильма (MovieScreen)
- */
 @Composable
 private fun ActorItem(actor: Actor, modifier: Modifier = Modifier.padding(bottom = 4.dp)) {
     Row(
@@ -59,24 +55,21 @@ private fun ActorItem(actor: Actor, modifier: Modifier = Modifier.padding(bottom
                 .width(160.dp)
                 .padding(start = 4.dp, end = 16.dp)
         ) {
-            Text(actor.name, color = colorResource(R.color.text), fontSize = 14.sp)
-            Text(actor.role, color = colorResource(R.color.text_second), fontSize = 14.sp)
+            Text(actor.name, color = MaterialTheme.colorScheme.primary, fontSize = 14.sp)
+            Text(actor.role, color = MaterialTheme.colorScheme.secondary, fontSize = 14.sp)
         }
 
     }
 }
 
-/**
- * Экран фильома.
- * Отображает основную информацию, список актеров и факты.
- */
+
 @Preview(showBackground = true)
 @Composable
 fun MovieScreen(paddingValues: PaddingValues = PaddingValues(), film: Film = Film()) {
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
-            .background(colorResource(R.color.background))
+            .background(MaterialTheme.colorScheme.background)
             .fillMaxSize().padding(paddingValues)
             .padding(horizontal = 8.dp)
             .verticalScroll(scrollState)
@@ -99,7 +92,7 @@ fun MovieScreen(paddingValues: PaddingValues = PaddingValues(), film: Film = Fil
                 text = film.name,
                 fontSize = 26.sp,
                 fontWeight = FontWeight.Bold,
-                color = colorResource(R.color.text)
+                color = MaterialTheme.colorScheme.primary
             )
             Row {
                 Text(
@@ -109,19 +102,19 @@ fun MovieScreen(paddingValues: PaddingValues = PaddingValues(), film: Film = Fil
                 )
                 Text(
                     "${(film.watches / 1000)}K",
-                    color = colorResource(R.color.text_second),
+                    color = MaterialTheme.colorScheme.secondary,
                     modifier = Modifier.padding(horizontal = 4.dp), fontWeight = FontWeight.Bold
                 )
-                Text(film.enname, color = colorResource(R.color.text), fontWeight = FontWeight.Bold)
+                Text(film.enname, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
             }
             Text(
                 "${film.year}, ${film.genres}",
-                color = colorResource(R.color.text_second),
+                color = MaterialTheme.colorScheme.secondary,
                 fontWeight = FontWeight.Bold
             )
             Text(
                 "${film.country}, ${film.duration} мин, ${if (film.isForAdult) "18+" else ""}",
-                color = colorResource(R.color.text_second),
+                color = MaterialTheme.colorScheme.secondary,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -137,9 +130,9 @@ fun MovieScreen(paddingValues: PaddingValues = PaddingValues(), film: Film = Fil
                 IconButton(onClick = {
 
                 }) {
-                    Icon(Icons.Outlined.Star, "star", tint = colorResource(R.color.text))
+                    Icon(Icons.Outlined.Star, "star", tint = MaterialTheme.colorScheme.primary)
                 }
-                Text("Оценить", color = colorResource(R.color.text), fontSize = 12.sp)
+                Text("Оценить", color = MaterialTheme.colorScheme.primary, fontSize = 12.sp)
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -149,9 +142,9 @@ fun MovieScreen(paddingValues: PaddingValues = PaddingValues(), film: Film = Fil
 
                     }
                 ) {
-                    Icon(Icons.TwoTone.Add, "star", tint = colorResource(R.color.text))
+                    Icon(Icons.TwoTone.Add, "star", tint = MaterialTheme.colorScheme.primary)
                 }
-                Text("Буду смотреть", color = colorResource(R.color.text), fontSize = 12.sp)
+                Text("Буду смотреть", color = MaterialTheme.colorScheme.primary, fontSize = 12.sp)
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -159,15 +152,15 @@ fun MovieScreen(paddingValues: PaddingValues = PaddingValues(), film: Film = Fil
                 IconButton(onClick = {
 
                 }) {
-                    Icon(Icons.Outlined.FavoriteBorder, "star", tint = colorResource(R.color.text))
+                    Icon(Icons.Outlined.FavoriteBorder, "star", tint = MaterialTheme.colorScheme.primary)
                 }
-                Text("Избранное", color = colorResource(R.color.text), fontSize = 12.sp)
+                Text("Избранное", color = MaterialTheme.colorScheme.primary, fontSize = 12.sp)
             }
         }
 
         Text(
             film.description,
-            color = colorResource(R.color.text),
+            color = MaterialTheme.colorScheme.primary,
             fontSize = 16.sp,
             maxLines = 3,
             overflow = TextOverflow.Ellipsis
@@ -185,7 +178,7 @@ fun MovieScreen(paddingValues: PaddingValues = PaddingValues(), film: Film = Fil
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Актеры", color = colorResource(R.color.text), fontSize = 20.sp, modifier = Modifier.padding(bottom = 8.dp))
+            Text(text = "Актеры", color = MaterialTheme.colorScheme.primary, fontSize = 20.sp, modifier = Modifier.padding(bottom = 8.dp))
             LazyRow {
                 items(actorsGroups) { group ->
                     Column {
@@ -199,7 +192,7 @@ fun MovieScreen(paddingValues: PaddingValues = PaddingValues(), film: Film = Fil
         Column(
             modifier = Modifier.fillMaxWidth().padding(bottom = 100.dp)
         ) {
-            Text(text = "Интересные факты", color = colorResource(R.color.text), fontSize = 20.sp, modifier = Modifier.padding(bottom = 8.dp))
+            Text(text = "Интересные факты", color = MaterialTheme.colorScheme.primary, fontSize = 20.sp, modifier = Modifier.padding(bottom = 8.dp))
             LazyRow {
                 items(film.facts) { fact ->
                     Column(
@@ -207,11 +200,11 @@ fun MovieScreen(paddingValues: PaddingValues = PaddingValues(), film: Film = Fil
                             .width(300.dp)
                             .height(100.dp)
                             .padding(end = 4.dp)
-                            .background(colorResource(R.color.background_second))
+                            .background(MaterialTheme.colorScheme.surface)
                     ) {
                         Text(
                             text = fact,
-                            color = colorResource(R.color.text),
+                            color = MaterialTheme.colorScheme.primary,
                             fontSize = 14.sp,
                             modifier = Modifier.padding(10.dp),
                             maxLines = 4,

@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,16 +27,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.absolutecinema.ui.screens.dummy.Film
 import com.example.absolutecinema.R
 
 private const val POSTER_WIDTH = 133
 private const val POSTER_HEIGHT = 200
 
-/**
- * Отображает постер фильома и название снизу.
- * Используется на главном экране (FeedScreen).
- */
+
 @Composable
 private fun FilmPosterWName(film: Film, onFilmClicked: () -> Unit) {
     Column(
@@ -59,17 +56,12 @@ private fun FilmPosterWName(film: Film, onFilmClicked: () -> Unit) {
         }
         Text(
             "${film.name} (${film.year})",
-            color = colorResource(R.color.text),
+            color = MaterialTheme.colorScheme.primary,
             fontSize = 16.sp
         )
     }
 }
 
-
-/**
- * Отображает ряд фильмов с соответствующим названием.
- * Используется на главном экране (FeedScreen).
- */
 @Composable
 private fun HorizontalRowWTitleBig(
     title: String,
@@ -87,7 +79,7 @@ private fun HorizontalRowWTitleBig(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Bottom
         ) {
-            Text(title, fontSize = 24.sp, color = colorResource(R.color.text))
+            Text(title, fontSize = 24.sp, color = MaterialTheme.colorScheme.primary)
             Text(
                 stringResource(R.string.All),
                 fontSize = 20.sp,
@@ -106,16 +98,6 @@ private fun HorizontalRowWTitleBig(
     }
 }
 
-
-/**
- * Главный экран.
- * Имеет слещующие подборки:
- * - фильмы для вас
- * - сериалы для вас
- * - детективы
- * - комедии
- * - романы
- */
 @Preview(showSystemUi = true)
 @Composable
 fun FeedScreen(
@@ -128,7 +110,7 @@ fun FeedScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
-            .background(color = colorResource(R.color.background))
+            .background(color = MaterialTheme.colorScheme.background)
             .verticalScroll(scrollState),
 
         ) {

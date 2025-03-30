@@ -1,5 +1,7 @@
 package com.example.absolutecinema.ui.screens
 
+import android.content.Context
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,8 +12,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchColors
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -20,22 +28,31 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.example.absolutecinema.R
+
 
 @Composable
 fun SettingsScreen(
     paddingValues: PaddingValues = PaddingValues(),
     onThemeChanged: (Boolean) -> Unit
 ) {
+
+    val context = LocalContext.current
+    val sharedPreferences = remember { context.getSharedPreferences("theme_prefs", Context.MODE_PRIVATE) }
+    val isDarkTheme = remember { mutableStateOf(sharedPreferences.getBoolean("dark_theme", false)) }
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = colorResource(R.color.background))
+            .background(color = MaterialTheme.colorScheme.background)
             .padding(paddingValues)
             .padding(horizontal = 8.dp),
     ) {
@@ -43,7 +60,7 @@ fun SettingsScreen(
             "Настройки",
             fontSize = 36.sp,
             fontWeight = FontWeight.Bold,
-            color = colorResource(R.color.text),
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
         )
         Box(
@@ -51,7 +68,7 @@ fun SettingsScreen(
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
                 .background(
-                    color = colorResource(R.color.background_second),
+                    color = MaterialTheme.colorScheme.surface,
                     shape = RoundedCornerShape(20.dp)
                 )
         ) {
@@ -65,13 +82,13 @@ fun SettingsScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Выбрать язык", fontSize = 26.sp, color = colorResource(R.color.text))
+                Text("Выбрать язык", fontSize = 26.sp, color = MaterialTheme.colorScheme.primary)
                 TextButton(
                     onClick = {
 
                     }
                 ) {
-                    Text("Русский", fontSize = 20.sp, color = colorResource(R.color.text_second))
+                    Text("Русский", fontSize = 20.sp, color = MaterialTheme.colorScheme.secondary)
                 }
             }
         }
@@ -81,7 +98,7 @@ fun SettingsScreen(
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
                 .background(
-                    color = colorResource(R.color.background_second),
+                    color = MaterialTheme.colorScheme.surface,
                     shape = RoundedCornerShape(20.dp)
                 )
         ) {
@@ -92,20 +109,22 @@ fun SettingsScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                TODO("реализовать переключение темной темы")
-                val isDarkTheme = remember { mutableStateOf(false) }
-                Text("Темная тема", fontSize = 26.sp, color = colorResource(R.color.text))
+
+                Text("Темная тема", fontSize = 26.sp, color = MaterialTheme.colorScheme.primary)
                 Switch(
                     checked = isDarkTheme.value,
-                    onCheckedChange = {
-                        isDarkTheme.value = it
-                        onThemeChanged(it)
+                    onCheckedChange = { checked ->
+                        isDarkTheme.value = checked
+                        sharedPreferences.edit().putBoolean("dark_theme", checked).apply()
+                        onThemeChanged(checked) // Передаем новое состояние темы
                     },
                     colors = SwitchDefaults.colors(
                         checkedTrackColor = colorResource(R.color.accent),
+                        checkedThumbColor =  colorResource(R.color.white)
                     )
                 )
             }
         }
     }
 }
+

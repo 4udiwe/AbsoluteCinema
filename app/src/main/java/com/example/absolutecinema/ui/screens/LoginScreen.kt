@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -13,12 +14,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,22 +29,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.absolutecinema.R
 
-/**
- * Экран входа.
- * Имеет поля:
- * - email
- * - password
- */
 @Preview(showSystemUi = true)
 @Composable
 fun LoginScreen(
     onToRegistration: () -> Unit = {},
-    onEnter: () -> Unit = {},
+    onEnter: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(R.color.background))
+            .background(MaterialTheme.colorScheme.background)
     ) {
 
         Box(
@@ -52,85 +49,93 @@ fun LoginScreen(
             ) {
                 Text(
                     text = stringResource(R.string.LogIn),
-                    color = colorResource(R.color.text),
+                    color = MaterialTheme.colorScheme.primary,
                     fontSize = 32.sp,
                     modifier = Modifier.padding(12.dp)
                 )
 
-                OutlinedTextField(value = "",
+                OutlinedTextField(
+                    value = "",
                     placeholder = { Text(stringResource(R.string.mockemail)) },
                     modifier = Modifier.padding(bottom = 12.dp),
                     trailingIcon = {
                         IconButton(onClick = {}) {
                             Icon(
-                                imageVector = Icons.Default.Clear, contentDescription = ""
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = ""
                             )
                         }
                     },
                     colors = TextFieldDefaults.colors(
                         unfocusedIndicatorColor = colorResource(R.color.accent),
                         focusedIndicatorColor = colorResource(R.color.accent),
-                        unfocusedContainerColor = colorResource(R.color.background),
-                        focusedContainerColor = colorResource(R.color.background),
-                        unfocusedTrailingIconColor = colorResource(R.color.text_second),
-                        focusedTrailingIconColor = colorResource(R.color.text_second),
-                        unfocusedPlaceholderColor = colorResource(R.color.text_second),
-                        focusedPlaceholderColor = colorResource(R.color.text_second),
+                        unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                        focusedContainerColor = MaterialTheme.colorScheme.background,
+                        unfocusedTrailingIconColor = MaterialTheme.colorScheme.secondary,
+                        focusedTrailingIconColor = MaterialTheme.colorScheme.secondary,
+                        unfocusedPlaceholderColor = MaterialTheme.colorScheme.secondary,
+                        focusedPlaceholderColor = MaterialTheme.colorScheme.secondary,
                     ),
                     onValueChange = {}
 
                 )
-                OutlinedTextField(value = "",
+                OutlinedTextField(
+                    value = "",
                     placeholder = { Text(stringResource(R.string.Password)) },
                     modifier = Modifier.padding(bottom = 12.dp),
                     trailingIcon = {
                         IconButton(onClick = {}) {
                             Icon(
-                                imageVector = Icons.Default.Clear, contentDescription = ""
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = ""
                             )
                         }
                     },
                     colors = TextFieldDefaults.colors(
                         unfocusedIndicatorColor = colorResource(R.color.accent),
                         focusedIndicatorColor = colorResource(R.color.accent),
-                        unfocusedContainerColor = colorResource(R.color.background),
-                        focusedContainerColor = colorResource(R.color.background),
-                        unfocusedTrailingIconColor = colorResource(R.color.text_second),
-                        focusedTrailingIconColor = colorResource(R.color.text_second),
-                        unfocusedPlaceholderColor = colorResource(R.color.text_second),
-                        focusedPlaceholderColor = colorResource(R.color.text_second),
+                        unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                        focusedContainerColor = MaterialTheme.colorScheme.background,
+                        unfocusedTrailingIconColor = MaterialTheme.colorScheme.secondary,
+                        focusedTrailingIconColor = MaterialTheme.colorScheme.secondary,
+                        unfocusedPlaceholderColor = MaterialTheme.colorScheme.secondary,
+                        focusedPlaceholderColor = MaterialTheme.colorScheme.secondary,
                     ),
-                    onValueChange = {})
+                    onValueChange = {}
+                )
 
                 Row {
                     Text(
                         text = stringResource(R.string.NoAccount),
-                        color = colorResource(R.color.text)
+                        color = MaterialTheme.colorScheme.primary
                     )
-                    Text(text = stringResource(R.string.ToRegistration),
+                    Text(
+                        text = stringResource(R.string.ToRegistration),
                         color = colorResource(R.color.accent),
-                        modifier = Modifier
-                            .padding(start = 4.dp)
-                            .clickable {
-                                onToRegistration.invoke()
-                            })
+                        modifier = Modifier.padding(start = 4.dp).clickable {
+                            onToRegistration.invoke()
+                        }
+                    )
                 }
                 Text(
                     text = stringResource(R.string.ForgotPassword),
                     color = colorResource(R.color.accent)
                 )
+
+
             }
 
         }
 
-        Button(modifier = Modifier
-            .align(Alignment.BottomCenter)
-            .padding(bottom = 100.dp),
+        Button(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 100.dp),
             colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.accent)),
             onClick = {
                 onEnter.invoke()
             }) {
-            Text(text = stringResource(R.string.toEnter), color = colorResource(R.color.text))
+            Text(text = stringResource(R.string.toEnter), color = MaterialTheme.colorScheme.primary)
         }
     }
 }

@@ -1,19 +1,26 @@
 package com.example.absolutecinema.ui.screens
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Context.*
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -22,12 +29,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import coil3.compose.rememberAsyncImagePainter
 import com.example.absolutecinema.R
-import com.example.absolutecinema.ui.screens.dummy.Film
 
-
-/**
- * Асинхронно загружает картирку по URL, пока картинки нет, отображает заглушку.
- */
 @Composable
 fun LoadImageWithPlaceholder(
     imageUrl: String?, // URL изображения
@@ -52,9 +54,6 @@ fun LoadImageWithPlaceholder(
     )
 }
 
-/**
- * Отображает оценку пользователя в кружке, соответствующего цвета.
- */
 @Composable
 fun UserScore(film: Film, modifier: Modifier = Modifier.size(20.dp)) {
     val rating = film.userScore
@@ -66,7 +65,7 @@ fun UserScore(film: Film, modifier: Modifier = Modifier.size(20.dp)) {
     Box(modifier = modifier.background(color = color, shape = CircleShape)) {
         Text(
             text = rating.toString(),
-            color = colorResource(R.color.text),
+            color = colorResource(R.color.white),
             modifier = Modifier.align(
                 Alignment.Center
             )
@@ -74,10 +73,7 @@ fun UserScore(film: Film, modifier: Modifier = Modifier.size(20.dp)) {
     }
 }
 
-/**
- * Отображает среднюю оценку фильма от пользователей в кружке, сооветствующего цвета.
- * Если фильмо в топ100, отображает "легендарный" кружок.
- */
+
 @SuppressLint("ResourceType")
 @Composable
 fun FilmRating(film: Film, modifier: Modifier = Modifier.padding(top = 10.dp, start = 14.dp)) {
@@ -109,7 +105,7 @@ fun FilmRating(film: Film, modifier: Modifier = Modifier.padding(top = 10.dp, st
                 .align(Alignment.Center)
                 .padding(horizontal = 4.dp),
             fontWeight = FontWeight.Bold,
-            color = colorResource(R.color.text),
+            color = colorResource(R.color.white),
             fontSize = 14.sp
         )
     }

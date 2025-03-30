@@ -1,4 +1,4 @@
-package com.example.kinopoiskapp.ui.screens
+package com.example.absolutecinema.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -11,14 +11,13 @@ import androidx.compose.material.icons.twotone.Person
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
-import com.example.absolutecinema.R
 
 
 @Composable
@@ -34,8 +33,8 @@ fun BotBar(
     var users by remember { mutableStateOf(false) }
     var profile by remember { mutableStateOf(false) }
     BottomAppBar(
-        containerColor = colorResource(R.color.background),
-        contentColor = colorResource(R.color.text_second),
+        containerColor = MaterialTheme.colorScheme.background,
+        contentColor = MaterialTheme.colorScheme.secondary,
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround
@@ -51,7 +50,6 @@ fun BotBar(
                     imageVector = Icons.Default.Home,
                     contentDescription = "home",
                 )
-
             }
             IconButton(onClick = {
                 onSearch.invoke()
