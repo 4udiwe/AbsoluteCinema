@@ -1,4 +1,4 @@
-package com.example.absolutecinema.ui.screens
+package com.example.users.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,6 +18,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -27,25 +28,32 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.absolutecinema.R
+import com.example.core.ui.LoadImageWithPlaceholder
+import com.example.core.ui.UserScore
 import com.example.domain.model.Movie
+import com.example.users.R
+import com.example.users.viewmodel.UsersViewModel
 
 private const val POSTER_HEIGHT = 150
 private const val POSTER_WIDTH = 100
 
 
-
+/**
+ * Отображает постер фильма, название и жарны.
+ *
+ * @param movie
+ * @param onMovieClicked
+ */
 @Composable
-private fun FilmPosterWNameGenre(movie: Movie, onFilmClicked: () -> Unit) {
+private fun FilmPosterWNameGenre(movie: Movie, onMovieClicked: () -> Unit) {
     Column(
         modifier = Modifier
             .width(POSTER_WIDTH.dp)
             .padding(end = 8.dp)
-            .clickable { onFilmClicked.invoke() }
+            .clickable { onMovieClicked.invoke() }
     ) {
         LoadImageWithPlaceholder(
             imageUrl = movie.poster?.posterUrl,
-            placeholderResId = R.drawable.ic_launcher_background,
             modifier = Modifier
                 .height(POSTER_HEIGHT.dp)
                 .width(POSTER_WIDTH.dp),
@@ -56,9 +64,9 @@ private fun FilmPosterWNameGenre(movie: Movie, onFilmClicked: () -> Unit) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column (
+            Column(
                 modifier = Modifier.weight(1f)
-            ){
+            ) {
                 Text(
                     text = movie.name!!,
                     color = MaterialTheme.colorScheme.primary,
@@ -74,13 +82,26 @@ private fun FilmPosterWNameGenre(movie: Movie, onFilmClicked: () -> Unit) {
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            UserScore(movie)
+            UserScore(movie = movie)
         }
     }
 }
 
+/**
+ * Горизонтальный список с фильмами пользователя.
+ *
+ * @param title заголовок категории.
+ * @param list список фильмов.
+ * @param onAllClicked функция вызывается при клике на кнопку "все" рядом с заголовком.
+ * @param onMovieClicked функция вызывается при клике на фильм.
+ */
 @Composable
-private fun HorizontalRowWTitleSmall(title: String, list: List<Movie>, onAllClicked: () -> Unit, onFilmClicked: () -> Unit) {
+private fun HorizontalRowWTitleSmall(
+    title: String,
+    list: List<Movie>,
+    onAllClicked: () -> Unit,
+    onMovieClicked: () -> Unit,
+) {
     Column(
         modifier = Modifier.padding(top = 32.dp, start = 16.dp, end = 16.dp)
     ) {
@@ -93,9 +114,9 @@ private fun HorizontalRowWTitleSmall(title: String, list: List<Movie>, onAllClic
         ) {
             Text(title, fontSize = 24.sp, color = MaterialTheme.colorScheme.primary)
             Text(
-                stringResource(R.string.All),
+                stringResource(com.example.core.R.string.All),
                 fontSize = 20.sp,
-                color = colorResource(R.color.accent),
+                color = colorResource(com.example.core.R.color.accent),
                 modifier = Modifier.clickable {
                     onAllClicked.invoke()
                 })
@@ -103,18 +124,28 @@ private fun HorizontalRowWTitleSmall(title: String, list: List<Movie>, onAllClic
         LazyRow {
             items(list) { movie ->
                 FilmPosterWNameGenre(movie) {
-                    onFilmClicked.invoke()
+                    onMovieClicked.invoke()
                 }
             }
         }
     }
 }
 
-@Preview(showSystemUi = true)
+
+/**
+ * Экран фильмов пользователя.
+ * Отображает такие разделы как:
+ *  - Буду смотреть
+ *  - Ваши оценки
+ *  - Любимые
+ *
+ * @param onFilmClicked функция для навигации, вызывается при клике на любой из фильмов.
+ */
 @Composable
 fun UsersScreen(
     paddingValues: PaddingValues = PaddingValues(),
-    onFilmClicked: () -> Unit = {}
+    onFilmClicked: () -> Unit = {},
+    viewModel: UsersViewModel,
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -123,23 +154,23 @@ fun UsersScreen(
             .background(MaterialTheme.colorScheme.background)
             .padding(paddingValues)
             .verticalScroll(scrollState)
-        ) {
-
-        //val list = arrayListOf(Film(), Film(), Film(), Film(), Film(), Film(), Film(), Film())
+    ) {
 
         HorizontalRowWTitleSmall(
-            title = stringResource(R.string.WillWatch), list,
+            title = stringResource(com.example.core.R.string.WillWatch),
+            list = viewModel.willWatch.collectAsState().value,
             onAllClicked = { },
-            onFilmClicked = { onFilmClicked.invoke() }
+            onMovieClicked = { onFilmClicked.invoke() }
         )
-        HorizontalRowWTitleSmall(title = stringResource(R.string.YourRates), list,
+        HorizontalRowWTitleSmall(title = stringResource(com.example.core.R.string.YourRates),
+            list = viewModel.userRates.collectAsState().value,
             onAllClicked = { },
-            onFilmClicked = { onFilmClicked.invoke() }
+            onMovieClicked = { onFilmClicked.invoke() }
         )
-        HorizontalRowWTitleSmall(title = stringResource(R.string.Favourite), list,
+        HorizontalRowWTitleSmall(title = stringResource(com.example.core.R.string.Favourite),
+            list = viewModel.favourites.collectAsState().value,
             onAllClicked = { },
-            onFilmClicked = { onFilmClicked.invoke() }
+            onMovieClicked = { onFilmClicked.invoke() }
         )
     }
-
 }
