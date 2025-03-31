@@ -1,39 +1,45 @@
-package com.example.absolutecinema.ui.screens
+package com.example.core.ui
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Context.*
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import coil3.compose.rememberAsyncImagePainter
-import com.example.absolutecinema.R
+import com.example.core.R
+import com.example.domain.model.Movie
 
+/**
+ * Функция для асинхронной загрузки постера фильма.
+ * Пока постер не загружен (и если не будет загружен)
+ * отображает плейсхолдер.
+ *
+ * @param imageUrl ссылка на постер фильма
+ * @param placeholderResId ресурс плейсхолдера (по умолчанию poster_placeholder)
+ * @param contentScale тип масштабирования контента (по умолчанию Fit)
+ */
+@Preview
 @Composable
 fun LoadImageWithPlaceholder(
-    imageUrl: String?, // URL изображения
-    placeholderResId: Int, // Ресурс заглушки (например, R.drawable.placeholder)
+    imageUrl: String? = "",
+    placeholderResId: Int = R.drawable.poster_placeholder,
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Fit,
 ) {
@@ -54,9 +60,14 @@ fun LoadImageWithPlaceholder(
     )
 }
 
+/**
+ * Отображает локальную оценку пользователя в кружке соответствующего оценке цвета.
+ *
+ * @param movie фильм, оценка которого отображается
+ */
 @Composable
-fun UserScore(film: Film, modifier: Modifier = Modifier.size(20.dp)) {
-    val rating = film.userScore
+fun UserScore(movie: Movie, modifier: Modifier = Modifier.size(20.dp)) {
+    val rating = movie.userRate
     val color = when (rating) {
         in 0..3 -> colorResource(R.color.score_red)
         in 4..6 -> colorResource(R.color.score_gray)
@@ -65,6 +76,7 @@ fun UserScore(film: Film, modifier: Modifier = Modifier.size(20.dp)) {
     Box(modifier = modifier.background(color = color, shape = CircleShape)) {
         Text(
             text = rating.toString(),
+            textAlign = TextAlign.Center,
             color = colorResource(R.color.white),
             modifier = Modifier.align(
                 Alignment.Center
@@ -74,17 +86,23 @@ fun UserScore(film: Film, modifier: Modifier = Modifier.size(20.dp)) {
 }
 
 
+/**
+ * Отображет оценку фильма по версии кинопоиска в небольшом прямоугольнике соответствующего цвета.
+ * Если фильм входит в топ 250, то цвет прямоугольника становится золотистым.
+ *
+ * @param movie фильм, оценку которого отображается.
+ */
 @SuppressLint("ResourceType")
 @Composable
-fun FilmRating(film: Film, modifier: Modifier = Modifier.padding(top = 10.dp, start = 14.dp)) {
-    val color = when (film.rating.toInt()) {
+fun FilmRating(movie: Movie, modifier: Modifier = Modifier.padding(top = 10.dp, start = 14.dp)) {
+    val color = when (movie.rating?.kp?.toInt()) {
         in 0..3 -> colorResource(R.color.score_red)
         in 4..6 -> colorResource(R.color.score_gray)
         else -> colorResource(R.color.score_green)
     }
     Box(
         modifier =
-        if (!film.isTop100)
+        if (movie.top250 != null)
             modifier.background(color = color, shape = RoundedCornerShape(8.dp))
         else
             modifier.background(
@@ -100,7 +118,7 @@ fun FilmRating(film: Film, modifier: Modifier = Modifier.padding(top = 10.dp, st
             )
     ) {
         Text(
-            film.rating.toString(),
+            movie.rating.toString(),
             modifier = Modifier
                 .align(Alignment.Center)
                 .padding(horizontal = 4.dp),

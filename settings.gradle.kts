@@ -23,3 +23,5 @@ rootProject.name = "AbsoluteCinema"
 include(":app")
 include(":data")
 include(":domain")
+include(":feature:users")
+include(":core")

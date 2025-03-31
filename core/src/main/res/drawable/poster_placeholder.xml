@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:width="200dp"
+    android:height="300dp"
+    android:viewportWidth="200"
+    android:viewportHeight="300"
+    tools:ignore="ExtraText,VectorRaster">
+
+    <!-- Фон (прямоугольник) -->
+    <path
+        android:fillColor="#171717"
+    android:pathData="M0,0 L200,0 L200,300 L0,300 Z" />
+
+    <!-- Иконка "плэй" (упрощённый значок фильма) -->
+    <path
+        android:fillColor="#282828"
+    android:pathData="M60,100 L140,150 L60,200 Z" />  <!-- Треугольник -->
+</vector>
