@@ -45,10 +45,13 @@ class MovieRepositoryImpl(
     }
 
     override suspend fun getMovieById(id: Int): Movie {
-        val dto = api.getMovieById(id = id)
-        val entity = DtoToEntity.map(movie = dto)
+        var entity = dao.getMovieById(movieId = id)
 
-        dao.insert(entity)
+        if (entity == null){
+            val dto = api.getMovieById(id = id)
+            entity = DtoToEntity.map(movie = dto)
+            dao.insert(entity)
+        }
 
         val movie = EntityToDomain.map(movie = entity)
 
