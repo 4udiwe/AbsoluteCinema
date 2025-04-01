@@ -353,4 +353,8 @@ class MovieRepositoryImpl(
             }
         }
     }
+
+    override suspend fun clearCache() {
+        dao.clearAll()
+    }
 }

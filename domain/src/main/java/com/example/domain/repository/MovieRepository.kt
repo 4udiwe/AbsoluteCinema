@@ -188,4 +188,9 @@ interface MovieRepository {
      * Если запрос к API неудачный, то показывает последние кешированные фильмы из БД.
      */
     fun getComedyMovies() : Flow<List<Movie>>
+
+    /**
+     * Функция очистки кэша - удаляет все локаьлно сохраненные фильмы из БД.
+     */
+    suspend fun clearCache()
 }
