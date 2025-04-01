@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:width="200dp"
+    android:height="300dp"
+    android:viewportWidth="200"
+    android:viewportHeight="300"
+    tools:ignore="VectorRaster">
+
+    <!-- Фон -->
+    <path
+        android:fillColor="#171717"
+        android:pathData="M0,0h200v300h-200z"/>
+
+    <!-- Увеличенный основной круг иконки (фон профиля) -->
+    <path
+        android:fillColor="#282828"
+        android:pathData="M100,80a70,70 0 1,1 0,140a70,70 0 1,1 0,-140z"/>
+
+    <!-- Большой круг (тело) -->
+    <path
+        android:fillColor="#171717"
+        android:pathData="M100,140a60,60 0 1,1 0,120a60,60 0 1,1 0,-120z"/>
+
+    <!-- Маленький круг (голова) -->
+    <path
+        android:fillColor="#171717"
+        android:pathData="M100,90a30,30 0 1,1 0,60a30,30 0 1,1 0,-60z"/>
+
+</vector>

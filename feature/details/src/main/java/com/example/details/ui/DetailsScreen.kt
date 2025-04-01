@@ -1,4 +1,4 @@
-package com.example.absolutecinema.ui.screens
+package com.example.details.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,7 +23,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,17 +33,25 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.absolutecinema.R
+import com.example.core.ui.LoadImageWithPlaceholder
+import com.example.domain.model.Movie
+import com.example.domain.model.Person
 
+/**
+ * Отображает краткую информацию об актере на экране фильма (DetailsScreen)
+ * Отображает фото актера, справа от фото имя и роль.
+ *
+ * @param actor актер типа [Person]
+ */
 @Composable
-private fun ActorItem(actor: Actor, modifier: Modifier = Modifier.padding(bottom = 4.dp)) {
+private fun ActorItem(actor: Person, modifier: Modifier = Modifier.padding(bottom = 4.dp)) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         LoadImageWithPlaceholder(
-            actor.pictureURL,
-            R.drawable.ic_launcher_background,
+            imageUrl = actor.photo,
+            placeholderResId = com.example.core.R.drawable.actor_placeholder,
             modifier = Modifier
                 .height(90.dp)
                 .width(60.dp),
@@ -55,17 +62,19 @@ private fun ActorItem(actor: Actor, modifier: Modifier = Modifier.padding(bottom
                 .width(160.dp)
                 .padding(start = 4.dp, end = 16.dp)
         ) {
-            Text(actor.name, color = MaterialTheme.colorScheme.primary, fontSize = 14.sp)
-            Text(actor.role, color = MaterialTheme.colorScheme.secondary, fontSize = 14.sp)
+            Text(actor.name.toString(), color = MaterialTheme.colorScheme.primary, fontSize = 14.sp)
+            Text(actor.description.toString(), color = MaterialTheme.colorScheme.secondary, fontSize = 14.sp)
         }
-
     }
 }
 
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-fun MovieScreen(paddingValues: PaddingValues = PaddingValues(), film: Film = Film()) {
+fun DetailsScreen(
+    paddingValues: PaddingValues = PaddingValues(),
+    movie: Movie = Movie()
+) {
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
@@ -81,39 +90,39 @@ fun MovieScreen(paddingValues: PaddingValues = PaddingValues(), film: Film = Fil
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             LoadImageWithPlaceholder(
-                film.posterURL,
-                placeholderResId = R.drawable.ic_launcher_background,
+                imageUrl = movie.poster?.posterUrl,
+                placeholderResId = com.example.core.R.drawable.poster_placeholder,
                 modifier = Modifier
                     .width(240.dp),
                 contentScale = ContentScale.Crop
             )
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
-                text = film.name,
+                text = movie.name.toString(),
                 fontSize = 26.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary
             )
             Row {
                 Text(
-                    film.rating.toString(),
-                    color = colorResource(R.color.score_green),
+                    movie.rating.toString(),
+                    color = colorResource(com.example.core.R.color.score_green),
                     fontWeight = FontWeight.Bold
                 )
-                Text(
-                    "${(film.watches / 1000)}K",
-                    color = MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier.padding(horizontal = 4.dp), fontWeight = FontWeight.Bold
-                )
-                Text(film.enname, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+//                Text(
+//                    "${(movie.watches / 1000)}K",
+//                    color = MaterialTheme.colorScheme.secondary,
+//                    modifier = Modifier.padding(horizontal = 4.dp), fontWeight = FontWeight.Bold
+//                )
+                Text(movie.enName.toString(), color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
             }
             Text(
-                "${film.year}, ${film.genres}",
+                "${movie.year}, ${movie.genres.joinToString()}",
                 color = MaterialTheme.colorScheme.secondary,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                "${film.country}, ${film.duration} мин, ${if (film.isForAdult) "18+" else ""}",
+                "${movie.countries.joinToString()}, ${movie.movieLength} мин, ${movie.ageRating.toString()}+",
                 color = MaterialTheme.colorScheme.secondary,
                 fontWeight = FontWeight.Bold
             )
@@ -159,7 +168,7 @@ fun MovieScreen(paddingValues: PaddingValues = PaddingValues(), film: Film = Fil
         }
 
         Text(
-            film.description,
+            text = (movie.shortDescription ?: movie.description).toString(),
             color = MaterialTheme.colorScheme.primary,
             fontSize = 16.sp,
             maxLines = 3,
@@ -167,13 +176,13 @@ fun MovieScreen(paddingValues: PaddingValues = PaddingValues(), film: Film = Fil
         )
         Text(
             text = "Все детали фильма",
-            color = colorResource(R.color.accent),
+            color = colorResource(com.example.core.R.color.accent),
             fontSize = 16.sp,
             modifier = Modifier.clickable {
 
             }
         )
-        val actorsGroups = film.actors.chunked(3)
+        val actorsGroups = movie.persons.chunked(3)
 
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -194,7 +203,7 @@ fun MovieScreen(paddingValues: PaddingValues = PaddingValues(), film: Film = Fil
         ) {
             Text(text = "Интересные факты", color = MaterialTheme.colorScheme.primary, fontSize = 20.sp, modifier = Modifier.padding(bottom = 8.dp))
             LazyRow {
-                items(film.facts) { fact ->
+                items(movie.facts) { fact ->
                     Column(
                         modifier = Modifier
                             .width(300.dp)
@@ -203,7 +212,7 @@ fun MovieScreen(paddingValues: PaddingValues = PaddingValues(), film: Film = Fil
                             .background(MaterialTheme.colorScheme.surface)
                     ) {
                         Text(
-                            text = fact,
+                            text = "${if (fact.spoiler == true) "Спойлер: " else ""} ${fact.fact.toString()}",
                             color = MaterialTheme.colorScheme.primary,
                             fontSize = 14.sp,
                             modifier = Modifier.padding(10.dp),
