@@ -16,6 +16,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.twotone.Add
@@ -24,16 +26,21 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.core.ui.LoadImageWithPlaceholder
+import com.example.details.R
+import com.example.details.viewmodel.DetailsViewModel
 import com.example.domain.model.Movie
 import com.example.domain.model.Person
 
@@ -63,23 +70,30 @@ private fun ActorItem(actor: Person, modifier: Modifier = Modifier.padding(botto
                 .padding(start = 4.dp, end = 16.dp)
         ) {
             Text(actor.name.toString(), color = MaterialTheme.colorScheme.primary, fontSize = 14.sp)
-            Text(actor.description.toString(), color = MaterialTheme.colorScheme.secondary, fontSize = 14.sp)
+            Text(
+                actor.description.toString(),
+                color = MaterialTheme.colorScheme.secondary,
+                fontSize = 14.sp
+            )
         }
     }
 }
 
 
-@Preview
 @Composable
 fun DetailsScreen(
     paddingValues: PaddingValues = PaddingValues(),
-    movie: Movie = Movie()
+    viewModel: DetailsViewModel,
 ) {
+
+    val movie by viewModel.movie.collectAsState()
+
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
-            .fillMaxSize().padding(paddingValues)
+            .fillMaxSize()
+            .padding(paddingValues)
             .padding(horizontal = 8.dp)
             .verticalScroll(scrollState)
     ) {
@@ -105,7 +119,7 @@ fun DetailsScreen(
             )
             Row {
                 Text(
-                    movie.rating.toString(),
+                    movie.rating?.kp.toString(),
                     color = colorResource(com.example.core.R.color.score_green),
                     fontWeight = FontWeight.Bold
                 )
@@ -114,7 +128,11 @@ fun DetailsScreen(
 //                    color = MaterialTheme.colorScheme.secondary,
 //                    modifier = Modifier.padding(horizontal = 4.dp), fontWeight = FontWeight.Bold
 //                )
-                Text(movie.enName.toString(), color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+                Text(
+                    movie.enName.toString(),
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold
+                )
             }
             Text(
                 "${movie.year}, ${movie.genres.joinToString()}",
@@ -136,9 +154,13 @@ fun DetailsScreen(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                IconButton(onClick = {
+                IconButton(
+                    onClick =
+                    {
+                        TODO("Написать экран для оценки фильма")
+                    }
 
-                }) {
+                ) {
                     Icon(Icons.Outlined.Star, "star", tint = MaterialTheme.colorScheme.primary)
                 }
                 Text("Оценить", color = MaterialTheme.colorScheme.primary, fontSize = 12.sp)
@@ -148,10 +170,21 @@ fun DetailsScreen(
             ) {
                 IconButton(
                     onClick = {
-
+                        if (movie.isWillWatch)
+                            viewModel.removeFromWillWatch()
+                        else
+                            viewModel.addToWillWatch()
                     }
                 ) {
-                    Icon(Icons.TwoTone.Add, "star", tint = MaterialTheme.colorScheme.primary)
+                    Icon(
+                        painter =
+                        if (movie.isWillWatch)
+                            painterResource(com.example.core.R.drawable.bookmark_filled)
+                        else
+                            painterResource(com.example.core.R.drawable.bookmark),
+                        contentDescription = "willwach",
+                        tint = colorResource(com.example.core.R.color.accent)
+                    )
                 }
                 Text("Буду смотреть", color = MaterialTheme.colorScheme.primary, fontSize = 12.sp)
             }
@@ -159,9 +192,20 @@ fun DetailsScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 IconButton(onClick = {
-
+                    if (movie.isFavorite)
+                        viewModel.removeFromFavourite()
+                    else
+                        viewModel.addToFavourite()
                 }) {
-                    Icon(Icons.Outlined.FavoriteBorder, "star", tint = MaterialTheme.colorScheme.primary)
+                    Icon(
+                        imageVector =
+                        if (movie.isFavorite)
+                            Icons.Filled.Favorite
+                        else
+                            Icons.Filled.FavoriteBorder,
+                        contentDescription = "favourite",
+                        tint = colorResource(com.example.core.R.color.accent)
+                    )
                 }
                 Text("Избранное", color = MaterialTheme.colorScheme.primary, fontSize = 12.sp)
             }
@@ -187,7 +231,12 @@ fun DetailsScreen(
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Актеры", color = MaterialTheme.colorScheme.primary, fontSize = 20.sp, modifier = Modifier.padding(bottom = 8.dp))
+            Text(
+                text = "Актеры",
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 20.sp,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
             LazyRow {
                 items(actorsGroups) { group ->
                     Column {
@@ -199,9 +248,16 @@ fun DetailsScreen(
             }
         }
         Column(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 100.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 100.dp)
         ) {
-            Text(text = "Интересные факты", color = MaterialTheme.colorScheme.primary, fontSize = 20.sp, modifier = Modifier.padding(bottom = 8.dp))
+            Text(
+                text = "Интересные факты",
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 20.sp,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
             LazyRow {
                 items(movie.facts) { fact ->
                     Column(

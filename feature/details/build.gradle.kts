@@ -38,6 +38,9 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":domain"))
 
+    //ViewModel
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.activity.compose)
