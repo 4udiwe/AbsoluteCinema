@@ -2,7 +2,6 @@ package com.example.details.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.domain.model.Movie
 import com.example.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +26,7 @@ class DetailsViewModel(
         }
     }
 
-    fun delteUserScore() = viewModelScope.launch{
+    fun deleteUserScore() = viewModelScope.launch{
         _movie.value.id?.let { id ->
             repository.removeUserRateFromMovie(id)
             updateMovie(id)

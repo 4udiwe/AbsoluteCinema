@@ -3,6 +3,7 @@ package com.example.details.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -10,24 +11,30 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material.icons.twotone.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableIntState
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -38,10 +45,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.example.core.ui.LoadImageWithPlaceholder
-import com.example.details.R
 import com.example.details.viewmodel.DetailsViewModel
-import com.example.domain.model.Movie
 import com.example.domain.model.Person
 
 /**
@@ -79,6 +86,118 @@ private fun ActorItem(actor: Person, modifier: Modifier = Modifier.padding(botto
     }
 }
 
+/**
+ * Функция отображения звездочки в MovieScoreDialog
+ */
+@Composable
+private fun Star(score: MutableIntState, number: Int) {
+    Icon(
+        painter =
+        if (score.intValue >= 1)
+            painterResource(com.example.core.R.drawable.star)
+        else
+            painterResource(com.example.core.R.drawable.star_border),
+        tint =
+        if (score.intValue >= 1)
+            colorResource(com.example.core.R.color.score_legend_start)
+        else
+            colorResource(com.example.core.R.color.text_second),
+        contentDescription = "star",
+        modifier = Modifier
+            .clickable {
+                score.intValue = number
+            }
+            .size(28.dp)
+    )
+
+}
+
+/**
+ * Диалог выставления оценки фильму
+ *
+ * @param dialogState стейт диалога
+ * @param isSeries является ли сериалом (для правильного отображения надписи)
+ * @param onSave сохраняет результат, записывает оценку фильма
+ * @param onCancel убирает оценку
+ */
+@Composable
+private fun MovieScoreDialog(
+    modifier: Modifier = Modifier,
+    dialogState: MutableState<Boolean>,
+    isSeries: Boolean = false,
+    onSave: (score: Int) -> Unit,
+    onCancel: () -> Unit,
+) {
+
+    val score = remember { mutableIntStateOf(-1) }
+
+    Dialog(
+        onDismissRequest = {
+            dialogState.value = false
+        },
+        properties = DialogProperties(
+            dismissOnBackPress = true,
+            dismissOnClickOutside = true,
+            usePlatformDefaultWidth = true
+        )
+    ) {
+        Box(
+            modifier = modifier
+                .background(
+                    color = MaterialTheme.colorScheme.surface,
+                    shape = RoundedCornerShape(20.dp)
+                )
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Оцените ${if (isSeries) "сериал" else "фильм"}",
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 22.sp,
+                    modifier = Modifier
+                        .padding(10.dp)
+                )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    repeat(10) { number ->
+                        Star(score = score, number = number)
+                    }
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    TextButton(
+                        onClick = {
+                            onSave(score.intValue)
+                        }
+                    ) {
+                        Text(
+                            text = "Сохранить",
+                            color = colorResource(com.example.core.R.color.accent),
+                        )
+                    }
+                    TextButton(
+                        onClick = {
+                            onCancel.invoke()
+                        }
+                    ) {
+                        Text(
+                            text = "Отмена",
+                            color = MaterialTheme.colorScheme.secondary,
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
 
 @Composable
 fun DetailsScreen(
@@ -87,6 +206,21 @@ fun DetailsScreen(
 ) {
 
     val movie by viewModel.movie.collectAsState()
+
+    val dialogState = remember { mutableStateOf(false) }
+
+    if (dialogState.value) {
+        MovieScoreDialog(
+            dialogState = dialogState,
+            isSeries = movie.isSeries == true,
+            onSave = { score ->
+                viewModel.setUserScore(score = score)
+            },
+            onCancel = {
+                viewModel.deleteUserScore()
+            }
+        )
+    }
 
     val scrollState = rememberScrollState()
     Column(
@@ -123,11 +257,6 @@ fun DetailsScreen(
                     color = colorResource(com.example.core.R.color.score_green),
                     fontWeight = FontWeight.Bold
                 )
-//                Text(
-//                    "${(movie.watches / 1000)}K",
-//                    color = MaterialTheme.colorScheme.secondary,
-//                    modifier = Modifier.padding(horizontal = 4.dp), fontWeight = FontWeight.Bold
-//                )
                 Text(
                     movie.enName.toString(),
                     color = MaterialTheme.colorScheme.primary,
@@ -155,9 +284,8 @@ fun DetailsScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 IconButton(
-                    onClick =
-                    {
-                        TODO("Написать экран для оценки фильма")
+                    onClick = {
+                        dialogState.value = true
                     }
 
                 ) {
