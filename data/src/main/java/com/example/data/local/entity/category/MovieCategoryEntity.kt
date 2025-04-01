@@ -7,7 +7,6 @@ import com.example.data.local.entity.MovieEntity
 
 @Entity(
     tableName = "movie_category",
-    primaryKeys = ["movieId", "categoryId"],
     foreignKeys = [
         ForeignKey(
             entity = MovieEntity::class,
@@ -26,6 +25,5 @@ import com.example.data.local.entity.MovieEntity
 data class MovieCategoryEntity(
     @PrimaryKey
     val movieId: Int,
-    @PrimaryKey
     val categoryId: Int
 )

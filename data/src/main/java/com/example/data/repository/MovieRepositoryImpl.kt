@@ -33,7 +33,7 @@ class MovieRepositoryImpl(
      * @param movie фильм без категорий и оценки.
      * @return [Movie] фильм с категориями и пользовательской оценкой.
      */
-    private suspend fun parseMovieInfo(movie: Movie): Movie {
+    suspend fun parseMovieInfo(movie: Movie): Movie {
         val categories = movie.id?.let { dao.getCategoriesForMovie(movieId = it) }
 
         movie.isFavorite = categories?.contains(LocalCategory.Favourite) == true
