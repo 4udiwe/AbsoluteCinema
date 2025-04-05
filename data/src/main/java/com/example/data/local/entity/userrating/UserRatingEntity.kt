@@ -1,4 +1,4 @@
-package com.example.data.local.entity
+package com.example.data.local.entity.userrating
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

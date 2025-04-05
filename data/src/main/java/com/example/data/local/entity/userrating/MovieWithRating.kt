@@ -1,4 +1,4 @@
-package com.example.data.local.dao
+package com.example.data.local.entity.userrating
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded

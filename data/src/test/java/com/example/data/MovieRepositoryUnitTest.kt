@@ -1,6 +1,7 @@
 package com.example.data
 
 import com.example.data.local.dao.MovieDao
+import com.example.data.local.entity.userrating.MovieWithRating
 import com.example.data.mapper.DtoToEntity
 import com.example.data.mapper.EntityToDomain
 import com.example.data.remote.api.MoviesAPI
@@ -132,7 +133,7 @@ class MovieRepositoryUnitTest {
     @Test
     fun `getMoviesWithUserRate should return flow of rated movies`() = runBlocking {
         // Arrange
-        val mockEntityWithRating = mockk<com.example.data.local.dao.MovieWithRating>()
+        val mockEntityWithRating = mockk<MovieWithRating>()
         val mockEntity = mockk<com.example.data.local.entity.MovieEntity>()
         val mockDomainMovie = mockk<Movie>()
         val rating = 5

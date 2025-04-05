@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.data.local.entity.MovieEntity
-import com.example.domain.model.LocalCategory
+import com.example.data.local.entity.userrating.MovieWithRating
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -43,51 +43,6 @@ interface MovieDao {
         """
     )
     fun getMoviesWithUserRate(): Flow<List<MovieWithRating>>
-
-    @Query(
-        """
-        SELECT categoryentity.name
-        FROM categoryEntity 
-        INNER JOIN movie_category 
-            ON categoryEntity.id = movie_category.categoryId 
-        WHERE movie_category.movieId = :movieId
-        """
-    )
-    suspend fun getCategoriesForMovie(movieId: Int): List<LocalCategory>
-
-    @Query(
-        """
-        SELECT MovieEntity.* 
-        FROM MovieEntity
-        INNER JOIN movie_category ON MovieEntity.id = movie_category.movieId
-        INNER JOIN CategoryEntity ON movie_category.categoryId = CategoryEntity.id
-        WHERE CategoryEntity.name = :category
-        """
-    )
-    fun getMoviesOfCategory(category: String): Flow<List<MovieEntity>>
-
-    @Query(
-        """
-        INSERT INTO movie_category (movieId, categoryId)
-        SELECT :movieId, id 
-        FROM CategoryEntity 
-        WHERE name = :category
-    """
-    )
-    suspend fun addMovieToCategory(movieId: Int, category: String)
-
-    @Query(
-        """
-        DELETE FROM movie_category
-        WHERE movieId = :movieId 
-        AND categoryId IN (
-            SELECT id 
-            FROM CategoryEntity 
-            WHERE name = :category
-        )
-    """
-    )
-    suspend fun removeMovieFromCategory(movieId: Int, category: String)
 
     @Query(
         """
