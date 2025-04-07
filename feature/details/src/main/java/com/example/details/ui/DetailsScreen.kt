@@ -47,8 +47,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.example.core.R
 import com.example.core.ui.LoadImageWithPlaceholder
+import com.example.core.ui.UserScore
 import com.example.details.viewmodel.DetailsViewModel
+import com.example.domain.model.Movie
 import com.example.domain.model.Person
 
 /**
@@ -65,7 +68,7 @@ private fun ActorItem(actor: Person, modifier: Modifier = Modifier.padding(botto
     ) {
         LoadImageWithPlaceholder(
             imageUrl = actor.photo,
-            placeholderResId = com.example.core.R.drawable.actor_placeholder,
+            placeholderResId = R.drawable.actor_placeholder,
             modifier = Modifier
                 .height(90.dp)
                 .width(60.dp),
@@ -94,14 +97,14 @@ private fun Star(score: MutableIntState, number: Int) {
     Icon(
         painter =
         if (score.intValue >= 1)
-            painterResource(com.example.core.R.drawable.star)
+            painterResource(R.drawable.star)
         else
-            painterResource(com.example.core.R.drawable.star_border),
+            painterResource(R.drawable.star_border),
         tint =
         if (score.intValue >= 1)
-            colorResource(com.example.core.R.color.score_legend_start)
+            colorResource(R.color.score_legend_start)
         else
-            colorResource(com.example.core.R.color.text_second),
+            colorResource(R.color.text_second),
         contentDescription = "star",
         modifier = Modifier
             .clickable {
@@ -120,13 +123,14 @@ private fun Star(score: MutableIntState, number: Int) {
  * @param onSave сохраняет результат, записывает оценку фильма
  * @param onCancel убирает оценку
  */
+@Preview
 @Composable
 private fun MovieScoreDialog(
     modifier: Modifier = Modifier,
-    dialogState: MutableState<Boolean>,
+    dialogState: MutableState<Boolean> = mutableStateOf(false),
     isSeries: Boolean = false,
-    onSave: (score: Int) -> Unit,
-    onCancel: () -> Unit,
+    onSave: (score: Int) -> Unit = {},
+    onCancel: () -> Unit = {},
 ) {
 
     val score = remember { mutableIntStateOf(-1) }
@@ -180,7 +184,7 @@ private fun MovieScoreDialog(
                     ) {
                         Text(
                             text = "Сохранить",
-                            color = colorResource(com.example.core.R.color.accent),
+                            color = colorResource(R.color.accent),
                         )
                     }
                     TextButton(
@@ -189,7 +193,7 @@ private fun MovieScoreDialog(
                         }
                     ) {
                         Text(
-                            text = "Отмена",
+                            text = "Убрать оценку",
                             color = MaterialTheme.colorScheme.secondary,
                         )
                     }
@@ -203,6 +207,7 @@ private fun MovieScoreDialog(
 fun DetailsScreen(
     paddingValues: PaddingValues = PaddingValues(),
     viewModel: DetailsViewModel,
+    onDescriptionClicked: (Movie) -> Unit
 ) {
 
     val movie by viewModel.movie.collectAsState()
@@ -239,7 +244,7 @@ fun DetailsScreen(
         ) {
             LoadImageWithPlaceholder(
                 imageUrl = movie.poster?.posterUrl,
-                placeholderResId = com.example.core.R.drawable.poster_placeholder,
+                placeholderResId = R.drawable.poster_placeholder,
                 modifier = Modifier
                     .width(240.dp),
                 contentScale = ContentScale.Crop
@@ -254,7 +259,7 @@ fun DetailsScreen(
             Row {
                 Text(
                     movie.rating?.kp.toString(),
-                    color = colorResource(com.example.core.R.color.score_green),
+                    color = colorResource(R.color.score_green),
                     fontWeight = FontWeight.Bold
                 )
                 Text(
@@ -283,15 +288,22 @@ fun DetailsScreen(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                IconButton(
-                    onClick = {
-                        dialogState.value = true
-                    }
+                if (movie.userRate == null) {
+                    IconButton(
+                        onClick = {
+                            dialogState.value = true
+                        }
 
-                ) {
-                    Icon(Icons.Outlined.Star, "star", tint = MaterialTheme.colorScheme.primary)
+                    ) {
+                        Icon(Icons.Outlined.Star, "star", tint = MaterialTheme.colorScheme.primary)
+                    }
+                    Text("Оценить", color = MaterialTheme.colorScheme.primary, fontSize = 12.sp)
+                } else {
+                    UserScore(
+                        movie = movie,
+                        modifier = Modifier
+                    )
                 }
-                Text("Оценить", color = MaterialTheme.colorScheme.primary, fontSize = 12.sp)
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -307,11 +319,11 @@ fun DetailsScreen(
                     Icon(
                         painter =
                         if (movie.isWillWatch)
-                            painterResource(com.example.core.R.drawable.bookmark_filled)
+                            painterResource(R.drawable.bookmark_filled)
                         else
-                            painterResource(com.example.core.R.drawable.bookmark),
+                            painterResource(R.drawable.bookmark),
                         contentDescription = "willwach",
-                        tint = colorResource(com.example.core.R.color.accent)
+                        tint = colorResource(R.color.accent)
                     )
                 }
                 Text("Буду смотреть", color = MaterialTheme.colorScheme.primary, fontSize = 12.sp)
@@ -332,7 +344,7 @@ fun DetailsScreen(
                         else
                             Icons.Filled.FavoriteBorder,
                         contentDescription = "favourite",
-                        tint = colorResource(com.example.core.R.color.accent)
+                        tint = colorResource(R.color.accent)
                     )
                 }
                 Text("Избранное", color = MaterialTheme.colorScheme.primary, fontSize = 12.sp)
@@ -348,10 +360,10 @@ fun DetailsScreen(
         )
         Text(
             text = "Все детали фильма",
-            color = colorResource(com.example.core.R.color.accent),
+            color = colorResource(R.color.accent),
             fontSize = 16.sp,
             modifier = Modifier.clickable {
-
+                onDescriptionClicked(movie)
             }
         )
         val actorsGroups = movie.persons.chunked(3)
@@ -407,7 +419,6 @@ fun DetailsScreen(
                 }
             }
         }
-
     }
 }
 
