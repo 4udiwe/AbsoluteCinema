@@ -25,7 +25,6 @@ include(":data")
 include(":domain")
 include(":feature:users")
 include(":feature:details")
-include(":core")
-
-
 include(":feature:profile")
+include(":feature:feed")
+include(":core")

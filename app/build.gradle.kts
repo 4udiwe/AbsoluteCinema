@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
     //id("org.jetbrains.dokka") version "1.9.10"
 }
 
@@ -54,15 +55,19 @@ dependencies {
 
     implementation(project(":data"))
     implementation(project(":domain"))
-
+    implementation(project(":core"))
+    implementation(project(":feature:users"))
+    implementation(project(":feature:profile"))
+    implementation(project(":feature:details"))
+    implementation(project(":feature:feed"))
 
     //Koin
     implementation("io.insert-koin:koin-android:4.0.0")
 
 
     //Navigation
-    implementation("androidx.navigation:navigation-compose:2.8.8")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation("androidx.navigation:navigation-compose:2.8.9")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
 
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

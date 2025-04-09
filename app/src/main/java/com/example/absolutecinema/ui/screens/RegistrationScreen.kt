@@ -33,7 +33,7 @@ import com.example.absolutecinema.R
 @Composable
 fun RegistrationScreen(
     onToLogin: () -> Unit = {},
-    onEnter: () -> Unit = {}
+    onEnter: () -> Unit = {},
 ) {
     Box(
         modifier = Modifier
@@ -48,27 +48,25 @@ fun RegistrationScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = stringResource(R.string.Registration),
+                    text = stringResource(com.example.core.R.string.Registration),
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 32.sp,
                     modifier = Modifier.padding(12.dp)
                 )
 
-                OutlinedTextField(
-                    value = "",
-                    placeholder = { Text(stringResource(R.string.mockemail)) },
+                OutlinedTextField(value = "",
+                    placeholder = { Text(stringResource(com.example.core.R.string.mockemail)) },
                     modifier = Modifier.padding(bottom = 12.dp),
                     trailingIcon = {
                         IconButton(onClick = {}) {
                             Icon(
-                                imageVector = Icons.Default.Clear,
-                                contentDescription = ""
+                                imageVector = Icons.Default.Clear, contentDescription = ""
                             )
                         }
                     },
                     colors = TextFieldDefaults.colors(
-                        unfocusedIndicatorColor = colorResource(R.color.accent),
-                        focusedIndicatorColor = colorResource(R.color.accent),
+                        unfocusedIndicatorColor = colorResource(com.example.core.R.color.accent),
+                        focusedIndicatorColor = colorResource(com.example.core.R.color.accent),
                         unfocusedContainerColor = MaterialTheme.colorScheme.background,
                         focusedContainerColor = MaterialTheme.colorScheme.background,
                         unfocusedTrailingIconColor = MaterialTheme.colorScheme.secondary,
@@ -79,21 +77,19 @@ fun RegistrationScreen(
                     onValueChange = {}
 
                 )
-                OutlinedTextField(
-                    value = "",
-                    placeholder = { Text(stringResource(R.string.Password)) },
+                OutlinedTextField(value = "",
+                    placeholder = { Text(stringResource(com.example.core.R.string.Password)) },
                     modifier = Modifier.padding(bottom = 12.dp),
                     trailingIcon = {
                         IconButton(onClick = {}) {
                             Icon(
-                                imageVector = Icons.Default.Clear,
-                                contentDescription = ""
+                                imageVector = Icons.Default.Clear, contentDescription = ""
                             )
                         }
                     },
                     colors = TextFieldDefaults.colors(
-                        unfocusedIndicatorColor = colorResource(R.color.accent),
-                        focusedIndicatorColor = colorResource(R.color.accent),
+                        unfocusedIndicatorColor = colorResource(com.example.core.R.color.accent),
+                        focusedIndicatorColor = colorResource(com.example.core.R.color.accent),
                         unfocusedContainerColor = MaterialTheme.colorScheme.background,
                         focusedContainerColor = MaterialTheme.colorScheme.background,
                         unfocusedTrailingIconColor = MaterialTheme.colorScheme.secondary,
@@ -101,23 +97,20 @@ fun RegistrationScreen(
                         unfocusedPlaceholderColor = MaterialTheme.colorScheme.secondary,
                         focusedPlaceholderColor = MaterialTheme.colorScheme.secondary,
                     ),
-                    onValueChange = {}
-                )
-                OutlinedTextField(
-                    value = "",
-                    placeholder = { Text(stringResource(R.string.ConfirmPassword)) },
+                    onValueChange = {})
+                OutlinedTextField(value = "",
+                    placeholder = { Text(stringResource(com.example.core.R.string.ConfirmPassword)) },
                     modifier = Modifier.padding(bottom = 12.dp),
                     trailingIcon = {
                         IconButton(onClick = {}) {
                             Icon(
-                                imageVector = Icons.Default.Clear,
-                                contentDescription = ""
+                                imageVector = Icons.Default.Clear, contentDescription = ""
                             )
                         }
                     },
                     colors = TextFieldDefaults.colors(
-                        unfocusedIndicatorColor = colorResource(R.color.accent),
-                        focusedIndicatorColor = colorResource(R.color.accent),
+                        unfocusedIndicatorColor = colorResource(com.example.core.R.color.accent),
+                        focusedIndicatorColor = colorResource(com.example.core.R.color.accent),
                         unfocusedContainerColor = MaterialTheme.colorScheme.background,
                         focusedContainerColor = MaterialTheme.colorScheme.background,
                         unfocusedTrailingIconColor = MaterialTheme.colorScheme.secondary,
@@ -125,31 +118,40 @@ fun RegistrationScreen(
                         unfocusedPlaceholderColor = MaterialTheme.colorScheme.secondary,
                         focusedPlaceholderColor = MaterialTheme.colorScheme.secondary,
                     ),
-                    onValueChange = {}
-                )
+                    onValueChange = {})
 
 
                 Row {
-                    Text(text = stringResource(R.string.HasAccount), color = MaterialTheme.colorScheme.primary)
-                    Text(text = stringResource(R.string.ToLogin), color = colorResource(R.color.accent), modifier = Modifier
-                        .padding(start = 4.dp)
-                        .clickable {
-                            onToLogin.invoke()
-                        })
+                    Text(
+                        text = stringResource(com.example.core.R.string.HasAccount),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Text(text = stringResource(com.example.core.R.string.ToLogin),
+                        color = colorResource(
+                            com.example.core.R.color.accent
+                        ),
+                        modifier = Modifier
+                            .padding(start = 4.dp)
+                            .clickable {
+                                onToLogin.invoke()
+                            })
                 }
             }
 
         }
 
-        Button(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 100.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.accent)),
+        Button(modifier = Modifier
+            .align(Alignment.BottomCenter)
+            .padding(bottom = 100.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = colorResource(com.example.core.R.color.accent)),
             onClick = {
                 onEnter.invoke()
             }) {
-            Text(stringResource(R.string.Registrate), color = MaterialTheme.colorScheme.primary, maxLines = 1)
+            Text(
+                stringResource(com.example.core.R.string.Registrate),
+                color = MaterialTheme.colorScheme.primary,
+                maxLines = 1
+            )
         }
     }
 }

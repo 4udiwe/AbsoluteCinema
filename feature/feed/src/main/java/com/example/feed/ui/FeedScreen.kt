@@ -128,11 +128,11 @@ fun FeedScreen(
 ) {
     val scrollState = rememberScrollState()
 
-    val recommendedMovies = viewModel.recommendedMovies.collectAsState()
-    val recommendedSeries = viewModel.recommendedSeries.collectAsState()
-    val detectives = viewModel.detectives.collectAsState()
-    val romans = viewModel.romans.collectAsState()
-    val comedies = viewModel.comedies.collectAsState()
+    val recommendedMovies = viewModel.recommendedMovies.collectAsState(emptyList())
+    val recommendedSeries = viewModel.recommendedSeries.collectAsState(emptyList())
+    val detectives = viewModel.detectives.collectAsState(emptyList())
+    val romans = viewModel.romans.collectAsState(emptyList())
+    val comedies = viewModel.comedies.collectAsState(emptyList())
 
     Column(
         modifier = Modifier

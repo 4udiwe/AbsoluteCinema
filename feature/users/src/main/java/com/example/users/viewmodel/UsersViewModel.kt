@@ -1,28 +1,26 @@
 package com.example.users.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.domain.model.Movie
 import com.example.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 class UsersViewModel(
     repository: MovieRepository,
 ) : ViewModel() {
 
-    private var _willWatch = MutableStateFlow<List<Movie>>(emptyList())
-    val willWatch = _willWatch.asStateFlow()
+    val willWatch = repository.getWillWatchMovies()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
-    private var _userRates = MutableStateFlow<List<Movie>>(emptyList())
-    val userRates = _userRates.asStateFlow()
+    val userRates = repository.getMoviesWithUserRate()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
-    private var _favourites = MutableStateFlow<List<Movie>>(emptyList())
-    val favourites = _favourites.asStateFlow()
-
-    init {
-        _willWatch = repository.getWillWatchMovies() as MutableStateFlow<List<Movie>>
-        _userRates = repository.getMoviesWithUserRate() as MutableStateFlow<List<Movie>>
-        _favourites = repository.getFavouriteMovies() as MutableStateFlow<List<Movie>>
-    }
-
+    val favourites = repository.getFavouriteMovies()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 }

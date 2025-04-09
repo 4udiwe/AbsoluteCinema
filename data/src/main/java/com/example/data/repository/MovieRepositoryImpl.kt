@@ -3,6 +3,7 @@ package com.example.data.repository
 import android.util.Log
 import com.example.data.local.dao.*
 import com.example.data.local.entity.*
+import com.example.data.local.entity.category.CategoryEntity
 import com.example.data.local.entity.category.MovieCategoryCrossRef
 import com.example.data.local.entity.country.CountryEntity
 import com.example.data.local.entity.country.MovieCountryCrossRef

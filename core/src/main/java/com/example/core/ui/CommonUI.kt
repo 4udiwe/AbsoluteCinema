@@ -95,6 +95,7 @@ fun UserScore(movie: Movie, modifier: Modifier = Modifier.size(20.dp)) {
 @SuppressLint("ResourceType")
 @Composable
 fun FilmRating(movie: Movie, modifier: Modifier = Modifier.padding(top = 10.dp, start = 14.dp)) {
+    TODO("сделать рассчет рейтинга (если нет kp, то брать другой)")
     val color = when (movie.rating?.kp?.toInt()) {
         in 0..3 -> colorResource(R.color.score_red)
         in 4..6 -> colorResource(R.color.score_gray)
@@ -118,7 +119,7 @@ fun FilmRating(movie: Movie, modifier: Modifier = Modifier.padding(top = 10.dp, 
             )
     ) {
         Text(
-            movie.rating.toString(),
+            movie.rating?.kp.toString(),
             modifier = Modifier
                 .align(Alignment.Center)
                 .padding(horizontal = 4.dp),

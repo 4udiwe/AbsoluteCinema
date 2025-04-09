@@ -48,7 +48,7 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = stringResource(R.string.LogIn),
+                    text = stringResource(com.example.core.R.string.LogIn),
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 32.sp,
                     modifier = Modifier.padding(12.dp)
@@ -56,7 +56,7 @@ fun LoginScreen(
 
                 OutlinedTextField(
                     value = "",
-                    placeholder = { Text(stringResource(R.string.mockemail)) },
+                    placeholder = { Text(stringResource(com.example.core.R.string.mockemail)) },
                     modifier = Modifier.padding(bottom = 12.dp),
                     trailingIcon = {
                         IconButton(onClick = {}) {
@@ -67,8 +67,8 @@ fun LoginScreen(
                         }
                     },
                     colors = TextFieldDefaults.colors(
-                        unfocusedIndicatorColor = colorResource(R.color.accent),
-                        focusedIndicatorColor = colorResource(R.color.accent),
+                        unfocusedIndicatorColor = colorResource(com.example.core.R.color.accent),
+                        focusedIndicatorColor = colorResource(com.example.core.R.color.accent),
                         unfocusedContainerColor = MaterialTheme.colorScheme.background,
                         focusedContainerColor = MaterialTheme.colorScheme.background,
                         unfocusedTrailingIconColor = MaterialTheme.colorScheme.secondary,
@@ -81,7 +81,7 @@ fun LoginScreen(
                 )
                 OutlinedTextField(
                     value = "",
-                    placeholder = { Text(stringResource(R.string.Password)) },
+                    placeholder = { Text(stringResource(com.example.core.R.string.Password)) },
                     modifier = Modifier.padding(bottom = 12.dp),
                     trailingIcon = {
                         IconButton(onClick = {}) {
@@ -92,8 +92,8 @@ fun LoginScreen(
                         }
                     },
                     colors = TextFieldDefaults.colors(
-                        unfocusedIndicatorColor = colorResource(R.color.accent),
-                        focusedIndicatorColor = colorResource(R.color.accent),
+                        unfocusedIndicatorColor = colorResource(com.example.core.R.color.accent),
+                        focusedIndicatorColor = colorResource(com.example.core.R.color.accent),
                         unfocusedContainerColor = MaterialTheme.colorScheme.background,
                         focusedContainerColor = MaterialTheme.colorScheme.background,
                         unfocusedTrailingIconColor = MaterialTheme.colorScheme.secondary,
@@ -106,20 +106,20 @@ fun LoginScreen(
 
                 Row {
                     Text(
-                        text = stringResource(R.string.NoAccount),
+                        text = stringResource(com.example.core.R.string.NoAccount),
                         color = MaterialTheme.colorScheme.primary
                     )
                     Text(
-                        text = stringResource(R.string.ToRegistration),
-                        color = colorResource(R.color.accent),
+                        text = stringResource(com.example.core.R.string.ToRegistration),
+                        color = colorResource(com.example.core.R.color.accent),
                         modifier = Modifier.padding(start = 4.dp).clickable {
                             onToRegistration.invoke()
                         }
                     )
                 }
                 Text(
-                    text = stringResource(R.string.ForgotPassword),
-                    color = colorResource(R.color.accent)
+                    text = stringResource(com.example.core.R.string.ForgotPassword),
+                    color = colorResource(com.example.core.R.color.accent)
                 )
 
 
@@ -131,11 +131,11 @@ fun LoginScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 100.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.accent)),
+            colors = ButtonDefaults.buttonColors(containerColor = colorResource(com.example.core.R.color.accent)),
             onClick = {
                 onEnter.invoke()
             }) {
-            Text(text = stringResource(R.string.toEnter), color = MaterialTheme.colorScheme.primary)
+            Text(text = stringResource(com.example.core.R.string.toEnter), color = MaterialTheme.colorScheme.primary)
         }
     }
 }

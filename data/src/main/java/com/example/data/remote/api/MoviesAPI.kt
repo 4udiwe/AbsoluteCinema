@@ -7,17 +7,18 @@ import retrofit2.http.Headers
 import retrofit2.http.Query
 
 interface MoviesAPI {
-    @Headers("X-API-KEY: 40JQ10H-Q9K4FYF-M2KXT1M-SHKCES3")
+
 
     /**
      * Выполняет поиск по названию.
      *
      * [query] - название тайтла
      */
+    @Headers("X-API-KEY: 40JQ10H-Q9K4FYF-M2KXT1M-SHKCES3")
     @GET("v1.4/movie/search")
     suspend fun searchMovieByName(@Query("query") query: String): MoviesResponseDto
 
-
+    @Headers("X-API-KEY: 40JQ10H-Q9K4FYF-M2KXT1M-SHKCES3")
     @GET("v1.4/movie")
     suspend fun getMovieById(@Query("id") id: Int): MovieDto
 
@@ -57,6 +58,7 @@ interface MoviesAPI {
      *
      *      Пример: { "top250", "top-100-indian-movies", "!top-100-movies" }
      */
+    @Headers("X-API-KEY: 40JQ10H-Q9K4FYF-M2KXT1M-SHKCES3")
     @GET("v1.4/movie")
     suspend fun searchWithFilter(
         @Query("sortField") fields: List<String>? = null,

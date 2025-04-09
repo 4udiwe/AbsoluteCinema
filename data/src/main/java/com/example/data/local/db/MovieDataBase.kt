@@ -2,6 +2,8 @@ package com.example.data.local.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.example.data.local.converter.LocalCategoryConverter
 import com.example.data.local.dao.CategoryDao
 import com.example.data.local.dao.CountryDao
 import com.example.data.local.dao.FactDao
@@ -12,6 +14,7 @@ import com.example.data.local.dao.MovieDao
 import com.example.data.local.dao.PersonDao
 import com.example.data.local.dao.SeqAndPreqDao
 import com.example.data.local.dao.SimilarDao
+import com.example.data.local.entity.MovieEntity
 import com.example.data.local.entity.country.CountryEntity
 import com.example.data.local.entity.country.MovieCountryCrossRef
 import com.example.data.local.entity.fact.FactEntity
@@ -27,6 +30,7 @@ import com.example.data.local.entity.userrating.UserRatingEntity
 
 @Database(
     entities = [
+        MovieEntity::class,
         CategoryEntity::class,
         MovieCategoryCrossRef::class,
         CountryEntity::class,
@@ -44,6 +48,7 @@ import com.example.data.local.entity.userrating.UserRatingEntity
     ],
     version = 1
 )
+@TypeConverters(LocalCategoryConverter::class)
 abstract class MovieDataBase : RoomDatabase() {
 
     abstract fun movieDao(): MovieDao
