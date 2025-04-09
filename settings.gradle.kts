@@ -24,4 +24,7 @@ include(":app")
 include(":data")
 include(":domain")
 include(":feature:users")
+include(":feature:details")
 include(":core")
+
+
