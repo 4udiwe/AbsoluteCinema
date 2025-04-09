@@ -1,7 +1,6 @@
-package com.example.absolutecinema.ui.screens
+package com.example.profile.ui
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,14 +11,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchColors
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -31,11 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
-import com.example.absolutecinema.R
 
 
 @Composable
@@ -116,11 +107,11 @@ fun SettingsScreen(
                     onCheckedChange = { checked ->
                         isDarkTheme.value = checked
                         sharedPreferences.edit().putBoolean("dark_theme", checked).apply()
-                        onThemeChanged(checked) // Передаем новое состояние темы
+                        onThemeChanged(checked)
                     },
                     colors = SwitchDefaults.colors(
-                        checkedTrackColor = colorResource(R.color.accent),
-                        checkedThumbColor =  colorResource(R.color.white)
+                        checkedTrackColor = colorResource(com.example.core.R.color.accent),
+                        checkedThumbColor =  colorResource(com.example.core.R.color.white)
                     )
                 )
             }

@@ -28,3 +28,4 @@ include(":feature:details")
 include(":core")
 
 
+include(":feature:profile")

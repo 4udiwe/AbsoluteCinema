@@ -21,4 +21,8 @@
     <string name="WillWatch">Буду смотреть</string>
     <string name="YourRates">Ваши оценки</string>
     <string name="Favourite">Любимые</string>
+    <string name="settings">Настройки</string>
+    <string name="about_app">О приложении</string>
+    <string name="support">Поддержка</string>
+    <string name="logout">Выйти из аккаунта</string>
 </resources>

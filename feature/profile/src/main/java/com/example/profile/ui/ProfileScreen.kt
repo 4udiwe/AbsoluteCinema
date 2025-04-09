@@ -1,4 +1,4 @@
-package com.example.absolutecinema.ui.screens
+package com.example.profile.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,11 +15,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.rounded.AccountCircle
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -33,7 +29,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.absolutecinema.R
 
 @Preview
 @Composable
@@ -66,12 +61,12 @@ fun ProfileScreen(
                     modifier = Modifier
                         .padding(top = 40.dp)
                         .background(
-                            color = colorResource(R.color.accent), shape = CircleShape
+                            color = colorResource(com.example.core.R.color.accent), shape = CircleShape
                         )
                         .size(100.dp)
                 )
                 Text(
-                    stringResource(R.string.mockemail),
+                    stringResource(com.example.core.R.string.mockemail),
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(16.dp)
                 )
@@ -100,7 +95,7 @@ fun ProfileScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Настройки", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
+                    Text(stringResource(com.example.core.R.string.settings), fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
                     Icon(
                         Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         "",
@@ -124,7 +119,7 @@ fun ProfileScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Поддержка", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
+                    Text(stringResource(com.example.core.R.string.support), fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
                     Icon(
                         Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         "",
@@ -148,7 +143,7 @@ fun ProfileScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("О приложении", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
+                    Text(stringResource(com.example.core.R.string.about_app), fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
                     Icon(
                         Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         "",
@@ -163,7 +158,7 @@ fun ProfileScreen(
 
             }
         ) {
-            Text("Выйти из аккаунта", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
+            Text(stringResource(com.example.core.R.string.logout), fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
         }
     }
 }
