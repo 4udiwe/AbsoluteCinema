@@ -43,16 +43,9 @@ fun LoadImageWithPlaceholder(
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Fit,
 ) {
-    // Создаем painter для загрузки изображения
-    val painter = rememberAsyncImagePainter(
-        model = imageUrl,
-        placeholder = painterResource(id = placeholderResId) // Устанавливаем заглушку
-    )
-
-    // Отображаем изображение
     AsyncImage(
         model = imageUrl,
-        contentDescription = null, // Описание для accessibility
+        contentDescription = null,
         modifier = modifier,
         contentScale = contentScale,
         placeholder = painterResource(id = placeholderResId), // Заглушка
@@ -95,8 +88,24 @@ fun UserScore(movie: Movie, modifier: Modifier = Modifier.size(20.dp)) {
 @SuppressLint("ResourceType")
 @Composable
 fun FilmRating(movie: Movie, modifier: Modifier = Modifier.padding(top = 10.dp, start = 14.dp)) {
-    TODO("сделать рассчет рейтинга (если нет kp, то брать другой)")
-    val color = when (movie.rating?.kp?.toInt()) {
+    val movieRating =
+        if (movie.rating?.kp != null)
+            movie.rating!!.kp
+        else if (movie.rating?.imdb != null)
+            movie.rating!!.imdb
+        else if (movie.rating?.tmdb != null)
+            movie.rating!!.tmdb
+        else if (movie.rating?.filmCritics != null)
+            movie.rating!!.filmCritics
+        else if (movie.rating?.russianFilmCritics != null)
+            movie.rating!!.russianFilmCritics
+        else if (movie.rating?.await != null)
+            movie.rating!!.await
+        else
+            0.0
+
+
+    val color = when (movieRating?.toInt()) {
         in 0..3 -> colorResource(R.color.score_red)
         in 4..6 -> colorResource(R.color.score_gray)
         else -> colorResource(R.color.score_green)
@@ -119,7 +128,7 @@ fun FilmRating(movie: Movie, modifier: Modifier = Modifier.padding(top = 10.dp, 
             )
     ) {
         Text(
-            movie.rating?.kp.toString(),
+            movieRating.toString(),
             modifier = Modifier
                 .align(Alignment.Center)
                 .padding(horizontal = 4.dp),
@@ -129,5 +138,3 @@ fun FilmRating(movie: Movie, modifier: Modifier = Modifier.padding(top = 10.dp, 
         )
     }
 }
-
-

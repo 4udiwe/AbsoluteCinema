@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.core.ui.LoadImageWithPlaceholder
 import com.example.core.ui.UserScore
+import com.example.core.util.getName
 import com.example.domain.model.Movie
 import com.example.users.viewmodel.UsersViewModel
 
@@ -66,7 +67,7 @@ private fun FilmPosterWNameGenre(movie: Movie, onMovieClicked: () -> Unit) {
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = movie.name!!,
+                    text = movie.getName(),
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 14.sp,
                     maxLines = 1,

@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.core.ui.FilmRating
 import com.example.core.ui.LoadImageWithPlaceholder
+import com.example.core.util.getName
 import com.example.domain.model.Movie
 import com.example.feed.viewmodel.FeedViewModel
 
@@ -63,7 +64,7 @@ private fun FilmPosterWName(movie: Movie, onMovieClicked: (Movie) -> Unit) {
             FilmRating(movie)
         }
         Text(
-            "${movie.name} (${movie.year})",
+            "${movie.getName()} (${movie.year})",
             color = MaterialTheme.colorScheme.primary,
             fontSize = 16.sp
         )
