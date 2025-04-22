@@ -22,7 +22,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import coil3.compose.rememberAsyncImagePainter
 import com.example.core.R
 import com.example.domain.model.Movie
 
@@ -89,30 +88,32 @@ fun UserScore(movie: Movie, modifier: Modifier = Modifier.size(20.dp)) {
 @Composable
 fun FilmRating(movie: Movie, modifier: Modifier = Modifier.padding(top = 10.dp, start = 14.dp)) {
     val movieRating =
-        if (movie.rating?.kp != null)
+        if (movie.rating?.kp != 0.0)
             movie.rating!!.kp
-        else if (movie.rating?.imdb != null)
+        else if (movie.rating?.imdb != 0.0)
             movie.rating!!.imdb
-        else if (movie.rating?.tmdb != null)
+        else if (movie.rating?.tmdb != 0.0)
             movie.rating!!.tmdb
-        else if (movie.rating?.filmCritics != null)
+        else if (movie.rating?.filmCritics != 0.0)
             movie.rating!!.filmCritics
-        else if (movie.rating?.russianFilmCritics != null)
+        else if (movie.rating?.russianFilmCritics != 0.0)
             movie.rating!!.russianFilmCritics
-        else if (movie.rating?.await != null)
+        else if (movie.rating?.await != 0.0)
             movie.rating!!.await
         else
-            0.0
+            null
 
+    if (movieRating == null)
+        return
 
-    val color = when (movieRating?.toInt()) {
+    val color = when (movieRating.toInt()) {
         in 0..3 -> colorResource(R.color.score_red)
         in 4..6 -> colorResource(R.color.score_gray)
         else -> colorResource(R.color.score_green)
     }
     Box(
         modifier =
-        if (movie.top250 != null)
+        if (movie.top250 == null || movie.top250 == 0)
             modifier.background(color = color, shape = RoundedCornerShape(8.dp))
         else
             modifier.background(

@@ -57,7 +57,9 @@ val dataModule = module {
             context = get(),
             klass = MovieDataBase::class.java,
             "movies.db"
-        ).build()
+        )
+            .createFromAsset("db/movies.db")
+            .build()
     }
 
     single<MovieDao> {

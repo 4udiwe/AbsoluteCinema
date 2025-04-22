@@ -3,7 +3,6 @@ package com.example.data.repository
 import android.util.Log
 import com.example.data.local.dao.*
 import com.example.data.local.entity.*
-import com.example.data.local.entity.category.CategoryEntity
 import com.example.data.local.entity.category.MovieCategoryCrossRef
 import com.example.data.local.entity.country.CountryEntity
 import com.example.data.local.entity.country.MovieCountryCrossRef
@@ -30,8 +29,6 @@ import com.example.domain.repository.MovieRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -133,16 +130,19 @@ class MovieRepositoryImpl(
             // Сохраняем связанные данные
             // Жанры
             dto.genres.forEach { genre ->
-                genreDao.addGenre(GenreEntity(name = genre.name))
-                genreDao.addGenreToMovie(MovieGenreCrossRef(entity.id!!, genre.name.hashCode()))
+                genreDao.addGenre(GenreEntity(id = genre.name.hashCode(), name = genre.name.toString()))
+                genreDao.addGenreToMovie(MovieGenreCrossRef(
+                    movieId = entity.id!!,
+                    genreId = genre.name.hashCode()
+                ))
             }
             // Страны
             dto.countries.forEach { country ->
-                countryDao.addCountry(CountryEntity(name = country.name))
+                countryDao.addCountry(CountryEntity(id = country.name.hashCode(), name = country.name.toString()))
                 countryDao.addCountryToMovie(
                     MovieCountryCrossRef(
-                        entity.id!!,
-                        country.name.hashCode()
+                        movieId = entity.id!!,
+                        countryId = country.name.hashCode()
                     )
                 )
             }
@@ -189,24 +189,24 @@ class MovieRepositoryImpl(
                 dto.similarMovies.forEach { similar ->
                     similarDao.addSimilar(
                         SimilarMovieEntity(
-                            id = sequel.id,
-                            name = sequel.name,
-                            enName = sequel.enName,
-                            alternativeName = sequel.alternativeName,
-                            type = sequel.type,
+                            id = similar.id,
+                            name = similar.name,
+                            enName = similar.enName,
+                            alternativeName = similar.alternativeName,
+                            type = similar.type,
                             poster = Poster(
-                                posterUrl = sequel.poster?.url,
-                                posterPreviewUrl = sequel.poster?.previewUrl
+                                posterUrl = similar.poster?.url,
+                                posterPreviewUrl = similar.poster?.previewUrl
                             ),
                             rating = Rating(
-                                kp = sequel.rating?.kp,
-                                imdb = sequel.rating?.imdb,
-                                tmdb = sequel.rating?.tmdb,
-                                filmCritics = sequel.rating?.filmCritics,
-                                russianFilmCritics = sequel.rating?.russianFilmCritics,
-                                await = sequel.rating?.await
+                                kp = similar.rating?.kp,
+                                imdb = similar.rating?.imdb,
+                                tmdb = similar.rating?.tmdb,
+                                filmCritics = similar.rating?.filmCritics,
+                                russianFilmCritics = similar.rating?.russianFilmCritics,
+                                await = similar.rating?.await
                             ),
-                            year = sequel.year
+                            year = similar.year
                         )
                     )
                 }
@@ -301,7 +301,7 @@ class MovieRepositoryImpl(
             categoryDao.addCategoryToMovie(
                 MovieCategoryCrossRef(
                     movieId = id,
-                    categoryId = LocalCategory.Favourite.name.hashCode()
+                    categoryId = categoryDao.getIdForCategory(category = LocalCategory.Favourite.name)!!
                 )
             )
             true
@@ -350,7 +350,7 @@ class MovieRepositoryImpl(
             categoryDao.addCategoryToMovie(
                 MovieCategoryCrossRef(
                     movieId = id,
-                    categoryId = LocalCategory.WillWatch.name.hashCode()
+                    categoryId = categoryDao.getIdForCategory(category = LocalCategory.WillWatch.name)!!
                 )
             )
             true
@@ -377,16 +377,14 @@ class MovieRepositoryImpl(
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 api.searchWithFilter(
-                    fields = listOf("top250"),
-                    sortTypes = listOf(1),
                     isSeries = false
                 ).movieDtos.forEach { dto ->
                     val entity = DtoToEntity.map(dto)
                     saveMovieFromDto(dto = dto)
                     categoryDao.addCategoryToMovie(
                         MovieCategoryCrossRef(
-                            entity.id!!,
-                            LocalCategory.RecomendedFilms.name.hashCode()
+                            movieId = entity.id!!,
+                            categoryId = categoryDao.getIdForCategory(LocalCategory.RecommendedFilms.name)!!,
                         )
                     )
                 }
@@ -394,7 +392,7 @@ class MovieRepositoryImpl(
                 Log.e("GetRecommendedFilms", e.message.toString())
             }
         }
-        return categoryDao.getMoviesByCategory(LocalCategory.RecomendedFilms.name)
+        return categoryDao.getMoviesByCategory(LocalCategory.RecommendedFilms.name)
             .map { movies -> movies.map { parseMovieInfo(EntityToDomain.map(it)) } }
     }
 
@@ -402,16 +400,14 @@ class MovieRepositoryImpl(
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 api.searchWithFilter(
-                    fields = listOf("top250"),
-                    sortTypes = listOf(1),
                     isSeries = true
                 ).movieDtos.forEach { dto ->
                     val entity = DtoToEntity.map(dto)
                     saveMovieFromDto(dto = dto)
                     categoryDao.addCategoryToMovie(
                         MovieCategoryCrossRef(
-                            entity.id!!,
-                            LocalCategory.RecomendedSeries.name.hashCode()
+                            movieId = entity.id!!,
+                            categoryId = categoryDao.getIdForCategory(category = LocalCategory.RecommendedSeries.name)!!
                         )
                     )
                 }
@@ -419,7 +415,7 @@ class MovieRepositoryImpl(
                 Log.e("GetRecommendedSeries", e.message.toString())
             }
         }
-        return categoryDao.getMoviesByCategory(LocalCategory.RecomendedSeries.name)
+        return categoryDao.getMoviesByCategory(LocalCategory.RecommendedSeries.name)
             .map { movies -> movies.map { parseMovieInfo(EntityToDomain.map(it)) } }
     }
 
@@ -435,8 +431,8 @@ class MovieRepositoryImpl(
                     saveMovieFromDto(dto = dto)
                     categoryDao.addCategoryToMovie(
                         MovieCategoryCrossRef(
-                            entity.id!!,
-                            LocalCategory.Detectives.name.hashCode()
+                            movieId = entity.id!!,
+                            categoryId = categoryDao.getIdForCategory(LocalCategory.Detectives.name)!!
                         )
                     )
                 }
@@ -452,16 +448,14 @@ class MovieRepositoryImpl(
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 api.searchWithFilter(
-                    fields = listOf("top250"),
-                    sortTypes = listOf(1),
-                    genres = listOf("роман")
+                    genres = listOf("драма")
                 ).movieDtos.forEach { dto ->
                     val entity = DtoToEntity.map(dto)
                     saveMovieFromDto(dto = dto)
                     categoryDao.addCategoryToMovie(
                         MovieCategoryCrossRef(
-                            entity.id!!,
-                            LocalCategory.Romans.name.hashCode()
+                            movieId = entity.id!!,
+                            categoryId = categoryDao.getIdForCategory(LocalCategory.Romans.name)!!
                         )
                     )
                 }
@@ -477,16 +471,14 @@ class MovieRepositoryImpl(
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 api.searchWithFilter(
-                    fields = listOf("top250"),
-                    sortTypes = listOf(1),
                     genres = listOf("комедия")
                 ).movieDtos.forEach { dto ->
                     val entity = DtoToEntity.map(dto)
                     saveMovieFromDto(dto = dto)
                     categoryDao.addCategoryToMovie(
                         MovieCategoryCrossRef(
-                            entity.id!!,
-                            LocalCategory.Comedys.name.hashCode()
+                            movieId = entity.id!!,
+                            categoryId = categoryDao.getIdForCategory(LocalCategory.Comedies.name)!!
                         )
                     )
                 }
@@ -494,7 +486,7 @@ class MovieRepositoryImpl(
                 Log.e("GetComedyMovies", e.message.toString())
             }
         }
-        return categoryDao.getMoviesByCategory(LocalCategory.Comedys.name)
+        return categoryDao.getMoviesByCategory(LocalCategory.Comedies.name)
             .map { movies -> movies.map { parseMovieInfo(EntityToDomain.map(it)) } }
     }
 

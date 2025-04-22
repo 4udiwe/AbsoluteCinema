@@ -5,9 +5,8 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.example.data.local.entity.MovieEntity
 
-@Entity()
+@Entity(primaryKeys = ["id", "name"])
 data class CountryEntity(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int? = null,
-    var name: String? = null,
+    var id: Int,
+    var name: String,
 )
