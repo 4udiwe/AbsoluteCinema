@@ -76,8 +76,13 @@ class MainActivity : ComponentActivity() {
                             FeedScreen(
                                 paddingValues = innerPadding,
                                 viewModel = feedViewModel,
-                                onMovieClicked = { },
-                                onAllClicked = { list, string ->}
+                                onMovieClicked = { movie ->
+                                    movie.id?.let { id -> detailsViewModel.updateMovie(movieId = id) }
+                                    navController.navigate(ScreenMovie)
+                                },
+                                onAllClicked = { list, string ->
+
+                                }
                             )
 
                         }

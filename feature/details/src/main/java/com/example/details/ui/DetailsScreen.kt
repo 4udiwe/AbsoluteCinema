@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -37,10 +38,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -50,6 +53,9 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.core.R
 import com.example.core.ui.LoadImageWithPlaceholder
 import com.example.core.ui.UserScore
+import com.example.core.ui.WreathOfTop250
+import com.example.core.util.getName
+import com.example.core.util.getRating
 import com.example.details.viewmodel.DetailsViewModel
 import com.example.domain.model.Movie
 import com.example.domain.model.Person
@@ -63,8 +69,7 @@ import com.example.domain.model.Person
 @Composable
 private fun ActorItem(actor: Person, modifier: Modifier = Modifier.padding(bottom = 4.dp)) {
     Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
+        modifier = modifier, verticalAlignment = Alignment.CenterVertically
     ) {
         LoadImageWithPlaceholder(
             imageUrl = actor.photo,
@@ -94,24 +99,16 @@ private fun ActorItem(actor: Person, modifier: Modifier = Modifier.padding(botto
  */
 @Composable
 private fun Star(score: MutableIntState, number: Int) {
-    Icon(
-        painter =
-        if (score.intValue >= 1)
-            painterResource(R.drawable.star)
-        else
-            painterResource(R.drawable.star_border),
-        tint =
-        if (score.intValue >= 1)
-            colorResource(R.color.score_legend_start)
-        else
-            colorResource(R.color.text_second),
+    Icon(painter = if (score.intValue >= number + 1) painterResource(R.drawable.star)
+    else painterResource(R.drawable.star_border),
+        tint = if (score.intValue >= number + 1) colorResource(R.color.score_legend_start)
+        else colorResource(R.color.text_second),
         contentDescription = "star",
         modifier = Modifier
             .clickable {
-                score.intValue = number
+                score.intValue = number + 1
             }
-            .size(28.dp)
-    )
+            .size(28.dp))
 
 }
 
@@ -119,6 +116,7 @@ private fun Star(score: MutableIntState, number: Int) {
  * Диалог выставления оценки фильму
  *
  * @param dialogState стейт диалога
+ * @param movieScore пользовательская оценка фильма, если есть
  * @param isSeries является ли сериалом (для правильного отображения надписи)
  * @param onSave сохраняет результат, записывает оценку фильма
  * @param onCancel убирает оценку
@@ -128,28 +126,24 @@ private fun Star(score: MutableIntState, number: Int) {
 private fun MovieScoreDialog(
     modifier: Modifier = Modifier,
     dialogState: MutableState<Boolean> = mutableStateOf(false),
+    movieScore: Int? = null,
     isSeries: Boolean = false,
     onSave: (score: Int) -> Unit = {},
     onCancel: () -> Unit = {},
 ) {
 
-    val score = remember { mutableIntStateOf(-1) }
+    val score = remember { mutableIntStateOf(movieScore ?: -1) }
 
     Dialog(
         onDismissRequest = {
             dialogState.value = false
-        },
-        properties = DialogProperties(
-            dismissOnBackPress = true,
-            dismissOnClickOutside = true,
-            usePlatformDefaultWidth = true
+        }, properties = DialogProperties(
+            dismissOnBackPress = true, dismissOnClickOutside = true, usePlatformDefaultWidth = true
         )
     ) {
         Box(
-            modifier = modifier
-                .background(
-                    color = MaterialTheme.colorScheme.surface,
-                    shape = RoundedCornerShape(20.dp)
+            modifier = modifier.background(
+                    color = MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(20.dp)
                 )
         ) {
             Column(
@@ -160,14 +154,11 @@ private fun MovieScoreDialog(
                     text = "Оцените ${if (isSeries) "сериал" else "фильм"}",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 22.sp,
-                    modifier = Modifier
-                        .padding(10.dp)
+                    modifier = Modifier.padding(10.dp)
                 )
 
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
+                    modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
                 ) {
                     repeat(10) { number ->
                         Star(score = score, number = number)
@@ -177,21 +168,19 @@ private fun MovieScoreDialog(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    TextButton(
-                        onClick = {
-                            onSave(score.intValue)
-                        }
-                    ) {
+                    TextButton(onClick = {
+                        onSave(score.intValue)
+                        dialogState.value = false
+                    }) {
                         Text(
                             text = "Сохранить",
                             color = colorResource(R.color.accent),
                         )
                     }
-                    TextButton(
-                        onClick = {
-                            onCancel.invoke()
-                        }
-                    ) {
+                    TextButton(onClick = {
+                        onCancel.invoke()
+                        dialogState.value = false
+                    }) {
                         Text(
                             text = "Убрать оценку",
                             color = MaterialTheme.colorScheme.secondary,
@@ -207,7 +196,7 @@ private fun MovieScoreDialog(
 fun DetailsScreen(
     paddingValues: PaddingValues = PaddingValues(),
     viewModel: DetailsViewModel,
-    onDescriptionClicked: (Movie) -> Unit
+    onDescriptionClicked: (Movie) -> Unit,
 ) {
 
     val movie by viewModel.movie.collectAsState()
@@ -215,16 +204,15 @@ fun DetailsScreen(
     val dialogState = remember { mutableStateOf(false) }
 
     if (dialogState.value) {
-        MovieScoreDialog(
-            dialogState = dialogState,
+        MovieScoreDialog(dialogState = dialogState,
+            movieScore = movie.userRate,
             isSeries = movie.isSeries == true,
             onSave = { score ->
                 viewModel.setUserScore(score = score)
             },
             onCancel = {
                 viewModel.deleteUserScore()
-            }
-        )
+            })
     }
 
     val scrollState = rememberScrollState()
@@ -242,86 +230,121 @@ fun DetailsScreen(
                 .padding(top = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LoadImageWithPlaceholder(
-                imageUrl = movie.poster?.posterUrl,
-                placeholderResId = R.drawable.poster_placeholder,
-                modifier = Modifier
-                    .width(240.dp),
-                contentScale = ContentScale.Crop
-            )
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                LoadImageWithPlaceholder(
+                    imageUrl = movie.backdrop?.backdropUrl,
+                    modifier = Modifier.fillMaxWidth().height(500.dp).alpha(1f),
+                    contentScale = ContentScale.FillWidth
+                )
+                LoadImageWithPlaceholder(
+                    imageUrl = movie.poster?.posterUrl,
+                    placeholderResId = R.drawable.poster_placeholder,
+                    modifier = Modifier.width(240.dp),
+                    contentScale = ContentScale.Crop
+                )
+            }
             Text(
-                modifier = Modifier.padding(vertical = 8.dp),
-                text = movie.name.toString(),
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .fillMaxWidth(),
+                text = movie.getName(),
                 fontSize = 26.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
+                textAlign = TextAlign.Center
             )
-            Row {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val movieRating = movie.getRating()
+                if (movieRating != null) {
+                    val color = when (movieRating.toInt()) {
+                        in 0..3 -> colorResource(R.color.score_red)
+                        in 4..6 -> colorResource(R.color.score_gray)
+                        else -> colorResource(R.color.score_green)
+                    }
+                    if (movie.top250 != null && movie.top250!! > 0) {
+                        WreathOfTop250(place = movie.top250!!)
+                    }
+                    Text(
+                        modifier = Modifier.padding(end = 4.dp),
+                        text = movieRating.toString(),
+                        color = color,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
                 Text(
-                    movie.rating?.kp.toString(),
-                    color = colorResource(R.color.score_green),
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    movie.enName.toString(),
+                    (movie.enName ?: movie.alternativeName) ?: "",
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold
                 )
             }
             Text(
-                "${movie.year}, ${movie.genres.joinToString()}",
+                "${
+                    if (movie.status == "announced") "Анонсирован," 
+                    else if (movie.year != null) movie.year.toString() + "," 
+                    else ""
+                } ${movie.genres.map { it.name }.joinToString()}",
                 color = MaterialTheme.colorScheme.secondary,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                "${movie.countries.joinToString()}, ${movie.movieLength} мин, ${movie.ageRating.toString()}+",
-                color = MaterialTheme.colorScheme.secondary,
-                fontWeight = FontWeight.Bold
+                "${
+                    movie.countries.map { it.name }.joinToString()
+                } ${
+                    if (movie.movieLength != null) movie.movieLength.toString() + "мин" else ""
+                } ${
+                    if (movie.ageRating != null) ", " + movie.ageRating.toString() + "+" else ""
+                }", color = MaterialTheme.colorScheme.secondary, fontWeight = FontWeight.Bold
             )
         }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(100.dp)
                 .padding(horizontal = 70.dp, vertical = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                Modifier.fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                if (movie.userRate == null) {
-                    IconButton(
-                        onClick = {
-                            dialogState.value = true
-                        }
-
-                    ) {
-                        Icon(Icons.Outlined.Star, "star", tint = MaterialTheme.colorScheme.primary)
-                    }
-                    Text("Оценить", color = MaterialTheme.colorScheme.primary, fontSize = 12.sp)
-                } else {
-                    UserScore(
-                        movie = movie,
-                        modifier = Modifier
-                    )
+                IconButton(onClick = {
+                    dialogState.value = true
                 }
+
+                ) {
+                    if (movie.userRate == null) {
+                        Icon(
+                            Icons.Outlined.Star, "star", tint = MaterialTheme.colorScheme.primary
+                        )
+                    } else {
+                        UserScore(
+                            movie = movie, modifier = Modifier.size(26.dp)
+                        )
+                    }
+                }
+                Text(
+                    text = if (movie.userRate == null) "Оценить" else "Ваша оценка",
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 12.sp
+                )
             }
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                Modifier.fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                IconButton(
-                    onClick = {
-                        if (movie.isWillWatch)
-                            viewModel.removeFromWillWatch()
-                        else
-                            viewModel.addToWillWatch()
-                    }
-                ) {
+                IconButton(onClick = {
+                    if (movie.isWillWatch) viewModel.removeFromWillWatch()
+                    else viewModel.addToWillWatch()
+                }) {
                     Icon(
-                        painter =
-                        if (movie.isWillWatch)
-                            painterResource(R.drawable.bookmark_filled)
-                        else
-                            painterResource(R.drawable.bookmark),
+                        painter = if (movie.isWillWatch) painterResource(R.drawable.bookmark_filled)
+                        else painterResource(R.drawable.bookmark),
                         contentDescription = "willwach",
                         tint = colorResource(R.color.accent)
                     )
@@ -329,20 +352,17 @@ fun DetailsScreen(
                 Text("Буду смотреть", color = MaterialTheme.colorScheme.primary, fontSize = 12.sp)
             }
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                Modifier.fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
                 IconButton(onClick = {
-                    if (movie.isFavorite)
-                        viewModel.removeFromFavourite()
-                    else
-                        viewModel.addToFavourite()
+                    if (movie.isFavorite) viewModel.removeFromFavourite()
+                    else viewModel.addToFavourite()
                 }) {
                     Icon(
-                        imageVector =
-                        if (movie.isFavorite)
-                            Icons.Filled.Favorite
-                        else
-                            Icons.Filled.FavoriteBorder,
+                        imageVector = if (movie.isFavorite) Icons.Filled.Favorite
+                        else Icons.Filled.FavoriteBorder,
                         contentDescription = "favourite",
                         tint = colorResource(R.color.accent)
                     )
@@ -351,22 +371,33 @@ fun DetailsScreen(
             }
         }
 
-        Text(
-            text = (movie.shortDescription ?: movie.description).toString(),
-            color = MaterialTheme.colorScheme.primary,
-            fontSize = 16.sp,
-            maxLines = 3,
-            overflow = TextOverflow.Ellipsis
-        )
-        Text(
-            text = "Все детали фильма",
-            color = colorResource(R.color.accent),
-            fontSize = 16.sp,
-            modifier = Modifier.clickable {
-                onDescriptionClicked(movie)
-            }
-        )
-        val actorsGroups = movie.persons.chunked(3)
+        if (movie.shortDescription != null || movie.description != null) {
+            Text(
+                text = (movie.shortDescription ?: movie.description).toString(),
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 16.sp,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(text = "Все детали фильма",
+                color = colorResource(R.color.accent),
+                fontSize = 16.sp,
+                modifier = Modifier.clickable {
+                    onDescriptionClicked(movie)
+                })
+        } else {
+            Text(
+                text = "Нет описания",
+                color = MaterialTheme.colorScheme.secondary,
+                fontSize = 16.sp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                textAlign = TextAlign.Center
+            )
+        }
+
+
 
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -377,14 +408,27 @@ fun DetailsScreen(
                 fontSize = 20.sp,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
-            LazyRow {
-                items(actorsGroups) { group ->
-                    Column {
-                        group.forEach { actor ->
-                            ActorItem(actor = actor)
+            if (movie.persons.isNotEmpty()) {
+                val actorsGroups = movie.persons.chunked(3)
+                LazyRow {
+                    items(actorsGroups) { group ->
+                        Column {
+                            group.forEach { actor ->
+                                ActorItem(actor = actor)
+                            }
                         }
                     }
                 }
+            } else {
+                Text(
+                    text = "Нет информации об актерах",
+                    color = MaterialTheme.colorScheme.secondary,
+                    fontSize = 16.sp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
+                    textAlign = TextAlign.Center
+                )
             }
         }
         Column(
@@ -398,25 +442,38 @@ fun DetailsScreen(
                 fontSize = 20.sp,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
-            LazyRow {
-                items(movie.facts) { fact ->
-                    Column(
-                        modifier = Modifier
-                            .width(300.dp)
-                            .height(100.dp)
-                            .padding(end = 4.dp)
-                            .background(MaterialTheme.colorScheme.surface)
-                    ) {
-                        Text(
-                            text = "${if (fact.spoiler == true) "Спойлер: " else ""} ${fact.fact.toString()}",
-                            color = MaterialTheme.colorScheme.primary,
-                            fontSize = 14.sp,
-                            modifier = Modifier.padding(10.dp),
-                            maxLines = 4,
-                            overflow = TextOverflow.Ellipsis
-                        )
+
+            if (movie.facts.isNotEmpty()) {
+                LazyRow {
+                    items(movie.facts) { fact ->
+                        Column(
+                            modifier = Modifier
+                                .width(300.dp)
+                                .height(100.dp)
+                                .padding(end = 4.dp)
+                                .background(MaterialTheme.colorScheme.surface)
+                        ) {
+                            Text(
+                                text = "${if (fact.spoiler == true) "Спойлер: " else ""} ${fact.fact.toString()}",
+                                color = MaterialTheme.colorScheme.primary,
+                                fontSize = 14.sp,
+                                modifier = Modifier.padding(10.dp),
+                                maxLines = 4,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
                     }
                 }
+            } else {
+                Text(
+                    text = "Нет информации о фактах",
+                    color = MaterialTheme.colorScheme.secondary,
+                    fontSize = 16.sp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }
