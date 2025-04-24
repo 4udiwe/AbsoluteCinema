@@ -123,7 +123,7 @@ class MovieRepositoryImpl(
         return movie
     }
 
-    private suspend fun saveMovieFromDto(dto: MovieDto) {
+    suspend fun saveMovieFromDto(dto: MovieDto) {
         val entity = DtoToEntity.map(dto)
 
         withContext(Dispatchers.IO) {
