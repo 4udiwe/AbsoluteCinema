@@ -4,9 +4,9 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import com.example.data.local.entity.genre.GenreEntity
 import com.example.data.local.entity.genre.MovieGenreCrossRef
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GenreDao {
@@ -25,4 +25,15 @@ interface GenreDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addGenreToMovie(movieGenreCrossRef: MovieGenreCrossRef)
 
+    @Query("DELETE FROM genreentity")
+    suspend fun clearGenres()
+
+    @Query("DELETE FROM MovieGenreCrossRef")
+    suspend fun clearMovieGenreRelations()
+
+    @Transaction
+    suspend fun clearAll() {
+        clearGenres()
+        clearMovieGenreRelations()
+    }
 }

@@ -2,8 +2,6 @@ package com.example.data.local.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import com.example.data.local.converter.LocalCategoryConverter
 import com.example.data.local.dao.CategoryDao
 import com.example.data.local.dao.CountryDao
 import com.example.data.local.dao.FactDao
@@ -48,7 +46,6 @@ import com.example.data.local.entity.userrating.UserRatingEntity
     ],
     version = 1
 )
-@TypeConverters(LocalCategoryConverter::class)
 abstract class MovieDataBase : RoomDatabase() {
 
     abstract fun movieDao(): MovieDao
