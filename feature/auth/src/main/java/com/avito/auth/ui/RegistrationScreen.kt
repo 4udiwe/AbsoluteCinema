@@ -1,18 +1,20 @@
-package com.example.absolutecinema.ui.screens
+package com.avito.auth.ui
 
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +22,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -27,19 +32,38 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.absolutecinema.R
+import com.avito.auth.viewmodel.AuthState
+import com.avito.auth.viewmodel.AuthViewModel
+import com.example.core.R
 
-@Preview(showSystemUi = true)
 @Composable
 fun RegistrationScreen(
     onToLogin: () -> Unit = {},
-    onEnter: () -> Unit = {},
+    viewModel: AuthViewModel,
+    onSuccess: () -> Unit,
+    context: Context,
 ) {
+    val email = remember { mutableStateOf("") }
+    val password = remember { mutableStateOf("") }
+    val confirmPassword = remember { mutableStateOf("") }
+    val authState = viewModel.authState.collectAsState()
+
+    if (authState.value is AuthState.CreateAccountFail) {
+        Toast.makeText(
+            context, (authState.value as AuthState.CreateAccountFail).message, Toast.LENGTH_LONG
+        ).show()
+    }
+
+    if (authState.value is AuthState.SignInSuccess)
+        onSuccess.invoke()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
+        if (authState.value is AuthState.Loading)
+            CircularProgressIndicator()
 
         Box(
             modifier = Modifier.align(Alignment.Center)
@@ -48,25 +72,28 @@ fun RegistrationScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = stringResource(com.example.core.R.string.Registration),
+                    text = stringResource(R.string.Registration),
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 32.sp,
                     modifier = Modifier.padding(12.dp)
                 )
 
-                OutlinedTextField(value = "",
-                    placeholder = { Text(stringResource(com.example.core.R.string.mockemail)) },
+                OutlinedTextField(
+                    value = email.value,
+                    placeholder = { Text(stringResource(R.string.mockemail)) },
                     modifier = Modifier.padding(bottom = 12.dp),
                     trailingIcon = {
-                        IconButton(onClick = {}) {
+                        IconButton(onClick = {
+                            email.value = ""
+                        }) {
                             Icon(
                                 imageVector = Icons.Default.Clear, contentDescription = ""
                             )
                         }
                     },
                     colors = TextFieldDefaults.colors(
-                        unfocusedIndicatorColor = colorResource(com.example.core.R.color.accent),
-                        focusedIndicatorColor = colorResource(com.example.core.R.color.accent),
+                        unfocusedIndicatorColor = colorResource(R.color.accent),
+                        focusedIndicatorColor = colorResource(R.color.accent),
                         unfocusedContainerColor = MaterialTheme.colorScheme.background,
                         focusedContainerColor = MaterialTheme.colorScheme.background,
                         unfocusedTrailingIconColor = MaterialTheme.colorScheme.secondary,
@@ -74,22 +101,28 @@ fun RegistrationScreen(
                         unfocusedPlaceholderColor = MaterialTheme.colorScheme.secondary,
                         focusedPlaceholderColor = MaterialTheme.colorScheme.secondary,
                     ),
-                    onValueChange = {}
+                    onValueChange = {
+                        email.value = it
+                    },
+                    isError = authState.value is AuthState.CreateAccountFail
 
                 )
-                OutlinedTextField(value = "",
-                    placeholder = { Text(stringResource(com.example.core.R.string.Password)) },
+                OutlinedTextField(
+                    value = password.value,
+                    placeholder = { Text(stringResource(R.string.Password)) },
                     modifier = Modifier.padding(bottom = 12.dp),
                     trailingIcon = {
-                        IconButton(onClick = {}) {
+                        IconButton(onClick = {
+                            password.value = ""
+                        }) {
                             Icon(
                                 imageVector = Icons.Default.Clear, contentDescription = ""
                             )
                         }
                     },
                     colors = TextFieldDefaults.colors(
-                        unfocusedIndicatorColor = colorResource(com.example.core.R.color.accent),
-                        focusedIndicatorColor = colorResource(com.example.core.R.color.accent),
+                        unfocusedIndicatorColor = colorResource(R.color.accent),
+                        focusedIndicatorColor = colorResource(R.color.accent),
                         unfocusedContainerColor = MaterialTheme.colorScheme.background,
                         focusedContainerColor = MaterialTheme.colorScheme.background,
                         unfocusedTrailingIconColor = MaterialTheme.colorScheme.secondary,
@@ -97,20 +130,27 @@ fun RegistrationScreen(
                         unfocusedPlaceholderColor = MaterialTheme.colorScheme.secondary,
                         focusedPlaceholderColor = MaterialTheme.colorScheme.secondary,
                     ),
-                    onValueChange = {})
-                OutlinedTextField(value = "",
-                    placeholder = { Text(stringResource(com.example.core.R.string.ConfirmPassword)) },
+                    onValueChange = {
+                        password.value = it
+                    },
+                    isError = authState.value is AuthState.CreateAccountFail
+                )
+                OutlinedTextField(
+                    value = confirmPassword.value,
+                    placeholder = { Text(stringResource(R.string.ConfirmPassword)) },
                     modifier = Modifier.padding(bottom = 12.dp),
                     trailingIcon = {
-                        IconButton(onClick = {}) {
+                        IconButton(onClick = {
+                            confirmPassword.value = ""
+                        }) {
                             Icon(
                                 imageVector = Icons.Default.Clear, contentDescription = ""
                             )
                         }
                     },
                     colors = TextFieldDefaults.colors(
-                        unfocusedIndicatorColor = colorResource(com.example.core.R.color.accent),
-                        focusedIndicatorColor = colorResource(com.example.core.R.color.accent),
+                        unfocusedIndicatorColor = colorResource(R.color.accent),
+                        focusedIndicatorColor = colorResource(R.color.accent),
                         unfocusedContainerColor = MaterialTheme.colorScheme.background,
                         focusedContainerColor = MaterialTheme.colorScheme.background,
                         unfocusedTrailingIconColor = MaterialTheme.colorScheme.secondary,
@@ -118,17 +158,20 @@ fun RegistrationScreen(
                         unfocusedPlaceholderColor = MaterialTheme.colorScheme.secondary,
                         focusedPlaceholderColor = MaterialTheme.colorScheme.secondary,
                     ),
-                    onValueChange = {})
-
+                    onValueChange = {
+                        confirmPassword.value = it
+                    },
+                    isError = authState.value is AuthState.CreateAccountFail
+                )
 
                 Row {
                     Text(
-                        text = stringResource(com.example.core.R.string.HasAccount),
+                        text = stringResource(R.string.HasAccount),
                         color = MaterialTheme.colorScheme.primary
                     )
-                    Text(text = stringResource(com.example.core.R.string.ToLogin),
+                    Text(text = stringResource(R.string.ToLogin),
                         color = colorResource(
-                            com.example.core.R.color.accent
+                            R.color.accent
                         ),
                         modifier = Modifier
                             .padding(start = 4.dp)
@@ -137,18 +180,21 @@ fun RegistrationScreen(
                             })
                 }
             }
-
         }
 
         Button(modifier = Modifier
             .align(Alignment.BottomCenter)
             .padding(bottom = 100.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = colorResource(com.example.core.R.color.accent)),
+            colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.accent)),
             onClick = {
-                onEnter.invoke()
+                viewModel.createAccount(
+                    email = email.value,
+                    password = password.value,
+                    confirmPassword = confirmPassword.value
+                )
             }) {
             Text(
-                stringResource(com.example.core.R.string.Registrate),
+                stringResource(R.string.Registrate),
                 color = MaterialTheme.colorScheme.primary,
                 maxLines = 1
             )
