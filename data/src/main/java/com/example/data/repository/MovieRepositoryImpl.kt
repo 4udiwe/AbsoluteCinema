@@ -377,7 +377,8 @@ class MovieRepositoryImpl(
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 api.searchWithFilter(
-                    isSeries = false
+                    isSeries = false,
+                    inCollection = arrayListOf("top250")
                 ).movieDtos.forEach { dto ->
                     val entity = DtoToEntity.map(dto)
                     saveMovieFromDto(dto = dto)
@@ -423,9 +424,8 @@ class MovieRepositoryImpl(
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 api.searchWithFilter(
-                    fields = listOf("top250"),
-                    sortTypes = listOf(1),
-                    genres = listOf("детектив")
+                    genres = listOf("детектив"),
+                    inCollection = listOf("top250")
                 ).movieDtos.forEach { dto ->
                     val entity = DtoToEntity.map(dto)
                     saveMovieFromDto(dto = dto)
@@ -448,7 +448,8 @@ class MovieRepositoryImpl(
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 api.searchWithFilter(
-                    genres = listOf("драма")
+                    genres = listOf("драма"),
+                    inCollection = listOf("top250")
                 ).movieDtos.forEach { dto ->
                     val entity = DtoToEntity.map(dto)
                     saveMovieFromDto(dto = dto)
@@ -471,7 +472,8 @@ class MovieRepositoryImpl(
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 api.searchWithFilter(
-                    genres = listOf("комедия")
+                    genres = listOf("комедия"),
+                    inCollection = listOf("top250")
                 ).movieDtos.forEach { dto ->
                     val entity = DtoToEntity.map(dto)
                     saveMovieFromDto(dto = dto)

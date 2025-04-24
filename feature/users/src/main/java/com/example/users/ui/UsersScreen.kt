@@ -101,7 +101,7 @@ private fun HorizontalRowWTitleSmall(
     title: String,
     list: List<Movie>,
     onAllClicked: () -> Unit,
-    onMovieClicked: () -> Unit,
+    onMovieClicked: (Movie) -> Unit,
 ) {
     Column(
         modifier = Modifier.padding(top = 32.dp, start = 16.dp, end = 16.dp)
@@ -128,7 +128,7 @@ private fun HorizontalRowWTitleSmall(
             LazyRow {
                 items(list) { movie ->
                     FilmPosterWNameGenre(movie) {
-                        onMovieClicked.invoke()
+                        onMovieClicked(movie)
                     }
                 }
             }
@@ -154,12 +154,12 @@ private fun HorizontalRowWTitleSmall(
  *  - Ваши оценки
  *  - Любимые
  *
- * @param onFilmClicked функция для навигации, вызывается при клике на любой из фильмов.
+ * @param onMovieClicked функция для навигации, вызывается при клике на любой из фильмов.
  */
 @Composable
 fun UsersScreen(
     paddingValues: PaddingValues = PaddingValues(),
-    onFilmClicked: () -> Unit = {},
+    onMovieClicked: (Movie) -> Unit = {},
     viewModel: UsersViewModel,
 ) {
     val scrollState = rememberScrollState()
@@ -175,17 +175,17 @@ fun UsersScreen(
             title = stringResource(com.example.core.R.string.WillWatch),
             list = viewModel.willWatch.collectAsState().value,
             onAllClicked = { },
-            onMovieClicked = { onFilmClicked.invoke() }
+            onMovieClicked = { movie -> onMovieClicked(movie) }
         )
         HorizontalRowWTitleSmall(title = stringResource(com.example.core.R.string.YourRates),
             list = viewModel.userRates.collectAsState().value,
             onAllClicked = { },
-            onMovieClicked = { onFilmClicked.invoke() }
+            onMovieClicked = { movie -> onMovieClicked(movie) }
         )
         HorizontalRowWTitleSmall(title = stringResource(com.example.core.R.string.Favourite),
             list = viewModel.favourites.collectAsState().value,
             onAllClicked = { },
-            onMovieClicked = { onFilmClicked.invoke() }
+            onMovieClicked = { movie -> onMovieClicked(movie) }
         )
     }
 }

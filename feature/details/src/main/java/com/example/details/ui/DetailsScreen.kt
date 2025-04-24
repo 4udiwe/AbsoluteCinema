@@ -232,17 +232,16 @@ fun DetailsScreen(
         ) {
             Box(
                 modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.BottomCenter
             ) {
                 LoadImageWithPlaceholder(
                     imageUrl = movie.backdrop?.backdropUrl,
-                    modifier = Modifier.fillMaxWidth().height(500.dp).alpha(1f),
-                    contentScale = ContentScale.FillWidth
+                    modifier = Modifier.fillMaxWidth().height(500.dp).alpha(0.5f).align(Alignment.TopCenter),
+                    contentScale = ContentScale.Crop
                 )
                 LoadImageWithPlaceholder(
                     imageUrl = movie.poster?.posterUrl,
                     placeholderResId = R.drawable.poster_placeholder,
-                    modifier = Modifier.width(240.dp),
+                    modifier = Modifier.width(240.dp).align(Alignment.BottomCenter),
                     contentScale = ContentScale.Crop
                 )
             }
@@ -295,8 +294,8 @@ fun DetailsScreen(
                 "${
                     movie.countries.map { it.name }.joinToString()
                 } ${
-                    if (movie.movieLength != null) movie.movieLength.toString() + "мин" else ""
-                } ${
+                    if (movie.movieLength != null) movie.movieLength.toString() + " мин" else ""
+                }${
                     if (movie.ageRating != null) ", " + movie.ageRating.toString() + "+" else ""
                 }", color = MaterialTheme.colorScheme.secondary, fontWeight = FontWeight.Bold
             )

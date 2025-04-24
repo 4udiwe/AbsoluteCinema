@@ -92,7 +92,10 @@ class MainActivity : ComponentActivity() {
                         composable<ScreenUsers> {
                             UsersScreen(
                                 paddingValues = innerPadding,
-                                onFilmClicked = { navController.navigate(ScreenMovie) },
+                                onMovieClicked = { movie ->
+                                    movie.id?.let { id -> detailsViewModel.updateMovie(movieId = id) }
+                                    navController.navigate(ScreenMovie)
+                                },
                                 viewModel = usersViewModel
                             )
                         }
