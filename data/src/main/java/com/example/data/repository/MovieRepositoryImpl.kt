@@ -1,6 +1,5 @@
 package com.example.data.repository
 
-import android.util.Log
 import com.example.data.local.dao.*
 import com.example.data.local.entity.*
 import com.example.data.local.entity.category.MovieCategoryCrossRef
@@ -237,7 +236,6 @@ class MovieRepositoryImpl(
         return MoviesResponce(
             movies = responseDto.movieDtos.map { dto ->
                 val entity = DtoToEntity.map(dto)
-                movieDao.insert(entity)
                 saveMovieFromDto(dto = dto)
                 parseMovieInfo(EntityToDomain.map(entity))
             },
@@ -308,7 +306,7 @@ class MovieRepositoryImpl(
             )
             true
         } catch (e: Exception) {
-            Log.e("AddMovieToFavourites", e.message.toString())
+            logger.log("AddMovieToFavourites", e.message.toString())
             false
         }
     }
@@ -321,7 +319,7 @@ class MovieRepositoryImpl(
             )
             true
         } catch (e: Exception) {
-            Log.e("RemoveMovieFromFavourites", e.message.toString())
+            logger.log("RemoveMovieFromFavourites", e.message.toString())
             false
         }
     }
@@ -342,7 +340,7 @@ class MovieRepositoryImpl(
             movieDao.removeUserRateFromMovie(movieId)
             true
         } catch (e: Exception) {
-            Log.e("RemoveUserRateFromMovie", e.message.toString())
+            logger.log("RemoveUserRateFromMovie", e.message.toString())
             false
         }
     }
@@ -357,7 +355,7 @@ class MovieRepositoryImpl(
             )
             true
         } catch (e: Exception) {
-            Log.e("AddMovieToWillWatch", e.message.toString())
+            logger.log("AddMovieToWillWatch", e.message.toString())
             false
         }
     }
@@ -370,7 +368,7 @@ class MovieRepositoryImpl(
             )
             true
         } catch (e: Exception) {
-            Log.e("RemoveMovieFromWillWatch", e.message.toString())
+            logger.log("RemoveMovieFromWillWatch", e.message.toString())
             false
         }
     }
@@ -392,7 +390,7 @@ class MovieRepositoryImpl(
                     )
                 }
             } catch (e: Exception) {
-                Log.e("GetRecommendedFilms", e.message.toString())
+                logger.log("GetRecommendedFilms", e.message.toString())
             }
         }
         return categoryDao.getMoviesByCategory(LocalCategory.RecommendedFilms.name)
@@ -415,7 +413,7 @@ class MovieRepositoryImpl(
                     )
                 }
             } catch (e: Exception) {
-                Log.e("GetRecommendedSeries", e.message.toString())
+                logger.log("GetRecommendedSeries", e.message.toString())
             }
         }
         return categoryDao.getMoviesByCategory(LocalCategory.RecommendedSeries.name)
@@ -439,7 +437,7 @@ class MovieRepositoryImpl(
                     )
                 }
             } catch (e: Exception) {
-                Log.e("GetDetectiveMovies", e.message.toString())
+                logger.log("GetDetectiveMovies", e.message.toString())
             }
         }
         return categoryDao.getMoviesByCategory(LocalCategory.Detectives.name)
@@ -463,7 +461,7 @@ class MovieRepositoryImpl(
                     )
                 }
             } catch (e: Exception) {
-                Log.e("GetRomanMovies", e.message.toString())
+                logger.log("GetRomanMovies", e.message.toString())
             }
         }
         return categoryDao.getMoviesByCategory(LocalCategory.Romans.name)
@@ -487,7 +485,7 @@ class MovieRepositoryImpl(
                     )
                 }
             } catch (e: Exception) {
-                Log.e("GetComedyMovies", e.message.toString())
+                logger.log("GetComedyMovies", e.message.toString())
             }
         }
         return categoryDao.getMoviesByCategory(LocalCategory.Comedies.name)
@@ -495,12 +493,15 @@ class MovieRepositoryImpl(
     }
 
     override suspend fun clearCache() {
-//        withContext(Dispatchers.IO) {
-//            movieDao.clearAll()
-//            categoryDao.clearAll()
-//            genreDao.clearAll()
-//            countryDao.clearAll()
-//            personDao.clearAll()
-//        }
+        withContext(Dispatchers.IO) {
+            movieDao.clearAll()
+            categoryDao.clearAll()
+            genreDao.clearAll()
+            countryDao.clearAll()
+            personDao.clearAll()
+            factDao.clearAll()
+            seqAndPreqDao.clearAll()
+            similarDao.clearAll()
+        }
     }
 }

@@ -3,9 +3,10 @@ package com.example.data.local.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import com.example.data.local.entity.similar.MovieSimilarCrossRef
 import com.example.data.local.entity.similar.SimilarMovieEntity
-import kotlinx.coroutines.flow.Flow
+
 @Dao
 interface SimilarDao {
     @Query("""
@@ -21,4 +22,16 @@ interface SimilarDao {
 
     @Insert
     suspend fun addSimilarToMovie(movieSimilarCrossRef: MovieSimilarCrossRef)
+
+    @Query("DELETE FROM similarmovieentity")
+    suspend fun clearSimilars()
+
+    @Query("DELETE FROM moviesimilarcrossref")
+    suspend fun clearMovieSimilarsRelation()
+
+    @Transaction
+    suspend fun clearAll(){
+        clearSimilars()
+        clearMovieSimilarsRelation()
+    }
 }

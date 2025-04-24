@@ -3,6 +3,7 @@ package com.example.data.local.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import com.example.data.local.entity.seqandpreq.MovieSequelCrossRef
 import com.example.data.local.entity.seqandpreq.SeqAndPreqEntity
 
@@ -21,4 +22,16 @@ interface SeqAndPreqDao {
 
     @Insert
     suspend fun addSequelToMovie(movieSequelCrossRef: MovieSequelCrossRef)
+
+    @Query("DELETE FROM seqandpreqentity")
+    suspend fun clearSequels()
+
+    @Query("DELETE FROM moviesequelcrossref")
+    suspend fun clearMovieSequelsRelation()
+
+    @Transaction
+    suspend fun clearAll(){
+        clearSequels()
+        clearMovieSequelsRelation()
+    }
 }

@@ -12,6 +12,7 @@ import com.example.data.local.dao.MovieDao
 import com.example.data.local.dao.PersonDao
 import com.example.data.local.dao.SeqAndPreqDao
 import com.example.data.local.dao.SimilarDao
+import com.example.data.local.entity.MovieEntity
 import com.example.data.local.entity.country.CountryEntity
 import com.example.data.local.entity.country.MovieCountryCrossRef
 import com.example.data.local.entity.fact.FactEntity
@@ -27,6 +28,7 @@ import com.example.data.local.entity.userrating.UserRatingEntity
 
 @Database(
     entities = [
+        MovieEntity::class,
         CategoryEntity::class,
         MovieCategoryCrossRef::class,
         CountryEntity::class,

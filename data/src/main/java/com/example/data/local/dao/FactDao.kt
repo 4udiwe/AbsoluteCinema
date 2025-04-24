@@ -16,4 +16,7 @@ interface FactDao {
 
     @Insert
     suspend fun addFact(factEntity: FactEntity)
+
+    @Query("""DELETE FROM factentity""")
+    suspend fun clearAll()
 }

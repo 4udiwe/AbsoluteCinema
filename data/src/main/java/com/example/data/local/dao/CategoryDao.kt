@@ -1,7 +1,6 @@
 package com.example.data.local.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -53,4 +52,9 @@ interface CategoryDao {
         WHERE CategoryEntity.name == :category
     """)
     suspend fun getIdForCategory(category: String): Int?
+
+    @Query("""
+        DELETE FROM moviecategorycrossref
+    """)
+    suspend fun clearAll()
 }

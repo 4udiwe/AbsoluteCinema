@@ -4,9 +4,9 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import com.example.data.local.entity.country.CountryEntity
 import com.example.data.local.entity.country.MovieCountryCrossRef
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CountryDao {
@@ -24,5 +24,18 @@ interface CountryDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addCountryToMovie(countryCrossRef: MovieCountryCrossRef)
+
+
+    @Query("DELETE FROM countryentity")
+    suspend fun clearCountries()
+
+    @Query("DELETE FROM moviecountrycrossref")
+    suspend fun clearMovieCountryRelations()
+
+    @Transaction
+    suspend fun clearAll() {
+        clearCountries()
+        clearMovieCountryRelations()
+    }
 
 }

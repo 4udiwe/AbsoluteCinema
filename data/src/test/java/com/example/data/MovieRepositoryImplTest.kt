@@ -97,7 +97,6 @@ class MovieRepositoryImplTest {
         // Arrange
         val movieId = 123
         val apiMovieDto = MovieDto(id = movieId, name = "API Movie")
-        val apiMovieEntity = MovieEntity(id = movieId, name = "API Movie")
         val expectedMovie = Movie(id = movieId, name = "API Movie")
 
         `when`(movieDao.getMovieById(movieId)).thenReturn(null)
@@ -155,13 +154,15 @@ class MovieRepositoryImplTest {
     fun `addMovieToFavourites should return true on success`() = runTest {
         // Arrange
         val movieId = 123
+        val category = LocalCategory.Favourite.name
         `when`(categoryDao.addCategoryToMovie(any())).thenReturn(Unit)
+        `when`(categoryDao.getIdForCategory(category)).thenReturn(category.hashCode())
 
         // Act
         val result = repository.addMovieToFavourites(movieId)
 
         // Assert
-        assertTrue(result)
+        assertEquals(true, result)
         val captor = argumentCaptor<MovieCategoryCrossRef>()
         verify(categoryDao).addCategoryToMovie(captor.capture())
         assertEquals(movieId, captor.firstValue.movieId)
@@ -291,17 +292,19 @@ class MovieRepositoryImplTest {
             pages = 1
         )
 
-        `when`(api.searchWithFilter(
-            fields = eq(fields),
-            sortTypes = any(),
-            types = any(),
-            isSeries = any(),
-            years = any(),
-            kpRating = any(),
-            genres = any(),
-            countries = any(),
-            inCollection = any()
-        )).thenReturn(apiResponse)
+        `when`(
+            api.searchWithFilter(
+                fields = eq(fields),
+                sortTypes = isNull(),
+                types = isNull(),
+                isSeries = isNull(),
+                years = isNull(),
+                kpRating = isNull(),
+                genres = isNull(),
+                countries = isNull(),
+                inCollection = isNull()
+            )
+        ).thenReturn(apiResponse)
 
         `when`(categoryDao.getCategoriesForMovie(any())).thenReturn(emptyList())
         `when`(countryDao.getCountryForMovie(any())).thenReturn(emptyList())
