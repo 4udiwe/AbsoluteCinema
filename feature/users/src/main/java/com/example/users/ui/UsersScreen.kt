@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -24,11 +25,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.core.ui.LoadImageWithPlaceholder
 import com.example.core.ui.UserScore
+import com.example.core.util.getName
 import com.example.domain.model.Movie
 import com.example.users.viewmodel.UsersViewModel
 
@@ -66,21 +69,21 @@ private fun FilmPosterWNameGenre(movie: Movie, onMovieClicked: () -> Unit) {
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = movie.name!!,
+                    text = movie.getName(),
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 14.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = movie.genres.joinToString(),
+                    text = movie.genres.map { it.name }.joinToString(),
                     color = MaterialTheme.colorScheme.secondary,
                     fontSize = 14.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            UserScore(movie = movie)
+            UserScore(movie = movie, modifier = Modifier.size(20.dp))
         }
     }
 }
@@ -111,20 +114,34 @@ private fun HorizontalRowWTitleSmall(
             verticalAlignment = Alignment.Bottom
         ) {
             Text(title, fontSize = 24.sp, color = MaterialTheme.colorScheme.primary)
-            Text(
-                stringResource(com.example.core.R.string.All),
-                fontSize = 20.sp,
-                color = colorResource(com.example.core.R.color.accent),
-                modifier = Modifier.clickable {
-                    onAllClicked.invoke()
-                })
+            if (list.isNotEmpty()) {
+                Text(
+                    stringResource(com.example.core.R.string.All),
+                    fontSize = 20.sp,
+                    color = colorResource(com.example.core.R.color.accent),
+                    modifier = Modifier.clickable {
+                        onAllClicked.invoke()
+                    })
+            }
         }
-        LazyRow {
-            items(list) { movie ->
-                FilmPosterWNameGenre(movie) {
-                    onMovieClicked.invoke()
+        if (list.isNotEmpty()) {
+            LazyRow {
+                items(list) { movie ->
+                    FilmPosterWNameGenre(movie) {
+                        onMovieClicked.invoke()
+                    }
                 }
             }
+        } else {
+            Text(
+                text = "В этом разделе еще нет фильмов",
+                color = MaterialTheme.colorScheme.secondary,
+                fontSize = 16.sp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                textAlign = TextAlign.Center
+            )
         }
     }
 }

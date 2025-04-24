@@ -2,6 +2,7 @@ package com.example.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.data.local.entity.country.CountryEntity
 import com.example.data.local.entity.country.MovieCountryCrossRef
@@ -18,10 +19,10 @@ interface CountryDao {
     )
     suspend fun getCountryForMovie(movieId: Int) : List<CountryEntity>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addCountry(countryEntity: CountryEntity)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addCountryToMovie(countryCrossRef: MovieCountryCrossRef)
 
 }

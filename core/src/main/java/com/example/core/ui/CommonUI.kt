@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,8 +23,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import coil3.compose.rememberAsyncImagePainter
 import com.example.core.R
+import com.example.core.util.getRating
 import com.example.domain.model.Movie
 
 /**
@@ -35,7 +36,6 @@ import com.example.domain.model.Movie
  * @param placeholderResId ресурс плейсхолдера (по умолчанию poster_placeholder)
  * @param contentScale тип масштабирования контента (по умолчанию Fit)
  */
-@Preview
 @Composable
 fun LoadImageWithPlaceholder(
     imageUrl: String? = "",
@@ -43,16 +43,9 @@ fun LoadImageWithPlaceholder(
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Fit,
 ) {
-    // Создаем painter для загрузки изображения
-    val painter = rememberAsyncImagePainter(
-        model = imageUrl,
-        placeholder = painterResource(id = placeholderResId) // Устанавливаем заглушку
-    )
-
-    // Отображаем изображение
     AsyncImage(
         model = imageUrl,
-        contentDescription = null, // Описание для accessibility
+        contentDescription = null,
         modifier = modifier,
         contentScale = contentScale,
         placeholder = painterResource(id = placeholderResId), // Заглушка
@@ -65,22 +58,23 @@ fun LoadImageWithPlaceholder(
  *
  * @param movie фильм, оценка которого отображается
  */
+@Preview
 @Composable
-fun UserScore(movie: Movie, modifier: Modifier = Modifier.size(20.dp)) {
+fun UserScore(movie: Movie = Movie(userRate = 10), modifier: Modifier = Modifier) {
     val rating = movie.userRate
     val color = when (rating) {
         in 0..3 -> colorResource(R.color.score_red)
         in 4..6 -> colorResource(R.color.score_gray)
         else -> colorResource(R.color.score_green)
     }
-    Box(modifier = modifier.background(color = color, shape = CircleShape)) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier.background(color = color, shape = CircleShape)
+    ) {
         Text(
             text = rating.toString(),
             textAlign = TextAlign.Center,
-            color = colorResource(R.color.white),
-            modifier = Modifier.align(
-                Alignment.Center
-            )
+            color = colorResource(R.color.white)
         )
     }
 }
@@ -95,15 +89,16 @@ fun UserScore(movie: Movie, modifier: Modifier = Modifier.size(20.dp)) {
 @SuppressLint("ResourceType")
 @Composable
 fun FilmRating(movie: Movie, modifier: Modifier = Modifier.padding(top = 10.dp, start = 14.dp)) {
-    TODO("сделать рассчет рейтинга (если нет kp, то брать другой)")
-    val color = when (movie.rating?.kp?.toInt()) {
+    val movieRating = movie.getRating() ?: return
+
+    val color = when (movieRating.toInt()) {
         in 0..3 -> colorResource(R.color.score_red)
         in 4..6 -> colorResource(R.color.score_gray)
         else -> colorResource(R.color.score_green)
     }
     Box(
         modifier =
-        if (movie.top250 != null)
+        if (movie.top250 == null || movie.top250 == 0)
             modifier.background(color = color, shape = RoundedCornerShape(8.dp))
         else
             modifier.background(
@@ -119,7 +114,7 @@ fun FilmRating(movie: Movie, modifier: Modifier = Modifier.padding(top = 10.dp, 
             )
     ) {
         Text(
-            movie.rating?.kp.toString(),
+            movieRating.toString(),
             modifier = Modifier
                 .align(Alignment.Center)
                 .padding(horizontal = 4.dp),
@@ -130,4 +125,25 @@ fun FilmRating(movie: Movie, modifier: Modifier = Modifier.padding(top = 10.dp, 
     }
 }
 
-
+/**
+ * Функция для отображения вхождения фильма в топ 250. Отображает его место в списке и иконку.
+ *
+ * @param place место фильма в списке.
+ */
+@Composable
+fun WreathOfTop250(modifier: Modifier = Modifier.padding(4.dp), place: Int = 249) {
+    Box(
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = place.toString(),
+            color = colorResource(R.color.score_legend_start)
+        )
+        Icon(
+            modifier = modifier.size(32.dp),
+            painter = painterResource(R.drawable.top250_wreath),
+            contentDescription = "",
+            tint = colorResource(R.color.score_legend_end).copy(alpha = 0.8f)
+        )
+    }
+}

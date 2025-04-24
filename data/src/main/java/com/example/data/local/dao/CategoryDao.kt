@@ -30,10 +30,10 @@ interface CategoryDao {
     """)
     suspend fun getCategoriesForMovie(movieId: Int) : List<CategoryEntity>
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addCategory(categoryEntity: CategoryEntity)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addCategoryToMovie(movieCategoryCrossRef: MovieCategoryCrossRef)
 
     @Query("""
@@ -46,4 +46,11 @@ interface CategoryDao {
     )
 """)
     suspend fun deleteCategoryFromMovie(movieId: Int, category: String)
+
+    @Query("""
+        SELECT CategoryEntity.id
+        FROM CATEGORYENTITY
+        WHERE CategoryEntity.name == :category
+    """)
+    suspend fun getIdForCategory(category: String): Int?
 }

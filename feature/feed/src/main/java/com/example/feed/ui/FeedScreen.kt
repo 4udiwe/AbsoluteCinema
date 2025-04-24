@@ -25,10 +25,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.core.ui.FilmRating
 import com.example.core.ui.LoadImageWithPlaceholder
+import com.example.core.util.getName
 import com.example.domain.model.Movie
 import com.example.feed.viewmodel.FeedViewModel
 
@@ -63,10 +65,21 @@ private fun FilmPosterWName(movie: Movie, onMovieClicked: (Movie) -> Unit) {
             FilmRating(movie)
         }
         Text(
-            "${movie.name} (${movie.year})",
+            movie.getName(),
             color = MaterialTheme.colorScheme.primary,
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
         )
+        if (movie.year != null) {
+            Text(
+                "(${movie.year})",
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 16.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
     }
 }
 
@@ -86,7 +99,7 @@ private fun HorizontalRowWTitleBig(
     onMovieClicked: (Movie) -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(top = 32.dp, start = 16.dp, end = 16.dp)
+        modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp).height(320.dp)
     ) {
         Row(
             modifier = Modifier
