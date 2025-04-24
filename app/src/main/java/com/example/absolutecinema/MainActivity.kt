@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.absolutecinema.ui.screens.LoginScreen
-import com.example.absolutecinema.ui.screens.RegistrationScreen
+import com.avito.auth.ui.LoginScreen
+import com.avito.auth.ui.RegistrationScreen
 import com.example.absolutecinema.ui.theme.AbsoluteCinemaTheme
 import com.example.core.ui.BotBar
 import com.example.details.ui.DetailsScreen
@@ -125,7 +125,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable<ScreenLogin> {
-                            LoginScreen(
+                            com.avito.auth.ui.LoginScreen(
                                 onToRegistration = {
                                     navController.navigate(ScreenRegistration)
                                 },
@@ -136,7 +136,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable<ScreenRegistration> {
-                            RegistrationScreen(
+                            com.avito.auth.ui.RegistrationScreen(
                                 onToLogin = {
                                     navController.navigate(ScreenLogin)
                                 },
