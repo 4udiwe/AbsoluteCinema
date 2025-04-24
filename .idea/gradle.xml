@@ -18,6 +18,7 @@
             <option value="$PROJECT_DIR$/feature/details" />
             <option value="$PROJECT_DIR$/feature/feed" />
             <option value="$PROJECT_DIR$/feature/profile" />
+            <option value="$PROJECT_DIR$/feature/search" />
             <option value="$PROJECT_DIR$/feature/users" />
           </set>
         </option>
