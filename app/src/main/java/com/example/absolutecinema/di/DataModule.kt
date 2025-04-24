@@ -32,7 +32,8 @@ val dataModule = module {
             genreDao = get(),
             personDao = get(),
             seqAndPreqDao = get(),
-            similarDao = get()
+            similarDao = get(),
+            logger = get()
         )
     }
 

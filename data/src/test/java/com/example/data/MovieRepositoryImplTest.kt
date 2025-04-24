@@ -3,6 +3,7 @@ package com.example.data
 import com.example.data.local.dao.*
 import com.example.data.local.entity.*
 import com.example.data.local.entity.category.MovieCategoryCrossRef
+import com.example.data.logger.TestLogger
 import com.example.data.remote.api.MoviesAPI
 import com.example.data.remote.dto.common.Country
 import com.example.data.remote.dto.common.Genre
@@ -13,7 +14,6 @@ import com.example.data.remote.dto.common.SimilarMovie
 import com.example.data.remote.dto.responce.MoviesResponseDto
 import com.example.data.repository.MovieRepositoryImpl
 import com.example.domain.model.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -26,7 +26,6 @@ import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class MovieRepositoryImplTest {
 
     private lateinit var repository: MovieRepositoryImpl
@@ -39,6 +38,7 @@ class MovieRepositoryImplTest {
     private lateinit var personDao: PersonDao
     private lateinit var seqAndPreqDao: SeqAndPreqDao
     private lateinit var similarDao: SimilarDao
+    private lateinit var logger: TestLogger
 
     @Before
     fun setUp() {
@@ -51,6 +51,7 @@ class MovieRepositoryImplTest {
         personDao = mock()
         seqAndPreqDao = mock()
         similarDao = mock()
+        logger = mock()
 
         repository = MovieRepositoryImpl(
             api = api,
@@ -61,7 +62,8 @@ class MovieRepositoryImplTest {
             genreDao = genreDao,
             personDao = personDao,
             seqAndPreqDao = seqAndPreqDao,
-            similarDao = similarDao
+            similarDao = similarDao,
+            logger = logger
         )
     }
 
@@ -97,7 +99,6 @@ class MovieRepositoryImplTest {
         val apiMovieDto = MovieDto(id = movieId, name = "API Movie")
         val apiMovieEntity = MovieEntity(id = movieId, name = "API Movie")
         val expectedMovie = Movie(id = movieId, name = "API Movie")
-
 
         `when`(movieDao.getMovieById(movieId)).thenReturn(null)
         `when`(api.getMovieById(movieId)).thenReturn(apiMovieDto)
@@ -210,7 +211,6 @@ class MovieRepositoryImplTest {
         verify(movieDao, never()).setUserRateToMovie(any(), any())
     }
 
-
     @Test
     fun `getFavouriteMovies should return flow of favourite movies`() = runTest {
         // Arrange
@@ -279,51 +279,50 @@ class MovieRepositoryImplTest {
         verify(similarDao).addSimilar(any())
     }
 
-@Test
-fun `searchWithFilters should return mapped response`() = runTest {
-    // Arrange
-    val fields = listOf("top250")
-    val apiResponse = MoviesResponseDto(
-        movieDtos = listOf(MovieDto(id = 1, name = "Filtered Movie")),
-        total = 1,
-        limit = 10,
-        page = 1,
-        pages = 1
-    )
+    @Test
+    fun `searchWithFilters should return mapped response`() = runTest {
+        // Arrange
+        val fields = listOf("top250")
+        val apiResponse = MoviesResponseDto(
+            movieDtos = listOf(MovieDto(id = 1, name = "Filtered Movie")),
+            total = 1,
+            limit = 10,
+            page = 1,
+            pages = 1
+        )
 
-    `when`(api.searchWithFilter(
-        fields = eq(fields),
-        sortTypes = any(),
-        types = any(),
-        isSeries = any(),
-        years = any(),
-        kpRating = any(),
-        genres = any(),
-        countries = any(),
-        inCollection = any()
-    )).thenReturn(apiResponse)
+        `when`(api.searchWithFilter(
+            fields = eq(fields),
+            sortTypes = any(),
+            types = any(),
+            isSeries = any(),
+            years = any(),
+            kpRating = any(),
+            genres = any(),
+            countries = any(),
+            inCollection = any()
+        )).thenReturn(apiResponse)
 
-    `when`(categoryDao.getCategoriesForMovie(any())).thenReturn(emptyList())
-    `when`(countryDao.getCountryForMovie(any())).thenReturn(emptyList())
-    `when`(genreDao.getGenresForMovie(any())).thenReturn(emptyList())
-    `when`(factDao.getFactsForMovie(any())).thenReturn(emptyList())
-    `when`(personDao.getPersonsForMovie(any())).thenReturn(emptyList())
-    `when`(seqAndPreqDao.getSequelsForMovie(any())).thenReturn(emptyList())
-    `when`(similarDao.getSimilarsForMovie(any())).thenReturn(emptyList())
+        `when`(categoryDao.getCategoriesForMovie(any())).thenReturn(emptyList())
+        `when`(countryDao.getCountryForMovie(any())).thenReturn(emptyList())
+        `when`(genreDao.getGenresForMovie(any())).thenReturn(emptyList())
+        `when`(factDao.getFactsForMovie(any())).thenReturn(emptyList())
+        `when`(personDao.getPersonsForMovie(any())).thenReturn(emptyList())
+        `when`(seqAndPreqDao.getSequelsForMovie(any())).thenReturn(emptyList())
+        `when`(similarDao.getSimilarsForMovie(any())).thenReturn(emptyList())
 
-    // Act
-    val result = repository.searchMoviesWithFilters(
-        fields = fields,
-        sortTypes = listOf(1),
-        types = listOf("movie"),
-        isSeries = false,
-        years = listOf("1984"),
-        kpRating = listOf("9"),
-        genres = listOf("драма"),
-        countries = listOf("США"),
-        inCollection = listOf("top250")
-    )
-
+        // Act
+        val result = repository.searchMoviesWithFilters(
+            fields = fields,
+            sortTypes = null,
+            types = null,
+            isSeries = null,
+            years = null,
+            kpRating = null,
+            genres = null,
+            countries = null,
+            inCollection = null
+        )
 
         // Assert
         assertEquals(1, result.movies.size)

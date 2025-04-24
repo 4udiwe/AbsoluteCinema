@@ -16,6 +16,7 @@ import com.example.data.mapper.DtoToEntity
 import com.example.data.mapper.EntityToDomain
 import com.example.data.remote.api.MoviesAPI
 import com.example.data.remote.dto.common.MovieDto
+import com.example.domain.logger.Logger
 import com.example.domain.model.Country
 import com.example.domain.model.Fact
 import com.example.domain.model.Genre
@@ -43,6 +44,7 @@ class MovieRepositoryImpl(
     private val personDao: PersonDao,
     private val seqAndPreqDao: SeqAndPreqDao,
     private val similarDao: SimilarDao,
+    private val logger: Logger
 ) : MovieRepository {
 
     suspend fun parseMovieInfo(movie: Movie): Movie {
@@ -330,7 +332,7 @@ class MovieRepositoryImpl(
             movieDao.setUserRateToMovie(movieId, rate)
             true
         } catch (e: Exception) {
-            Log.e("SetUserRateToMovie", e.message.toString())
+            logger.log("MovieRepo", e.message ?: "Unknown error")
             false
         }
     }
