@@ -60,6 +60,7 @@ dependencies {
     implementation(project(":feature:profile"))
     implementation(project(":feature:details"))
     implementation(project(":feature:feed"))
+    implementation(project(":feature:search"))
 
     //Koin
     implementation("io.insert-koin:koin-android:4.0.0")

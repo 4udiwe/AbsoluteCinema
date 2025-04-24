@@ -26,6 +26,8 @@ import com.example.feed.ui.FeedScreen
 import com.example.feed.viewmodel.FeedViewModel
 import com.example.profile.ui.ProfileScreen
 import com.example.profile.ui.SettingsScreen
+import com.example.search.ui.SearchScreen
+import com.example.search.viewmodel.SearchViewModel
 import com.example.users.ui.UsersScreen
 import com.example.users.viewmodel.UsersViewModel
 import kotlinx.serialization.Serializable
@@ -36,6 +38,7 @@ class MainActivity : ComponentActivity() {
     private val feedViewModel by viewModel<FeedViewModel>()
     private val detailsViewModel by viewModel<DetailsViewModel>()
     private val usersViewModel by viewModel<UsersViewModel>()
+    private val searchViewModel by viewModel<SearchViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +90,14 @@ class MainActivity : ComponentActivity() {
 
                         }
                         composable<ScreenSearch> {
-
+                            SearchScreen(
+                                paddingValues = innerPadding,
+                                viewModel = searchViewModel,
+                                onMovieClicked = { movie ->
+                                    movie.id?.let { id -> detailsViewModel.updateMovie(movieId = id) }
+                                    navController.navigate(ScreenMovie)
+                                }
+                            )
                         }
                         composable<ScreenUsers> {
                             UsersScreen(
