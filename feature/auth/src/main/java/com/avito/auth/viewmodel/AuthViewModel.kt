@@ -1,28 +1,25 @@
 package com.avito.auth.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
-class AuthViewModel : ViewModel() {
+class AuthViewModel(
+    private val auth: FirebaseAuth
+) : ViewModel() {
 
-    private var auth: FirebaseAuth = Firebase.auth
+    //private var auth: FirebaseAuth = Firebase.auth
 
     private val _authState = MutableStateFlow<AuthState>(AuthState.Idle)
     val authState = _authState.asStateFlow()
 
-    fun checkUser(
-        onSignedUserFound: () -> Unit,
-        onUserNotFound: () -> Unit,
-    ) {
-        if (auth.currentUser == null) {
-            onUserNotFound.invoke()
-        } else
-            onSignedUserFound.invoke()
-    }
+    fun checkUser(): Boolean = auth.currentUser != null
+
 
     fun signIn(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)

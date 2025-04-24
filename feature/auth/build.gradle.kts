@@ -42,7 +42,7 @@ dependencies {
 
     //FireBase
     implementation(platform(libs.firebase.bom))
-    implementation(libs.google.firebase.auth)
+    api(libs.google.firebase.auth)
 
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
