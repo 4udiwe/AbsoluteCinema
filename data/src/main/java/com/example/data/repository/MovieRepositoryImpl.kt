@@ -5,6 +5,7 @@ import com.example.data.local.entity.*
 import com.example.data.local.entity.category.MovieCategoryCrossRef
 import com.example.data.local.entity.country.CountryEntity
 import com.example.data.local.entity.country.MovieCountryCrossRef
+import com.example.data.local.entity.fact.FactEntity
 import com.example.data.local.entity.genre.GenreEntity
 import com.example.data.local.entity.genre.MovieGenreCrossRef
 import com.example.data.local.entity.person.MoviePersonCrossRef
@@ -162,6 +163,21 @@ class MovieRepositoryImpl(
                 )
                 personDao.addPersonToMovie(MoviePersonCrossRef(entity.id!!, person.id!!))
             }
+            println(dto.toString())
+            println(dto.facts.toString())
+            // Факты
+            dto.facts.forEach { fact ->
+                println(fact.toString())
+                factDao.addFact(
+                    FactEntity(
+                        id = null,
+                        fact = fact.value,
+                        type = fact.type,
+                        spoiler = fact.spoiler,
+                        movieId = entity.id!!
+                    )
+                )
+            }
             // Сиквелы и приквелы
             dto.sequelsAndPrequels.forEach { sequel ->
                 seqAndPreqDao.addSequel(
@@ -217,16 +233,16 @@ class MovieRepositoryImpl(
     }
 
     override suspend fun getMovieById(id: Int): Movie {
-        var entity = movieDao.getMovieById(id)
+        val entity = movieDao.getMovieById(id)
 
-        if (entity == null) {
+        try {
             val dto = api.getMovieById(id)
-            entity = DtoToEntity.map(dto)
-
             saveMovieFromDto(dto = dto)
+        } catch (e: Exception) {
+            logger.log("GetMovieById", e.message.toString())
         }
 
-        val movie = EntityToDomain.map(entity)
+        val movie = EntityToDomain.map(entity ?: MovieEntity())
         return parseMovieInfo(movie)
     }
 
