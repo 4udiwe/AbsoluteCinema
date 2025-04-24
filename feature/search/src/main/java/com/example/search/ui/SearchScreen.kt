@@ -32,6 +32,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.example.domain.model.Movie
+import com.example.search.viewmodel.SearchState
 import com.example.search.viewmodel.SearchViewModel
 
 @Composable
@@ -43,10 +44,7 @@ fun SearchScreen(
     var query by remember { mutableStateOf("") }
     var isDropdownExpanded by remember { mutableStateOf(false) }
 
-    val movies by viewModel.movies.collectAsState()
-    val isSearching by viewModel.isSearching.collectAsState()
-    val errorState by viewModel.errorState.collectAsState()
-    val emptyState by viewModel.emptyState.collectAsState()
+    val searchState by viewModel.searchstate.collectAsState()
     val searchHistory by viewModel.searchHistory.collectAsState()
 
     Column(
@@ -102,8 +100,15 @@ fun SearchScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        when {
-            isSearching -> {
+        when(searchState) {
+            SearchState.Idle -> {
+                Text(
+                    text = "Ищите фильмы и сериалы по названию или фильтрам",
+                    modifier = Modifier.padding(top = 16.dp)
+                )
+            }
+
+            SearchState.Loading -> {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -113,20 +118,21 @@ fun SearchScreen(
                     CircularProgressIndicator()
                 }
             }
-            errorState -> {
+            is SearchState.Error -> {
                 Text(
-                    text = "Ошибка при поиске, попробуйте ещё раз.",
+                    text = "Ошибка ${(searchState as SearchState.Error).message}, попробуйте ещё раз",
                     color = MaterialTheme.colorScheme.error,
                     modifier = Modifier.padding(top = 16.dp)
                 )
             }
-            emptyState -> {
+            SearchState.Empty -> {
                 Text(
-                    text = "Ничего не найдено.",
+                    text = "Ничего не найдено",
                     modifier = Modifier.padding(top = 16.dp)
                 )
             }
-            else -> {
+            is SearchState.Success -> {
+                val movies = (searchState as SearchState.Success).movies
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(top = 16.dp)
