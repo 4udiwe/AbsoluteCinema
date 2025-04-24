@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "592694370768",
+    "project_id": "absolute-cinema-android-app",
+    "storage_bucket": "absolute-cinema-android-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:592694370768:android:6fa35032ab86cc1a4e59d5",
+        "android_client_info": {
+          "package_name": "com.example.absolutecinema"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAq3Q2W6q0n37NdaqguPu3E1B34Buv5Ue4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

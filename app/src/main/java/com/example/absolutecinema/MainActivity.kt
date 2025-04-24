@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,7 +19,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.avito.auth.ui.LoginScreen
 import com.avito.auth.ui.RegistrationScreen
+import com.avito.auth.viewmodel.AuthState
+import com.avito.auth.viewmodel.AuthViewModel
 import com.example.absolutecinema.ui.theme.AbsoluteCinemaTheme
+import com.example.core.ui.BeginScreen
 import com.example.core.ui.BotBar
 import com.example.details.ui.DetailsScreen
 import com.example.details.viewmodel.DetailsViewModel
@@ -28,14 +32,18 @@ import com.example.profile.ui.ProfileScreen
 import com.example.profile.ui.SettingsScreen
 import com.example.users.ui.UsersScreen
 import com.example.users.viewmodel.UsersViewModel
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.compose.runtime.LaunchedEffect as LaunchedEffect1
 
 class MainActivity : ComponentActivity() {
 
     private val feedViewModel by viewModel<FeedViewModel>()
     private val detailsViewModel by viewModel<DetailsViewModel>()
     private val usersViewModel by viewModel<UsersViewModel>()
+    private val authViewModel by viewModel<AuthViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +79,19 @@ class MainActivity : ComponentActivity() {
                     }
                 ) { innerPadding ->
 
-                    NavHost(startDestination = ScreenRegistration, navController = navController) {
+                    NavHost(startDestination = ScreenBegin, navController = navController) {
+                        composable<ScreenBegin> {
+                            LaunchedEffect(true) {
+                                delay(1000L)
+                                if (authViewModel.checkUser()){
+                                    navController.navigate(ScreenHome)
+                                } else
+                                    navController.navigate(ScreenLogin)
+                            }
+                            BeginScreen(paddingValues = innerPadding)
+                        }
+
+
                         composable<ScreenHome> {
                             FeedScreen(
                                 paddingValues = innerPadding,
@@ -125,25 +145,26 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable<ScreenLogin> {
-                            com.avito.auth.ui.LoginScreen(
+                            LoginScreen(
                                 onToRegistration = {
                                     navController.navigate(ScreenRegistration)
                                 },
-                                onEnter = {
+                                viewModel = authViewModel,
+                                onSuccess = {
                                     navController.navigate(ScreenHome)
                                     botBarState = true
-                                }
+                                },
+                                context = this@MainActivity
                             )
                         }
                         composable<ScreenRegistration> {
-                            com.avito.auth.ui.RegistrationScreen(
+                            RegistrationScreen(
                                 onToLogin = {
                                     navController.navigate(ScreenLogin)
                                 },
-                                onEnter = {
-                                    navController.navigate(ScreenHome)
-                                    botBarState = true
-                                }
+                                viewModel = authViewModel,
+                                onSuccess = { navController.navigate(ScreenLogin) },
+                                context = this@MainActivity
                             )
                         }
                     }
@@ -176,3 +197,6 @@ object ScreenRegistration
 
 @Serializable
 object ScreenLogin
+
+@Serializable
+object ScreenBegin

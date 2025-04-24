@@ -1,6 +1,7 @@
 package com.example.absolutecinema
 
 import android.app.Application
+import com.example.absolutecinema.di.authModule
 import com.example.absolutecinema.di.dataModule
 import com.example.absolutecinema.di.featureDetailsModule
 import com.example.absolutecinema.di.featureFeedModule
@@ -17,7 +18,7 @@ class App: Application() {
         startKoin {
             androidLogger(Level.INFO)
             androidContext(this@App)
-            modules(listOf(dataModule, featureFeedModule, featureUsersModule, featureDetailsModule, loggerModule))
+            modules(listOf(dataModule, featureFeedModule, featureUsersModule, featureDetailsModule, loggerModule, authModule))
         }
     }
 }
