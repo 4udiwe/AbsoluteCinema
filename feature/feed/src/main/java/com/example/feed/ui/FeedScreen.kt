@@ -28,7 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.core.ui.FilmRating
+import com.example.core.ui.FilmRatingBox
 import com.example.core.ui.LoadImageWithPlaceholder
 import com.example.core.util.getName
 import com.example.domain.model.Movie
@@ -62,7 +62,7 @@ private fun FilmPosterWName(movie: Movie, onMovieClicked: (Movie) -> Unit) {
                     .width(POSTER_WIDTH.dp),
                 contentScale = ContentScale.Crop
             )
-            FilmRating(movie)
+            FilmRatingBox(movie)
         }
         Text(
             movie.getName(),

@@ -52,10 +52,9 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.core.R
 import com.example.core.ui.LoadImageWithPlaceholder
+import com.example.core.ui.MovieRatingWithWreath
 import com.example.core.ui.UserScore
-import com.example.core.ui.WreathOfTop250
 import com.example.core.util.getName
-import com.example.core.util.getRating
 import com.example.details.viewmodel.DetailsViewModel
 import com.example.domain.model.Movie
 import com.example.domain.model.Person
@@ -258,28 +257,7 @@ fun DetailsScreen(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                val movieRating = movie.getRating()
-                if (movieRating != null) {
-                    val color = when (movieRating.toInt()) {
-                        in 0..3 -> colorResource(R.color.score_red)
-                        in 4..6 -> colorResource(R.color.score_gray)
-                        else -> colorResource(R.color.score_green)
-                    }
-                    if (movie.top250 != null && movie.top250!! > 0) {
-                        WreathOfTop250(place = movie.top250!!)
-                    }
-                    Text(
-                        modifier = Modifier.padding(end = 4.dp),
-                        text = movieRating.toString(),
-                        color = color,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Text(
-                    (movie.enName ?: movie.alternativeName) ?: "",
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.Bold
-                )
+                MovieRatingWithWreath(movie = movie)
             }
             Text(
                 "${
