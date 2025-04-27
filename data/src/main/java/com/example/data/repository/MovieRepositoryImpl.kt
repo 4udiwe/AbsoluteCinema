@@ -19,6 +19,7 @@ import com.example.data.remote.dto.common.MovieDto
 import com.example.domain.logger.Logger
 import com.example.domain.model.Country
 import com.example.domain.model.Fact
+import com.example.domain.model.Filter
 import com.example.domain.model.Genre
 import com.example.domain.model.LocalCategory
 import com.example.domain.model.Movie
@@ -289,6 +290,24 @@ class MovieRepositoryImpl(
             page = responseDto.page,
             pages = responseDto.pages
         )
+    }
+
+    override suspend fun getCountryFiltersForSearch(): List<Filter> {
+        return try {
+            api.getFiltersByFields("countries.name").map { Filter(name = it.name) }
+        } catch (e: Exception){
+            logger.log("GetCountryFiltersForSearch", e.message.toString())
+            listOf<Filter>()
+        }
+    }
+
+    override suspend fun getGenreFiltersForSearch(): List<Filter> {
+        return try {
+            api.getFiltersByFields("genres.name").map { Filter(name = it.name) }
+        } catch (e: Exception){
+            logger.log("GetGenreFiltersForSearch", e.message.toString())
+            listOf<Filter>()
+        }
     }
 
     override fun getFavouriteMovies(): Flow<List<Movie>> {
