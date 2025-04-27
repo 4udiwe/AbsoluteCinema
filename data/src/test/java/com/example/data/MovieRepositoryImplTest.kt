@@ -332,4 +332,54 @@ class MovieRepositoryImplTest {
         assertEquals("Filtered Movie", result.movies[0].name)
         verify(movieDao).insert(any())
     }
+
+    @Test
+    fun `getMovieById should log error when API call fails`() = runTest {
+        // Arrange
+        val movieId = 123
+        val errorMessage = "Network error"
+
+        `when`(movieDao.getMovieById(movieId)).thenReturn(null)
+        `when`(api.getMovieById(movieId)).thenThrow(RuntimeException(errorMessage))
+
+        // Act
+        val result = runCatching { repository.getMovieById(movieId) }
+
+        // Assert
+        assertTrue(result.isFailure)
+        verify(logger).log(eq("MovieRepository"), contains(errorMessage))
+    }
+
+    @Test
+    fun `addMovieToFavourites should return false and log error when DB operation fails`() = runTest {
+        // Arrange
+        val movieId = 123
+        val errorMessage = "DB error"
+        `when`(categoryDao.getIdForCategory("Favourite")).thenReturn("Favourite".hashCode())
+        `when`(categoryDao.addCategoryToMovie(any())).thenThrow(RuntimeException(errorMessage))
+
+        // Act
+        val result = repository.addMovieToFavourites(movieId)
+
+        // Assert
+        assertFalse(result)
+        verify(logger).log(eq("MovieRepository"), contains(errorMessage))
+    }
+
+    @Test
+    fun `searchMoviesByName should return empty result and log error when API fails`() = runTest {
+        // Arrange
+        val query = "test"
+        val errorMessage = "API unavailable"
+        `when`(api.searchMovieByName(query)).thenThrow(RuntimeException(errorMessage))
+
+        // Act
+        val result = repository.searchMoviesByName(query)
+
+        // Assert
+        assertEquals(0, result.movies.size)
+        assertEquals(0, result.total)
+        verify(logger).log(eq("MovieRepository"), contains(errorMessage))
+        verify(movieDao, never()).insert(any())
+    }
 }

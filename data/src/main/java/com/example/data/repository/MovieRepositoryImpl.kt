@@ -117,7 +117,6 @@ class MovieRepositoryImpl(
                 year = it.year,
             )
         }
-
         return movie
     }
 
@@ -211,7 +210,6 @@ class MovieRepositoryImpl(
                         )
                     )
                 }
-
             }
         }
     }
