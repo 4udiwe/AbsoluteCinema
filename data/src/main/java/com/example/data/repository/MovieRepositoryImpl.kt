@@ -15,6 +15,7 @@ import com.example.data.mapper.DtoToEntity
 import com.example.data.mapper.EntityToDomain
 import com.example.data.remote.api.MoviesAPI
 import com.example.data.remote.dto.common.MovieDto
+import com.example.data.remote.dto.responce.MoviesResponseDto
 import com.example.domain.logger.Logger
 import com.example.domain.model.Country
 import com.example.domain.model.Fact
@@ -120,7 +121,8 @@ class MovieRepositoryImpl(
         return movie
     }
 
-    suspend fun saveMovieFromDto(dto: MovieDto) {
+    suspend fun saveMovieFromDto(dto: MovieDto?) {
+        if (dto == null) return
         val entity = DtoToEntity.map(dto)
 
         withContext(Dispatchers.IO) {
@@ -215,21 +217,32 @@ class MovieRepositoryImpl(
     }
 
     override suspend fun getMovieById(id: Int): Movie {
-        var entity = movieDao.getMovieById(id)
+        try {
+            var entity = movieDao.getMovieById(id)
 
-        if (entity == null) {
-            val dto = api.getMovieById(id)
-            entity = DtoToEntity.map(dto)
+            if (entity == null) {
+                val dto = api.getMovieById(id)
+                entity = DtoToEntity.map(dto)
+                saveMovieFromDto(dto = dto)
+            }
 
-            saveMovieFromDto(dto = dto)
+            val movie = EntityToDomain.map(entity)
+            return parseMovieInfo(movie)
+        } catch (e: Exception) {
+            logger.log("GetMovieById", e.message ?: "Unknown error")
+            return Movie()
         }
-
-        val movie = EntityToDomain.map(entity)
-        return parseMovieInfo(movie)
     }
 
     override suspend fun searchMoviesByName(query: String): MoviesResponce {
-        val responseDto = api.searchMovieByName(query)
+        val responseDto: MoviesResponseDto?
+
+        try {
+            responseDto = api.searchMovieByName(query)
+        } catch (e: Exception) {
+            logger.log("SearchMoviesByName", e.message ?: "Unknown error")
+            return MoviesResponce(total = 0, movies = listOf())
+        }
 
         return MoviesResponce(
             movies = responseDto.movieDtos.map { dto ->

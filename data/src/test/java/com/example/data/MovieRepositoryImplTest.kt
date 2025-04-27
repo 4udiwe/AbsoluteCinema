@@ -343,11 +343,11 @@ class MovieRepositoryImplTest {
         `when`(api.getMovieById(movieId)).thenThrow(RuntimeException(errorMessage))
 
         // Act
-        val result = runCatching { repository.getMovieById(movieId) }
+        val result = repository.getMovieById(movieId)
 
         // Assert
-        assertTrue(result.isFailure)
-        verify(logger).log(eq("MovieRepository"), contains(errorMessage))
+        assertEquals(result, Movie())
+        verify(logger).log(eq("GetMovieById"), contains(errorMessage))
     }
 
     @Test
@@ -355,7 +355,7 @@ class MovieRepositoryImplTest {
         // Arrange
         val movieId = 123
         val errorMessage = "DB error"
-        `when`(categoryDao.getIdForCategory("Favourite")).thenReturn("Favourite".hashCode())
+        `when`(categoryDao.getIdForCategory(LocalCategory.Favourite.name)).thenReturn(LocalCategory.Favourite.name.hashCode())
         `when`(categoryDao.addCategoryToMovie(any())).thenThrow(RuntimeException(errorMessage))
 
         // Act
@@ -363,7 +363,7 @@ class MovieRepositoryImplTest {
 
         // Assert
         assertFalse(result)
-        verify(logger).log(eq("MovieRepository"), contains(errorMessage))
+        verify(logger).log(eq("AddMovieToFavourites"), contains(errorMessage))
     }
 
     @Test
@@ -379,7 +379,7 @@ class MovieRepositoryImplTest {
         // Assert
         assertEquals(0, result.movies.size)
         assertEquals(0, result.total)
-        verify(logger).log(eq("MovieRepository"), contains(errorMessage))
+        verify(logger).log(eq("SearchMoviesByName"), contains(errorMessage))
         verify(movieDao, never()).insert(any())
     }
 }
