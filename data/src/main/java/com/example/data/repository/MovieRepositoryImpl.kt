@@ -310,6 +310,15 @@ class MovieRepositoryImpl(
         }
     }
 
+    override suspend fun getTypeFiltersForSearch(): List<Filter> {
+        return try {
+            api.getFiltersByFields("type").map { Filter(name = it.name) }
+        } catch (e: Exception){
+            logger.log("GetTypeFiltersForSearch", e.message.toString())
+            listOf<Filter>()
+        }
+    }
+
     override fun getFavouriteMovies(): Flow<List<Movie>> {
         return categoryDao.getMoviesByCategory(LocalCategory.Favourite.name)
             .map { movies -> movies.map { parseMovieInfo(EntityToDomain.map(it)) } }

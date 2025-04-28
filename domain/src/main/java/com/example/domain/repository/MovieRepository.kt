@@ -90,6 +90,19 @@ interface MovieRepository {
      */
     suspend fun getGenreFiltersForSearch() : List<Filter>
 
+
+    /**
+     * Получает список типов, применяемых для филтрации в поиске из API.
+     *  - movie
+     *  - tv-series
+     *  - anime
+     *  - animated-series
+     *  - cartoon
+     *
+     * @return список из [Filter], содержащий жанры.
+     */
+    suspend fun getTypeFiltersForSearch() : List<Filter>
+
     /**
      * Возвращаяет список любимых фильмов из БД.
      */
