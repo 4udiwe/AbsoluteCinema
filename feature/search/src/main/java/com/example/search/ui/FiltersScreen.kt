@@ -33,7 +33,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.util.toRange
-import com.example.domain.model.Movie
 import com.example.search.viewmodel.SearchViewModel
 
 @Composable
@@ -41,7 +40,7 @@ fun FiltersScreen(
     paddingValues: PaddingValues = PaddingValues(),
     viewModel: SearchViewModel,
     onBackClicked: () -> Unit,
-    onSearchClicked: (String, List<Movie>) -> Unit
+    onSearchClicked: () -> Unit
 ) {
     val filters = viewModel.filters.collectAsState()
     val filtersForSearch = viewModel.filtersForSearch.collectAsState()
@@ -280,7 +279,7 @@ fun FiltersScreen(
         Button(
             onClick = {
                 viewModel.searchWithFilters()
-                onBackClicked.invoke()
+                onSearchClicked.invoke()
             },
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
