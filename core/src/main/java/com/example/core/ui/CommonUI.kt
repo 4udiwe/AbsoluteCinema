@@ -252,7 +252,7 @@ fun CommonMovieItem(
                     color = MaterialTheme.colorScheme.primary
                 )
                 Text(
-                    text = "боевик, триллер, драма", //movie.genres.map { it.name }.joinToString(),
+                    text = movie.genres.map { it.name }.joinToString(),
                     color = MaterialTheme.colorScheme.secondary
                 )
                 Row(
@@ -266,7 +266,7 @@ fun CommonMovieItem(
                         modifier = Modifier.padding(end = 10.dp)
                     ) {
                         Text(
-                            text = "США, Германия, Индия",//movie.countries.map { it.name }.joinToString(),
+                            text = movie.countries.map { it.name }.joinToString(),
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.fillMaxWidth(0.8f).padding(end = 4.dp),
                             maxLines = 1,

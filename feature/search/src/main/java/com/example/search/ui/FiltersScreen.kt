@@ -23,6 +23,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -33,7 +35,7 @@ import androidx.core.util.toRange
 import com.example.search.viewmodel.SearchViewModel
 
 @Composable
-fun SettingsScreen(
+fun FiltersScreen(
     paddingValues: PaddingValues = PaddingValues(),
     viewModel: SearchViewModel,
     onBackClicked: () -> Unit,
@@ -41,10 +43,13 @@ fun SettingsScreen(
     val filters = viewModel.filters.collectAsState()
     val filtersForSearch = viewModel.filtersForSearch.collectAsState()
 
-    var yearSliderPosition: ClosedFloatingPointRange<Float> =
-        (filters.value.years.lower..filters.value.years.upper)
-    var ratingSliderPosition: ClosedFloatingPointRange<Float> =
-        (filters.value.rating.lower..filters.value.rating.upper)
+    val ratingSliderPosition = remember {
+        mutableStateOf(filters.value.rating.lower..filters.value.rating.upper) }
+    val yearSliderPosition = remember {
+        mutableStateOf(filters.value.years.lower..filters.value.years.upper)
+    }
+
+
 
     val scrollState = rememberScrollState()
 
@@ -78,7 +83,7 @@ fun SettingsScreen(
             )
 
             Text(
-                "от ${yearSliderPosition.start.toInt()} до ${yearSliderPosition.endInclusive.toInt()}",
+                "от ${yearSliderPosition.value.start.toInt()} до ${yearSliderPosition.value.endInclusive.toInt()}",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
@@ -86,13 +91,16 @@ fun SettingsScreen(
             )
         }
         RangeSlider(
-            value = yearSliderPosition,
-            steps = 20,
-            onValueChange = { range -> yearSliderPosition = range },
-            valueRange = filters.value.years.lower..filters.value.years.upper,
-            onValueChangeFinished = {
-                viewModel.setYearsFilter(yearSliderPosition.toRange())
+            modifier = Modifier.padding(horizontal = 8.dp),
+            value = yearSliderPosition.value,
+            onValueChange = { range ->
+                yearSliderPosition.value = range
             },
+            onValueChangeFinished = {
+                viewModel.setYearsFilter(yearSliderPosition.value.toRange())
+            },
+            steps = 0,
+            valueRange = (filters.value.years.lower..filters.value.years.upper),
             colors = SliderDefaults.colors(
                 thumbColor = colorResource(com.example.core.R.color.accent),
                 activeTrackColor = colorResource(com.example.core.R.color.accent),
@@ -116,7 +124,7 @@ fun SettingsScreen(
                     selected = selected,
                     onClick = {
                         if (selected) viewModel.removeTypeFilter(it)
-                        else viewModel.addTypeFliter(it)
+                        else viewModel.addTypeFilter(it)
                     },
                     label = { Text(it.name) },
                     modifier = Modifier.padding(4.dp),
@@ -205,7 +213,7 @@ fun SettingsScreen(
             )
 
             Text(
-                "от ${ratingSliderPosition.start.toInt()} до ${ratingSliderPosition.endInclusive.toInt()}",
+                "от ${ratingSliderPosition.value.start.toInt()} до ${ratingSliderPosition.value.endInclusive.toInt()}",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
@@ -213,12 +221,13 @@ fun SettingsScreen(
             )
         }
         RangeSlider(
-            value = ratingSliderPosition,
-            steps = 20,
-            onValueChange = { range -> ratingSliderPosition = range },
-            valueRange = filters.value.years.lower..filters.value.years.upper,
+            modifier = Modifier.padding(horizontal = 8.dp),
+            value = ratingSliderPosition.value,
+            steps = 8,
+            onValueChange = { range -> ratingSliderPosition.value = range },
+            valueRange = filters.value.rating.lower..filters.value.rating.upper,
             onValueChangeFinished = {
-                viewModel.setRatingFilter(ratingSliderPosition.toRange())
+                viewModel.setRatingFilter(ratingSliderPosition.value.toRange())
             },
             colors = SliderDefaults.colors(
                 thumbColor = colorResource(com.example.core.R.color.accent),

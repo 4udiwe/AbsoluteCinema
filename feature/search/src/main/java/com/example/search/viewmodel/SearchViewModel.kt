@@ -11,6 +11,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
@@ -72,10 +73,8 @@ class SearchViewModel(
         _searchState.value = SearchState.Loading
         try {
             val result = repository.searchMoviesByName(query)
-            if (result.total == 0)
-                _searchState.value = SearchState.Empty
-            else
-                _searchState.value = SearchState.Success(movies = result.movies)
+            if (result.total == 0) _searchState.value = SearchState.Empty
+            else _searchState.value = SearchState.Success(movies = result.movies)
         } catch (e: Exception) {
             _searchState.value = SearchState.Error(message = e.message ?: "Unknown error")
             Log.e("Search", e.message.toString())
@@ -115,10 +114,8 @@ class SearchViewModel(
                 isSeries = null,
                 inCollection = null,
             )
-            if (result.total == 0)
-                _searchState.value = SearchState.Empty
-            else
-                _searchState.value = SearchState.Success(movies = result.movies)
+            if (result.total == 0) _searchState.value = SearchState.Empty
+            else _searchState.value = SearchState.Success(movies = result.movies)
 
         } catch (e: Exception) {
             _searchState.value = SearchState.Error(message = e.message ?: "Unknown error")
@@ -141,28 +138,46 @@ class SearchViewModel(
         _filtersForSearch.value.rating = range
     }
 
-    fun addTypeFliter(type: Filter) {
-        _filtersForSearch.value.types.add(type)
+    fun addTypeFilter(type: Filter) {
+        _filtersForSearch.update { searchFilters ->
+            searchFilters.copy(types = searchFilters.types + type)
+        }
     }
 
     fun removeTypeFilter(type: Filter) {
-        _filtersForSearch.value.types.remove(type)
+        _filtersForSearch.update { searchFilters ->
+            searchFilters.copy(types = searchFilters.types.filter {
+                it != type
+            })
+        }
     }
 
     fun addCountryFilter(country: Filter) {
-        _filtersForSearch.value.countries.add(country)
+        _filtersForSearch.update { searchFilters ->
+            searchFilters.copy(countries = searchFilters.countries + country)
+        }
     }
 
     fun removeCountryFilter(country: Filter) {
-        _filtersForSearch.value.countries.remove(country)
+        _filtersForSearch.update { searchFilters ->
+            searchFilters.copy(countries = searchFilters.countries.filter {
+                it != country
+            })
+        }
     }
 
     fun addGenreFilter(genre: Filter) {
-        _filtersForSearch.value.genres.add(genre)
+        _filtersForSearch.update { searchFilters ->
+            searchFilters.copy(genres = searchFilters.genres + genre)
+        }
     }
 
     fun removeGenreFilter(genre: Filter) {
-        _filtersForSearch.value.genres.remove(genre)
+        _filtersForSearch.update { searchFilters ->
+            searchFilters.copy(genres = searchFilters.genres.filter {
+                it != genre
+            })
+        }
     }
 
 

@@ -6,9 +6,9 @@ import com.example.domain.model.Filter
 import java.time.LocalDate
 
 data class SearchFilters(
-    var types: MutableList<Filter> = mutableListOf(),
-    var genres: MutableList<Filter> = mutableListOf(),
-    var countries: MutableList<Filter> = mutableListOf(),
+    var types: List<Filter> = listOf(),
+    var genres: List<Filter> = listOf(),
+    var countries: List<Filter> = listOf(),
     var years: Range<Float> = (1900F..LocalDate.now().year.toFloat()).toRange(),
     var rating: Range<Float> = (1F..10F).toRange(),
 )

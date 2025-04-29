@@ -26,6 +26,7 @@ import com.example.feed.ui.FeedScreen
 import com.example.feed.viewmodel.FeedViewModel
 import com.example.profile.ui.ProfileScreen
 import com.example.profile.ui.SettingsScreen
+import com.example.search.ui.FiltersScreen
 import com.example.search.ui.SearchScreen
 import com.example.search.viewmodel.SearchViewModel
 import com.example.users.ui.UsersScreen
@@ -96,7 +97,15 @@ class MainActivity : ComponentActivity() {
                                 onMovieClicked = { movie ->
                                     movie.id?.let { id -> detailsViewModel.updateMovie(movieId = id) }
                                     navController.navigate(ScreenMovie)
-                                }
+                                },
+                                onFiltersMenuClicked = { navController.navigate(ScreenSearchFilters)}
+                            )
+                        }
+                        composable<ScreenSearchFilters> {
+                            FiltersScreen(
+                                paddingValues = innerPadding,
+                                viewModel = searchViewModel,
+                                onBackClicked = { navController.navigate(ScreenSearch)}
                             )
                         }
                         composable<ScreenUsers> {
@@ -168,6 +177,9 @@ object ScreenHome
 
 @Serializable
 object ScreenSearch
+
+@Serializable
+object ScreenSearchFilters
 
 @Serializable
 object ScreenUsers
