@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.util.toRange
+import com.example.domain.model.Movie
 import com.example.search.viewmodel.SearchViewModel
 
 @Composable
@@ -39,16 +41,17 @@ fun FiltersScreen(
     paddingValues: PaddingValues = PaddingValues(),
     viewModel: SearchViewModel,
     onBackClicked: () -> Unit,
+    onSearchClicked: (String, List<Movie>) -> Unit
 ) {
     val filters = viewModel.filters.collectAsState()
     val filtersForSearch = viewModel.filtersForSearch.collectAsState()
 
     val ratingSliderPosition = remember {
-        mutableStateOf(filters.value.rating.lower..filters.value.rating.upper) }
+        mutableStateOf(filters.value.rating.lower..filters.value.rating.upper)
+    }
     val yearSliderPosition = remember {
         mutableStateOf(filters.value.years.lower..filters.value.years.upper)
     }
-
 
 
     val scrollState = rememberScrollState()
@@ -110,13 +113,25 @@ fun FiltersScreen(
             )
         )
 
-        Text(
-            text = "Тип",
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
-        )
+        Row(
+            verticalAlignment = Alignment.Bottom
+        ) {
+            Text(
+                text = "Тип",
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp, end = 8.dp)
+            )
+            if (filtersForSearch.value.types.isNotEmpty()) {
+                Text(
+                    text = filtersForSearch.value.types.size.toString(),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = colorResource(com.example.core.R.color.accent)
+                )
+            }
+        }
         LazyRow {
             items(filters.value.types) {
                 val selected = filtersForSearch.value.types.contains(it)
@@ -140,13 +155,25 @@ fun FiltersScreen(
             }
         }
 
-        Text(
-            text = "Жанры",
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
-        )
+        Row(
+            verticalAlignment = Alignment.Bottom
+        ) {
+            Text(
+                text = "Жанры",
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp, end = 8.dp)
+            )
+            if (filtersForSearch.value.genres.isNotEmpty()) {
+                Text(
+                    text = filtersForSearch.value.genres.size.toString(),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = colorResource(com.example.core.R.color.accent)
+                )
+            }
+        }
         LazyRow {
             items(filters.value.genres) {
                 val selected = filtersForSearch.value.genres.contains(it)
@@ -169,13 +196,25 @@ fun FiltersScreen(
                 )
             }
         }
-        Text(
-            text = "Страны",
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
-        )
+        Row(
+            verticalAlignment = Alignment.Bottom
+        ) {
+            Text(
+                text = "Страны",
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp, end = 8.dp)
+            )
+            if (filtersForSearch.value.countries.isNotEmpty()) {
+                Text(
+                    text = filtersForSearch.value.countries.size.toString(),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = colorResource(com.example.core.R.color.accent)
+                )
+            }
+        }
         LazyRow {
             items(filters.value.countries) {
                 val selected = filtersForSearch.value.countries.contains(it)
@@ -246,7 +285,11 @@ fun FiltersScreen(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth(0.5f)
-                .padding(top = 40.dp)
+                .padding(top = 40.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colorResource(com.example.core.R.color.accent),
+                contentColor = colorResource(com.example.core.R.color.white)
+            )
         ) {
             Text("Искать")
         }
