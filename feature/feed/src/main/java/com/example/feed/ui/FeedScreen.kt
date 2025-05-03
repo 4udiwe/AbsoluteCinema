@@ -28,7 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.core.ui.FilmRating
+import com.example.core.ui.FilmRatingBox
 import com.example.core.ui.LoadImageWithPlaceholder
 import com.example.core.util.getName
 import com.example.domain.model.Movie
@@ -62,7 +62,7 @@ private fun FilmPosterWName(movie: Movie, onMovieClicked: (Movie) -> Unit) {
                     .width(POSTER_WIDTH.dp),
                 contentScale = ContentScale.Crop
             )
-            FilmRating(movie)
+            FilmRatingBox(movie)
         }
         Text(
             movie.getName(),
@@ -129,15 +129,23 @@ private fun HorizontalRowWTitleBig(
  * Главный экран приложения - отображает рекомендации и определенные категории фильмов
  *
  *
- * @param onMovieClicked вызывается при нажатии на постер фильма (навигация на экран фильма DetailsScreen)
- * @param onAllClicked вызывается при нажатии на кнопку "все" (навигация на экран с полным списокм из категории)
+ * @param onMovieClicked вызывается при нажатии на постер фильма (навигация на экран фильма DetailsScreen).
+ * @param onAllRecommendedMoviesClicked вызывается при клике на кнопку "все" соответствующего списка.
+ * @param onAllRecommendedSeriesClicked вызывается при клике на кнопку "все" соответствующего списка.
+ * @param onAllDetectiveMoviesClicked вызывается при клике на кнопку "все" соответствующего списка.
+ * @param onAllComedyMoviesClicked вызывается при клике на кнопку "все" соответствующего списка.
+ * @param onAllRomanMoviesClicked вызывается при клике на кнопку "все" соответствующего списка.
  */
 @Composable
 fun FeedScreen(
     paddingValues: PaddingValues = PaddingValues(),
     viewModel: FeedViewModel,
     onMovieClicked: (Movie) -> Unit = {},
-    onAllClicked: (List<Movie>, String) -> Unit
+    onAllRecommendedMoviesClicked: () -> Unit,
+    onAllRecommendedSeriesClicked: () -> Unit,
+    onAllDetectiveMoviesClicked: () -> Unit,
+    onAllComedyMoviesClicked: () -> Unit,
+    onAllRomanMoviesClicked: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
 
@@ -159,7 +167,7 @@ fun FeedScreen(
         HorizontalRowWTitleBig(
             title = filmsForYouTitle, recommendedMovies.value,
             onAllClicked = {
-                onAllClicked(recommendedMovies.value, filmsForYouTitle)
+                onAllRecommendedMoviesClicked.invoke()
             },
             onMovieClicked = onMovieClicked
         )
@@ -167,7 +175,7 @@ fun FeedScreen(
         val seriesForYouTitle = stringResource(com.example.core.R.string.SerialsForYou)
         HorizontalRowWTitleBig(title = seriesForYouTitle, recommendedSeries.value,
             onAllClicked = {
-                onAllClicked(recommendedSeries.value, seriesForYouTitle)
+                onAllRecommendedSeriesClicked.invoke()
             },
             onMovieClicked = onMovieClicked
         )
@@ -175,7 +183,7 @@ fun FeedScreen(
         val detectivesTitle = stringResource(com.example.core.R.string.Detectives)
         HorizontalRowWTitleBig(title = detectivesTitle, detectives.value,
             onAllClicked = {
-                onAllClicked(detectives.value, detectivesTitle)
+                onAllDetectiveMoviesClicked.invoke()
             },
             onMovieClicked = onMovieClicked
         )
@@ -183,7 +191,7 @@ fun FeedScreen(
         val comediesTitle = stringResource(com.example.core.R.string.Comedys)
         HorizontalRowWTitleBig(title = comediesTitle, comedies.value,
             onAllClicked = {
-                onAllClicked(comedies.value, comediesTitle)
+                onAllComedyMoviesClicked.invoke()
             },
             onMovieClicked = onMovieClicked
         )
@@ -191,7 +199,7 @@ fun FeedScreen(
         val romansTitle = stringResource(com.example.core.R.string.Romans)
         HorizontalRowWTitleBig(title = romansTitle, romans.value,
             onAllClicked = {
-                onAllClicked(romans.value, romansTitle)
+                onAllRomanMoviesClicked.invoke()
             },
             onMovieClicked = onMovieClicked
         )

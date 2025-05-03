@@ -1,5 +1,6 @@
 package com.example.domain.repository
 
+import com.example.domain.model.Filter
 import com.example.domain.model.Movie
 import com.example.domain.model.MoviesResponce
 import kotlinx.coroutines.flow.Flow
@@ -74,6 +75,33 @@ interface MovieRepository {
         countries: List<String>?,
         inCollection: List<String>?,
     ) : MoviesResponce
+
+    /**
+     * Получает список стран, применяемых для филтрации в поиске из API.
+     *
+     * @return список из [Filter], содержащий страны.
+     */
+    suspend fun getCountryFiltersForSearch() : List<Filter>
+
+    /**
+     * Получает список жанров, применяемых для филтрации в поиске из API.
+     *
+     * @return список из [Filter], содержащий жанры.
+     */
+    suspend fun getGenreFiltersForSearch() : List<Filter>
+
+
+    /**
+     * Получает список типов, применяемых для филтрации в поиске из API.
+     *  - movie
+     *  - tv-series
+     *  - anime
+     *  - animated-series
+     *  - cartoon
+     *
+     * @return список из [Filter], содержащий жанры.
+     */
+    suspend fun getTypeFiltersForSearch() : List<Filter>
 
     /**
      * Возвращаяет список любимых фильмов из БД.

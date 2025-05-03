@@ -1,9 +1,11 @@
 package com.example.data.remote.api
 
+import com.example.data.remote.dto.common.FilterDto
 import com.example.data.remote.dto.common.MovieDto
 import com.example.data.remote.dto.responce.MoviesResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MoviesAPI {
@@ -19,8 +21,8 @@ interface MoviesAPI {
     suspend fun searchMovieByName(@Query("query") query: String): MoviesResponseDto
 
     @Headers("X-API-KEY: 40JQ10H-Q9K4FYF-M2KXT1M-SHKCES3")
-    @GET("v1.4/movie")
-    suspend fun getMovieById(@Query("id") id: Int): MovieDto
+    @GET("v1.4/movie/{id}")
+    suspend fun getMovieById(@Path("id") id: Int): MovieDto
 
     /**
      * Выполняет поиск с различными фильтрами.
@@ -71,4 +73,15 @@ interface MoviesAPI {
         @Query("countries.name") countries: List<String>? = null,
         @Query("lists") inCollection: List<String>? = null,
     ): MoviesResponseDto
+
+    /**
+     * Запрос получения доступных фильтров для поиска.
+     * Например: genres.name, countries.name.
+     *
+     * @param field искомое поле.
+     * @return список из [FilterDto], содержащий найденные фильтры.
+     */
+    @Headers("X-API-KEY: 40JQ10H-Q9K4FYF-M2KXT1M-SHKCES3")
+    @GET("v1/movie/possible-values-by-field")
+    suspend fun getFiltersByFields(@Query("field") field: String): List<FilterDto>
 }

@@ -27,12 +27,13 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.edit
 
 
 @Composable
 fun SettingsScreen(
     paddingValues: PaddingValues = PaddingValues(),
-    onThemeChanged: (Boolean) -> Unit
+    onThemeChanged: (Boolean) -> Unit,
 ) {
 
     val context = LocalContext.current
@@ -106,7 +107,7 @@ fun SettingsScreen(
                     checked = isDarkTheme.value,
                     onCheckedChange = { checked ->
                         isDarkTheme.value = checked
-                        sharedPreferences.edit().putBoolean("dark_theme", checked).apply()
+                        sharedPreferences.edit { putBoolean("dark_theme", checked) }
                         onThemeChanged(checked)
                     },
                     colors = SwitchDefaults.colors(
