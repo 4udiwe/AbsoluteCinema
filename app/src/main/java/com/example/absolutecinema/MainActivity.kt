@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.compose.rememberNavController
+import com.avito.auth.viewmodel.AuthViewModel
 import com.example.absolutecinema.navigtion.AppNavigation
 import com.example.absolutecinema.ui.theme.AbsoluteCinemaTheme
 import com.example.details.viewmodel.DetailsViewModel
@@ -22,6 +23,7 @@ class MainActivity : ComponentActivity() {
     private val detailsViewModel by viewModel<DetailsViewModel>()
     private val usersViewModel by viewModel<UsersViewModel>()
     private val searchViewModel by viewModel<SearchViewModel>()
+    private val authViewModel by viewModel<AuthViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,9 +63,11 @@ class MainActivity : ComponentActivity() {
                     detailsViewModel = detailsViewModel,
                     usersViewModel = usersViewModel,
                     searchViewModel = searchViewModel,
+                    authViewModel = authViewModel,
                     onThemeChanged = { isDarkTheme ->
                         changeTheme(isDark = isDarkTheme)
-                    }
+                    },
+                    context = this
                 )
 
             }

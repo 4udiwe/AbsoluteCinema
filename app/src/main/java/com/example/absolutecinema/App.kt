@@ -1,6 +1,7 @@
 package com.example.absolutecinema
 
 import android.app.Application
+import com.example.absolutecinema.di.authModule
 import com.example.absolutecinema.di.dataModule
 import com.example.absolutecinema.di.featureDetailsModule
 import com.example.absolutecinema.di.featureFeedModule
@@ -12,7 +13,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
-class App : Application() {
+class App: Application() {
     override fun onCreate() {
         super.onCreate()
         startKoin {
@@ -25,7 +26,8 @@ class App : Application() {
                     featureUsersModule,
                     featureDetailsModule,
                     loggerModule,
-                    searchModule
+                    searchModule,
+                    authModule
                 )
             )
         }

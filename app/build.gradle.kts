@@ -60,6 +60,7 @@ dependencies {
     implementation(project(":feature:profile"))
     implementation(project(":feature:details"))
     implementation(project(":feature:feed"))
+    implementation(project(":feature:auth"))
     implementation(project(":feature:search"))
 
     //Koin
