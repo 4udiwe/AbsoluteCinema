@@ -1,5 +1,6 @@
 package com.example.absolutecinema.navigtion
 
+import android.content.Context
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -11,6 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.avito.auth.ui.LoginScreen
+import com.avito.auth.ui.RegistrationScreen
+import com.avito.auth.viewmodel.AuthViewModel
 import com.example.absolutecinema.navigtion.ScreenRoutes.ScreenAllComedies
 import com.example.absolutecinema.navigtion.ScreenRoutes.ScreenAllDetectives
 import com.example.absolutecinema.navigtion.ScreenRoutes.ScreenAllMovies
@@ -26,8 +30,6 @@ import com.example.absolutecinema.navigtion.ScreenRoutes.ScreenSearchFilters
 import com.example.absolutecinema.navigtion.ScreenRoutes.ScreenSearchFiltersResult
 import com.example.absolutecinema.navigtion.ScreenRoutes.ScreenSettings
 import com.example.absolutecinema.navigtion.ScreenRoutes.ScreenUsers
-import com.example.absolutecinema.ui.screens.LoginScreen
-import com.example.absolutecinema.ui.screens.RegistrationScreen
 import com.example.core.ui.BotBar
 import com.example.details.ui.DetailsScreen
 import com.example.details.viewmodel.DetailsViewModel
@@ -55,7 +57,9 @@ fun AppNavigation(
     detailsViewModel: DetailsViewModel,
     usersViewModel: UsersViewModel,
     searchViewModel: SearchViewModel,
-    onThemeChanged: (Boolean) -> Unit
+    authViewModel: AuthViewModel,
+    onThemeChanged: (Boolean) -> Unit,
+    context: Context
 ) {
     var botBarState by rememberSaveable { mutableStateOf(false) }
 
@@ -215,10 +219,12 @@ fun AppNavigation(
                     onToRegistration = {
                         navController.navigate(ScreenRegistration)
                     },
-                    onEnter = {
+                    viewModel = authViewModel,
+                    onSuccess = {
                         navController.navigate(ScreenHome)
                         botBarState = true
-                    }
+                    },
+                    context = context,
                 )
             }
             composable<ScreenRegistration> {
@@ -226,10 +232,11 @@ fun AppNavigation(
                     onToLogin = {
                         navController.navigate(ScreenLogin)
                     },
-                    onEnter = {
-                        navController.navigate(ScreenHome)
-                        botBarState = true
-                    }
+                    viewModel = authViewModel,
+                    onSuccess = {
+                        navController.navigate(ScreenLogin)
+                    },
+                    context = context,
                 )
             }
         }

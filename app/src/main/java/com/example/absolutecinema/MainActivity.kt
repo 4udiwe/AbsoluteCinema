@@ -5,30 +5,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.avito.auth.ui.LoginScreen
-import com.avito.auth.ui.RegistrationScreen
+import com.avito.auth.viewmodel.AuthViewModel
+import com.example.absolutecinema.navigtion.AppNavigation
 import com.example.absolutecinema.ui.theme.AbsoluteCinemaTheme
-import com.example.core.ui.BotBar
-import com.example.details.ui.DetailsScreen
 import com.example.details.viewmodel.DetailsViewModel
-import com.example.feed.ui.FeedScreen
 import com.example.feed.viewmodel.FeedViewModel
-import com.example.profile.ui.ProfileScreen
-import com.example.profile.ui.SettingsScreen
-import com.example.users.ui.UsersScreen
+import com.example.search.viewmodel.SearchViewModel
 import com.example.users.viewmodel.UsersViewModel
-import kotlinx.serialization.Serializable
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
@@ -77,9 +63,11 @@ class MainActivity : ComponentActivity() {
                     detailsViewModel = detailsViewModel,
                     usersViewModel = usersViewModel,
                     searchViewModel = searchViewModel,
+                    authViewModel = authViewModel,
                     onThemeChanged = { isDarkTheme ->
                         changeTheme(isDark = isDarkTheme)
-                    }
+                    },
+                    context = this
                 )
 
             }
