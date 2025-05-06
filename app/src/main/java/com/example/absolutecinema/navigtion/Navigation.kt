@@ -23,6 +23,7 @@ import com.example.absolutecinema.navigtion.ScreenRoutes.ScreenAllMovies
 import com.example.absolutecinema.navigtion.ScreenRoutes.ScreenAllRomans
 import com.example.absolutecinema.navigtion.ScreenRoutes.ScreenAllSeries
 import com.example.absolutecinema.navigtion.ScreenRoutes.ScreenBegin
+import com.example.absolutecinema.navigtion.ScreenRoutes.ScreenDescription
 import com.example.absolutecinema.navigtion.ScreenRoutes.ScreenHome
 import com.example.absolutecinema.navigtion.ScreenRoutes.ScreenLogin
 import com.example.absolutecinema.navigtion.ScreenRoutes.ScreenMovie
@@ -35,6 +36,7 @@ import com.example.absolutecinema.navigtion.ScreenRoutes.ScreenSettings
 import com.example.absolutecinema.navigtion.ScreenRoutes.ScreenUsers
 import com.example.core.ui.BeginScreen
 import com.example.core.ui.BotBar
+import com.example.details.ui.DescriptionScreen
 import com.example.details.ui.DetailsScreen
 import com.example.details.viewmodel.DetailsViewModel
 import com.example.domain.model.Movie
@@ -243,7 +245,15 @@ fun AppNavigation(
                 DetailsScreen(
                     paddingValues = innerPadding,
                     viewModel = detailsViewModel,
-                    onDescriptionClicked = { },
+                    onDescriptionClicked = {
+                        navController.navigate(ScreenDescription)
+                    },
+                )
+            }
+            composable<ScreenDescription> {
+                DescriptionScreen(
+                    paddingValues = innerPadding,
+                    viewModel = detailsViewModel
                 )
             }
             composable<ScreenLogin> {

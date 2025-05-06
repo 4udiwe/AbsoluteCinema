@@ -32,6 +32,9 @@ sealed class ScreenRoutes {
     object ScreenMovie
 
     @Serializable
+    object ScreenDescription
+
+    @Serializable
     object ScreenRegistration
 
     @Serializable

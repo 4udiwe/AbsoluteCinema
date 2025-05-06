@@ -66,9 +66,9 @@ import com.example.domain.model.Person
  * @param actor актер типа [Person]
  */
 @Composable
-private fun ActorItem(actor: Person, modifier: Modifier = Modifier.padding(bottom = 4.dp)) {
+private fun ActorItem(actor: Person, modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier, verticalAlignment = Alignment.CenterVertically
+        modifier = modifier.padding(bottom = 4.dp), verticalAlignment = Alignment.CenterVertically
     ) {
         LoadImageWithPlaceholder(
             imageUrl = actor.photo,
@@ -83,9 +83,9 @@ private fun ActorItem(actor: Person, modifier: Modifier = Modifier.padding(botto
                 .width(160.dp)
                 .padding(start = 4.dp, end = 16.dp)
         ) {
-            Text(actor.name.toString(), color = MaterialTheme.colorScheme.primary, fontSize = 14.sp)
+            Text(actor.name ?: "", color = MaterialTheme.colorScheme.primary, fontSize = 14.sp)
             Text(
-                actor.description.toString(),
+                actor.description ?: "",
                 color = MaterialTheme.colorScheme.secondary,
                 fontSize = 14.sp
             )
@@ -202,6 +202,7 @@ fun DetailsScreen(
 
     val dialogState = remember { mutableStateOf(false) }
 
+
     if (dialogState.value) {
         MovieScoreDialog(dialogState = dialogState,
             movieScore = movie.userRate,
@@ -213,6 +214,9 @@ fun DetailsScreen(
                 viewModel.deleteUserScore()
             })
     }
+
+
+
 
     val scrollState = rememberScrollState()
     Column(
