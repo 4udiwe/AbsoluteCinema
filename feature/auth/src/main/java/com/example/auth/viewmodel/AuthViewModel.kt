@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -16,6 +17,10 @@ class AuthViewModel(
 ) : ViewModel() {
     private val _authState = MutableStateFlow<AuthState>(AuthState.Idle)
     val authState = _authState.asStateFlow()
+
+    fun getUser(): FirebaseUser? {
+        return auth.currentUser
+    }
 
     fun checkUser(): Boolean = auth.currentUser != null
 
@@ -72,4 +77,7 @@ class AuthViewModel(
                 _authState.value = AuthState.CreateAccountFail(e.message ?: "Unknown error")
             }
         }
+
+    fun logOut() = auth.signOut()
+
 }

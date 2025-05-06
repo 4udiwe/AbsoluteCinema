@@ -26,16 +26,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.auth.viewmodel.AuthViewModel
 
-@Preview
 @Composable
 fun ProfileScreen(
     paddingValues: PaddingValues = PaddingValues(),
-    onSettingsClicked: () -> Unit = {}
+    onSettingsClicked: () -> Unit = {},
+    onLogOut: () -> Unit,
+    viewmodel: AuthViewModel
 ) {
+
+    val user = viewmodel.getUser()
+
+
     Column(
         modifier = Modifier
             .fillMaxSize().padding(paddingValues)
@@ -66,7 +71,7 @@ fun ProfileScreen(
                         .size(100.dp)
                 )
                 Text(
-                    stringResource(com.example.core.R.string.mockemail),
+                    user?.email ?: stringResource(com.example.core.R.string.mockemail),
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(16.dp)
                 )
@@ -155,7 +160,8 @@ fun ProfileScreen(
         }
         TextButton(
             onClick = {
-
+                viewmodel.logOut()
+                onLogOut.invoke()
             }
         ) {
             Text(stringResource(com.example.core.R.string.logout), fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)

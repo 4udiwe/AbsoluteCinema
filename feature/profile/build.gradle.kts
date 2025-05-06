@@ -36,9 +36,14 @@ android {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":core"))
+    implementation(project(":feature:auth"))
 
     //ViewModel
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
+    //FireBase
+    api(platform(libs.firebase.bom))
+    api(libs.google.firebase.auth)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

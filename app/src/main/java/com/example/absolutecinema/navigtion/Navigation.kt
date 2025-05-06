@@ -230,7 +230,13 @@ fun AppNavigation(
             composable<ScreenProfile> {
                 ProfileScreen(
                     paddingValues = innerPadding,
-                    onSettingsClicked = { navController.navigate(ScreenSettings) })
+                    onSettingsClicked = { navController.navigate(ScreenSettings) },
+                    onLogOut = {
+                        navController.navigate(ScreenRegistration)
+                        botBarState = false
+                    },
+                    viewmodel = authViewModel
+                )
             }
             composable<ScreenSettings> {
                 SettingsScreen(
