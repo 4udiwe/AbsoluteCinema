@@ -1,4 +1,4 @@
-package com.avito.auth
+package com.example.auth
 
 import org.junit.Test
 

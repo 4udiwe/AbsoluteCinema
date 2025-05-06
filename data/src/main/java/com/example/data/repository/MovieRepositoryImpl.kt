@@ -164,11 +164,8 @@ class MovieRepositoryImpl(
                 )
                 personDao.addPersonToMovie(MoviePersonCrossRef(entity.id!!, person.id!!))
             }
-            println(dto.toString())
-            println(dto.facts.toString())
             // Факты
             dto.facts.forEach { fact ->
-                println(fact.toString())
                 factDao.addFact(
                     FactEntity(
                         id = null,

@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.avito.auth"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 26
@@ -41,7 +41,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     //FireBase
-    implementation(platform(libs.firebase.bom))
+    api(platform(libs.firebase.bom))
     api(libs.google.firebase.auth)
 
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -54,7 +54,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.firebase.auth)
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)

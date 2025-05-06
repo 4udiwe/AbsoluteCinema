@@ -1,6 +1,6 @@
 package com.example.absolutecinema.di
 
-import com.avito.auth.viewmodel.AuthViewModel
+import com.example.auth.viewmodel.AuthViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
@@ -12,11 +12,12 @@ import org.koin.dsl.module
 val authModule = module {
     viewModel<AuthViewModel> {
         AuthViewModel(
-            auth = get()
+            auth = Firebase.auth
         )
     }
 
     single<FirebaseAuth> {
+        FirebaseApp.initializeApp(androidApplication())
         Firebase.auth
     }
 }

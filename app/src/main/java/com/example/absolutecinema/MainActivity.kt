@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.compose.rememberNavController
-import com.avito.auth.viewmodel.AuthViewModel
+import com.example.auth.viewmodel.AuthViewModel
 import com.example.absolutecinema.navigtion.AppNavigation
 import com.example.absolutecinema.ui.theme.AbsoluteCinemaTheme
 import com.example.details.viewmodel.DetailsViewModel

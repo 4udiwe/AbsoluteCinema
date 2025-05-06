@@ -1,4 +1,5 @@
-package com.avito.auth.ui
+package com.example.auth.ui
+
 
 import android.content.Context
 import android.widget.Toast
@@ -30,28 +31,25 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.avito.auth.viewmodel.AuthState
-import com.avito.auth.viewmodel.AuthViewModel
+import com.example.auth.viewmodel.AuthState
+import com.example.auth.viewmodel.AuthViewModel
 import com.example.core.R
 
-
 @Composable
-fun LoginScreen(
-    onToRegistration: () -> Unit = {},
+fun RegistrationScreen(
+    onToLogin: () -> Unit = {},
     viewModel: AuthViewModel,
     onSuccess: () -> Unit,
     context: Context,
 ) {
-
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
+    val confirmPassword = remember { mutableStateOf("") }
     val authState = viewModel.authState.collectAsState()
 
-    if (authState.value is AuthState.SignInFail) {
+    if (authState.value is AuthState.CreateAccountFail) {
         Toast.makeText(
-            context,
-            (authState.value as AuthState.SignInFail).message,
-            Toast.LENGTH_LONG
+            context, (authState.value as AuthState.CreateAccountFail).message, Toast.LENGTH_LONG
         ).show()
     }
 
@@ -63,7 +61,6 @@ fun LoginScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-
         if (authState.value is AuthState.Loading)
             CircularProgressIndicator()
 
@@ -74,7 +71,7 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = stringResource(R.string.LogIn),
+                    text = stringResource(R.string.Registration),
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 32.sp,
                     modifier = Modifier.padding(12.dp)
@@ -89,8 +86,7 @@ fun LoginScreen(
                             email.value = ""
                         }) {
                             Icon(
-                                imageVector = Icons.Default.Clear,
-                                contentDescription = ""
+                                imageVector = Icons.Default.Clear, contentDescription = ""
                             )
                         }
                     },
@@ -107,7 +103,7 @@ fun LoginScreen(
                     onValueChange = {
                         email.value = it
                     },
-                    isError = authState.value is AuthState.SignInFail
+                    isError = authState.value is AuthState.CreateAccountFail
 
                 )
                 OutlinedTextField(
@@ -119,8 +115,7 @@ fun LoginScreen(
                             password.value = ""
                         }) {
                             Icon(
-                                imageVector = Icons.Default.Clear,
-                                contentDescription = ""
+                                imageVector = Icons.Default.Clear, contentDescription = ""
                             )
                         }
                     },
@@ -137,44 +132,71 @@ fun LoginScreen(
                     onValueChange = {
                         password.value = it
                     },
-                    isError = authState.value is AuthState.SignInFail
+                    isError = authState.value is AuthState.CreateAccountFail
+                )
+                OutlinedTextField(
+                    value = confirmPassword.value,
+                    placeholder = { Text(stringResource(R.string.ConfirmPassword)) },
+                    modifier = Modifier.padding(bottom = 12.dp),
+                    trailingIcon = {
+                        IconButton(onClick = {
+                            confirmPassword.value = ""
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Clear, contentDescription = ""
+                            )
+                        }
+                    },
+                    colors = TextFieldDefaults.colors(
+                        unfocusedIndicatorColor = colorResource(R.color.accent),
+                        focusedIndicatorColor = colorResource(R.color.accent),
+                        unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                        focusedContainerColor = MaterialTheme.colorScheme.background,
+                        unfocusedTrailingIconColor = MaterialTheme.colorScheme.secondary,
+                        focusedTrailingIconColor = MaterialTheme.colorScheme.secondary,
+                        unfocusedPlaceholderColor = MaterialTheme.colorScheme.secondary,
+                        focusedPlaceholderColor = MaterialTheme.colorScheme.secondary,
+                    ),
+                    onValueChange = {
+                        confirmPassword.value = it
+                    },
+                    isError = authState.value is AuthState.CreateAccountFail
                 )
 
                 Row {
                     Text(
-                        text = stringResource(R.string.NoAccount),
+                        text = stringResource(R.string.HasAccount),
                         color = MaterialTheme.colorScheme.primary
                     )
-                    Text(
-                        text = stringResource(R.string.ToRegistration),
-                        color = colorResource(R.color.accent),
+                    Text(text = stringResource(R.string.ToLogin),
+                        color = colorResource(
+                            R.color.accent
+                        ),
                         modifier = Modifier
                             .padding(start = 4.dp)
                             .clickable {
-                                onToRegistration.invoke()
-                            }
-                    )
+                                onToLogin.invoke()
+                            })
                 }
-                Text(
-                    text = stringResource(R.string.ForgotPassword),
-                    color = colorResource(R.color.accent)
-                )
             }
-
         }
 
-        Button(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 100.dp),
+        Button(modifier = Modifier
+            .align(Alignment.BottomCenter)
+            .padding(bottom = 100.dp),
             colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.accent)),
             onClick = {
-                viewModel.signIn(
+                viewModel.createAccount(
                     email = email.value,
-                    password = password.value
+                    password = password.value,
+                    confirmPassword = confirmPassword.value
                 )
             }) {
-            Text(text = stringResource(R.string.toEnter), color = MaterialTheme.colorScheme.primary)
+            Text(
+                stringResource(R.string.Registrate),
+                color = MaterialTheme.colorScheme.primary,
+                maxLines = 1
+            )
         }
     }
 }

@@ -3,17 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
-    //id("org.jetbrains.dokka") version "1.9.10"
+    id ("com.google.gms.google-services")
 }
-
-//tasks.dokkaHtmlPartial.configure {
-//    outputDirectory.set(file("$buildDir/dokka/app")) // Указываем директорию для вывода
-//    dokkaSourceSets {
-//        named("main") {
-//            sourceRoots.from("src/main/java") // Указываем путь к исходникам
-//        }
-//    }
-//}
 
 
 android {
@@ -88,6 +79,10 @@ dependencies {
 
     //SharedPreferences
     implementation(libs.androidx.preference.ktx)
+
+    //Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.google.firebase.auth)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

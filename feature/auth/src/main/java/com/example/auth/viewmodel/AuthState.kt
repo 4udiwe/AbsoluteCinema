@@ -1,4 +1,4 @@
-package com.avito.auth.viewmodel
+package com.example.auth.viewmodel
 
 import com.google.firebase.auth.FirebaseUser
 

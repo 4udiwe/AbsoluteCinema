@@ -4,6 +4,7 @@ coilCompose = "3.1.0"
 composeBomVersion = "2023.08.00"
 converterGson = "2.9.0"
 firebaseBom = "33.12.0"
+googleServices = "4.4.2"
 koinAndroid = "4.0.0"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
@@ -52,6 +53,7 @@ coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 google-firebase-auth = { module = "com.google.firebase:firebase-auth" }
+google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

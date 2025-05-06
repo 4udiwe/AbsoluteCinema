@@ -1,4 +1,4 @@
-package com.avito.auth
+package com.example.auth
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
